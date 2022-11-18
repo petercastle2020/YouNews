@@ -1,21 +1,20 @@
 const express = require("express");
-
 const router = express.Router();
+// controllers
+const {
+  createArticle,
+  getArticles,
+  getSingleArticle,
+} = require("../controllers/articleController");
 
 // GET all articles
-router.get("/", (req, res) => {
-  res.json({ msg: "all" });
-});
+router.get("/", getArticles);
 
 // GET single articles
-router.get("/:id", (req, res) => {
-  res.json({ msg: "single" });
-});
+router.get("/:id", getSingleArticle);
 
 // POST new articles
-router.post("/", (req, res) => {
-  res.json({ msg: "new" });
-});
+router.post("/", createArticle);
 
 // DELETE new articles
 router.delete("/:id", (req, res) => {
