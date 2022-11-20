@@ -5,6 +5,8 @@ const {
   createArticle,
   getArticles,
   getSingleArticle,
+  deleteArticle,
+  updateArticle,
 } = require("../controllers/articleController");
 
 // GET all articles
@@ -17,13 +19,9 @@ router.get("/:id", getSingleArticle);
 router.post("/", createArticle);
 
 // DELETE new articles
-router.delete("/:id", (req, res) => {
-  res.json({ msg: "delete" });
-});
+router.delete("/:id", deleteArticle);
 
 // EDIT new articles
-router.patch("/:id", (req, res) => {
-  res.json({ msg: "edit" });
-});
+router.patch("/:id", updateArticle);
 
 module.exports = router;
