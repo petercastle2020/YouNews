@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 // components
 import ArticleDetails from "../components/ArticleDetails";
+import ArticleForm from "../components/ArticleForm";
 
 const Home = () => {
   const [articles, setArticles] = useState(null);
@@ -27,6 +28,7 @@ const Home = () => {
             <ArticleDetails key={article._id} article={article} />
           ))}
       </div>
+      <ArticleForm />
     </div>
   );
 };

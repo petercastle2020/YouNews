@@ -8,7 +8,9 @@ const ArticleDetails = ({ article }) => {
       </h2>
       <h4>{article.subtitle}</h4>
       <img src={article.img} alt="article-img" />
-      <p>{article.content}</p>
+      <pre>
+        <p>{article.content}</p>
+      </pre>
       <p>{article.createdAt}</p>
     </div>
   );
