@@ -1,5 +1,6 @@
 /* google font */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;1,700&display=swap");
 
 /* layout */
 :root {
@@ -9,7 +10,7 @@
 body {
   background: #f1f1f1;
   margin: 0;
-  font-family: "Poppins";
+  font-family: "Source Sans Pro", sans-serif;
 }
 header {
   background: #fff;
@@ -43,6 +44,10 @@ header a {
   border-radius: 4px;
   margin: 20px auto;
   padding: 20px;
+  max-width: 70vw;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
   position: relative;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
 }
@@ -53,8 +58,12 @@ header a {
 }
 .article-details p {
   margin: 0;
-  font-size: 0.9em;
-  color: #555;
+  font-size: 1.31rem;
+  color: #222;
+  font-family: "Source Sans Pro", sans-serif;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 .article-details span {
   position: absolute;
@@ -100,4 +109,17 @@ div.error {
 }
 input.error {
   border: 1px solid var(--error);
+}
+
+/* text-area */
+.text-area-parent {
+  display: flex;
+  justify-content: center;
+}
+.text-area-parent > textarea {
+  height: 40vh;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  font-size: 1.31rem;
+  font-family: "Source Sans Pro", sans-serif;
 }
