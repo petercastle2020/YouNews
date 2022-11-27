@@ -67,10 +67,12 @@ const NewArticle = () => {
         className={emptyFields.includes("subtitle") ? "error" : ""}
       />
       <label>Image:</label>
+
       <input
-        type="text"
+        type="file"
         onChange={(e) => setImg(e.target.value)}
         value={img}
+        name="uploadFile"
         className={emptyFields.includes("img") ? "error" : ""}
       />
       <label>Content:</label>
