@@ -1,11 +1,6 @@
-require("dotenv").config();
-const fs = require("fs");
 const Article = require("../models/articleModel");
 const mongoose = require("mongoose");
-const cloudinary = require("cloudinary").v2;
-
-// multer config
-const multer = require("multer");
+const uploadIMG = require("./ImgUploadController");
 
 // GET all articles
 
@@ -38,61 +33,13 @@ const getSingleArticle = async (req, res) => {
 const createArticle = async (req, res) => {
   const { title, subtitle, content } = req.body;
   let img = "";
-
+  const imgPath = req.file.path;
   console.log(req.body);
   console.log(req.file);
-
   console.log(req.file.path);
 
-  // Cloudinary uploader and return IMG URL with .try and catch;
-
-  // const getImgURL = async () => {
-  //   try {
-  //     const result = await cloudinary.uploader.upload(req.file.path);
-
-  //     console.log("success", JSON.stringify(result, null, 2));
-  //     console.log(result.secure_url);
-  //     img = result.secure_url;
-  //     return img;
-  //   } catch (error) {
-  //     console.log("error", JSON.stringify(error, null, 2));
-  //     return null;
-  //   }
-  // };
-
-  // Cloudinary uploader and return IMG URL with .then
-
-  const uploadIMG = async () => {
-    return await cloudinary.uploader
-      .upload(req.file.path)
-      .then((result) => {
-        //JSON.stringify will provide a formatted string
-        //1st param is the value to be output
-        //2st param null is a function that can be applied to the output
-        //3st param is the number of space characters to use for whitespace in formatting the output
-        console.log("success", JSON.stringify(result, null, 2));
-        console.log(result.secure_url);
-        img = result.secure_url;
-        console.log("inside getImgURL", img);
-        //Deleting from Img from assets once it is uploaded.
-        //get file name
-        const imgName = result.original_filename;
-        fs.unlink("assets/" + imgName, (error) => {
-          if (error) {
-            throw error;
-          }
-
-          console.log("Delete File successfully.");
-        });
-        return img;
-      })
-      .catch((error) => {
-        console.log("error", JSON.stringify(error, null, 2));
-      });
-  };
-
   const inputValidation = async () => {
-    img = await uploadIMG();
+    img = await uploadIMG(imgPath);
 
     console.log("IMG URL -->", img);
 
@@ -140,127 +87,6 @@ const createArticle = async (req, res) => {
   };
 
   create();
-
-  // // Cloudinary uploader.
-
-  // const getImgURL = async () => {
-  //   const uploadIMG = await cloudinary.uploader
-  //     .upload(req.file.path)
-  //     .then((result) => {
-  //       //JSON.stringify will provide a formatted string
-  //       //1st param is the value to be output
-  //       //2st param null is a function that can be applied to the output
-  //       //3st param is the number of space characters to use for whitespace in formatting the output
-  //       console.log("success", JSON.stringify(result, null, 2));
-  //       console.log(result.secure_url);
-  //       const img = result.secure_url;
-  //       console.log("inside getImgURL", img);
-  //       return img;
-  //     })
-  //     .catch((error) => {
-  //       console.log("error", JSON.stringify(error, null, 2));
-  //     });
-  // };
-
-  // cloudinary.uploader
-  //   .upload(req.file.path)
-  //   .then((result) => {
-  //     //JSON.stringify will provide a formatted string
-  //     //1st param is the value to be output
-  //     //2st param null is a function that can be applied to the output
-  //     //3st param is the number of space characters to use for whitespace in formatting the output
-  //     console.log("success", JSON.stringify(result, null, 2));
-  //     const img = result.secure_url;
-  //   })
-  //   .catch((error) => {
-  //     console.log("error", JSON.stringify(error, null, 2));
-  //   });
-
-  // let emptyFields = [];
-
-  // if (!title) {
-  //   emptyFields.push("title");
-  // }
-
-  // if (!subtitle) {
-  //   emptyFields.push("subtitle");
-  // }
-
-  // if (!img) {
-  //   emptyFields.push("img");
-  // }
-
-  // if (!content) {
-  //   emptyFields.push("content");
-  // }
-
-  // if (emptyFields.length > 0) {
-  //   return res
-  //     .status(400)
-  //     .json({ error: "Please Fill in all the fields.", emptyFields });
-  // }
-
-  // const inputValidation = async () => {
-  //   const img = await getImgURL();
-
-  //   console.log("undefined should NOT be here ---> ", img);
-
-  //   let emptyFields = [];
-
-  // if (!title) {
-  //   emptyFields.push("title");
-  // }
-
-  // if (!subtitle) {
-  //   emptyFields.push("subtitle");
-  // }
-
-  // if (!img) {
-  //   emptyFields.push("img");
-  // }
-
-  // if (!content) {
-  //   emptyFields.push("content");
-  // }
-
-  //   if (emptyFields.length > 0) {
-  //     return res
-  //       .status(400)
-  //       .json({ error: "Please Fill in all the fields.", emptyFields });
-  //   }
-
-  //   return img;
-  // };
-
-  // const create = async () => {
-  //   const img = await inputValidation();
-
-  //   try {
-  //     const article = await Article.create({
-  //       title,
-  //       subtitle,
-  //       img: img,
-  //       content,
-  //     });
-  //     res.status(200).json(article);
-  //   } catch (error) {
-  //     res.status(400).json({ error: error.message });
-  //   }
-  // };
-
-  // create();
-
-  // try {
-  //   const article = await Article.create({
-  //     title,
-  //     subtitle,
-  //     img,
-  //     content,
-  //   });
-  //   res.status(200).json(article);
-  // } catch (error) {
-  //   res.status(400).json({ error: error.message });
-  // }
 };
 
 // DELETE article
