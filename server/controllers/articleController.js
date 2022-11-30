@@ -1,4 +1,5 @@
 require("dotenv").config();
+const fs = require("fs");
 const Article = require("../models/articleModel");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
@@ -73,6 +74,16 @@ const createArticle = async (req, res) => {
         console.log(result.secure_url);
         img = result.secure_url;
         console.log("inside getImgURL", img);
+        //Deleting from Img from assets once it is uploaded.
+        //get file name
+        const imgName = result.original_filename;
+        fs.unlink("assets/" + imgName, (error) => {
+          if (error) {
+            throw error;
+          }
+
+          console.log("Delete File successfully.");
+        });
         return img;
       })
       .catch((error) => {
