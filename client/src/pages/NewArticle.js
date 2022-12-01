@@ -11,8 +11,6 @@ const NewArticle = () => {
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
 
-  // console.log(file.files[0]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -22,13 +20,6 @@ const NewArticle = () => {
     formData.append("subtitle", subtitle);
     formData.append("file", img);
     formData.append("content", content);
-
-    // const article = {
-    //   title,
-    //   subtitle,
-    //   img,
-    //   content,
-    // };
 
     const options = {
       method: "POST",
@@ -102,7 +93,7 @@ const NewArticle = () => {
         id="file"
         type="file"
         onChange={(e) => setImg(e.target.files[0])}
-        value={img[0]}
+        value={img}
         name="uploadFile"
         className={emptyFields.includes("img") ? "error" : ""}
       />
