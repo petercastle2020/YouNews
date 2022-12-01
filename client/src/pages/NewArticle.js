@@ -93,7 +93,7 @@ const NewArticle = () => {
         id="file"
         type="file"
         onChange={(e) => setImg(e.target.files[0])}
-        value={img}
+        value={img[0]}
         name="uploadFile"
         className={emptyFields.includes("img") ? "error" : ""}
       />
