@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-// components
+// Components
 import ArticleDetails from "../components/ArticleDetails";
 import ArticleForm from "../components/ArticleForm";
 import { useArticlesContext } from "../hooks/useArticlesContext";
