@@ -13,6 +13,10 @@ const {
   deleteArticle,
   updateArticle,
 } = require("../controllers/articleController");
+const requireAuth = require("../middleware/requireAuth");
+
+// require auth for all following routes.
+router.use(requireAuth);
 
 // GET all articles
 router.get("/", getArticles);

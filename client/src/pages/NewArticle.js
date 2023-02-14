@@ -1,9 +1,12 @@
 import { useState } from "react";
 
 import { useArticlesContext } from "../hooks/useArticlesContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const NewArticle = () => {
   const { dispatch } = useArticlesContext();
+  const { user } = useAuthContext();
+
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [img, setImg] = useState("");
@@ -13,6 +16,11 @@ const NewArticle = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
 
     const formData = new FormData();
 
@@ -28,6 +36,7 @@ const NewArticle = () => {
         // headers: {
         //   'Content-Type': 'multipart/form-data',
         // }
+        Authorization: `Bearer ${user.token}`,
       },
       body: formData,
     };
