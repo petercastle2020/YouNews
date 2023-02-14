@@ -19,6 +19,10 @@ const articleSchema = new Schema(
       type: String,
       require: true,
     },
+    user_id: {
+      type: String,
+      require: true,
+    },
   },
   { timestamps: true }
 );

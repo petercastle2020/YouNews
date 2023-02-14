@@ -5,7 +5,11 @@ const uploadIMG = require("./ImgUploadController");
 // GET all articles
 
 const getArticles = async (req, res) => {
-  const articles = await Article.find({}).sort({ createAt: -1 });
+  const user_id = req.user._id;
+
+  const articles = await Article.find({ user_id: user_id }).sort({
+    createAt: -1,
+  });
 
   res.status(200).json(articles);
 };
@@ -74,11 +78,13 @@ const createArticle = async (req, res) => {
     img = await inputValidation();
 
     try {
+      const user_id = req.user._id;
       const article = await Article.create({
         title: title,
         subtitle: subtitle,
         img: img,
         content: content,
+        user_id: user_id,
       });
       res.status(200).json(article);
     } catch (error) {

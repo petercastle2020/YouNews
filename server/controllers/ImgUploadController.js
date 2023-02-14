@@ -40,7 +40,7 @@ const uploadIMG = async (imgPath) => {
           throw error;
         }
 
-        console.log("Delete File successfully.");
+        console.log("Deleted files from server placeholder successfully.");
       });
       return img;
     })
