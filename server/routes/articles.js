@@ -8,21 +8,25 @@ const upload = multer({ dest: "assets/" });
 // controllers
 const {
   createArticle,
-  getArticles,
+  getAllArticles,
+  getAllMyArticles,
   getSingleArticle,
   deleteArticle,
   updateArticle,
 } = require("../controllers/articleController");
 const requireAuth = require("../middleware/requireAuth");
 
-// GET all articles
-router.get("/", getArticles);
+// GET ALL articles
+router.get("/", getAllArticles);
 
 // GET single articles
 router.get("/:id", getSingleArticle);
 
 // require auth for all following routes.
 router.use(requireAuth);
+
+// GET Mine all articles
+router.get("/my", getAllMyArticles);
 
 // POST new articles
 router.post("/", upload.single("file"), createArticle);

@@ -17,11 +17,20 @@ const ArticlePage = () => {
   }
 
   return (
-    <div class="article">
-      <h1 class="article_title">{ArticlePage.title}</h1>
-      <h2 class="article_subtitle">{ArticlePage.subtitle}</h2>
-      <img src={ArticlePage.img} alt="article-img" class="article_image" />
-      <p class="article_content">{ArticlePage.content}</p>
+    <div className="article">
+      <div className="article_header">
+        <h1 className="article_title">{ArticlePage.title}</h1>
+        <h2 className="article_subtitle">{ArticlePage.subtitle}</h2>
+        <div className="article_author">
+          By{" "}
+          <a href="/author" className="article_author">
+            {ArticlePage.user_email}
+          </a>
+        </div>
+      </div>
+
+      <img src={ArticlePage.img} alt="article-img" className="article_image" />
+      <p className="article_content">{ArticlePage.content}</p>
     </div>
   );
 };

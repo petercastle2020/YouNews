@@ -18,6 +18,10 @@ function App() {
         <div className="pages">
           <Routes>
             <Route
+              path="/my"
+              element={user ? <Home /> : <Navigate to="/login" />}
+            />
+            <Route
               path="/"
               element={user ? <Home /> : <Navigate to="/login" />}
             />

@@ -2,10 +2,20 @@ const Article = require("../models/articleModel");
 const mongoose = require("mongoose");
 const uploadIMG = require("./ImgUploadController");
 
-// GET all articles
+// GET ALL articles
+const getAllArticles = async (req, res) => {
+  const articles = await Article.find({}).sort({
+    createAt: -1,
+  });
 
-const getArticles = async (req, res) => {
+  res.status(200).json(articles);
+};
+
+// GET MINE all articles
+
+const getAllMyArticles = async (req, res) => {
   const user_id = req.user._id;
+  console.log(user_id);
 
   const articles = await Article.find({ user_id: user_id }).sort({
     createAt: -1,
@@ -79,12 +89,14 @@ const createArticle = async (req, res) => {
 
     try {
       const user_id = req.user._id;
+      const user_email = req.user.user_email;
       const article = await Article.create({
         title: title,
         subtitle: subtitle,
         img: img,
         content: content,
         user_id: user_id,
+        user_email: user_email,
       });
       res.status(200).json(article);
     } catch (error) {
@@ -138,7 +150,8 @@ const updateArticle = async (req, res) => {
 
 module.exports = {
   createArticle,
-  getArticles,
+  getAllArticles,
+  getAllMyArticles,
   getSingleArticle,
   deleteArticle,
   updateArticle,

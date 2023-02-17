@@ -199,3 +199,34 @@ form.signup, form.login {
   margin-top: 1rem;
   margin-bottom: 2rem;
 }
+
+.article_header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.article_title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.article_subtitle {
+  font-size: 1.5rem;
+  font-weight: normal;
+  color: #666;
+}
+
+.article_author {
+  margin-top: 1rem;
+  align-self: flex-start;
+}
+
+.article_author-link {
+  color: #666;
+  text-decoration: none;
+}
+
+
+

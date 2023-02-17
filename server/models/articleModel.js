@@ -23,6 +23,10 @@ const articleSchema = new Schema(
       type: String,
       require: true,
     },
+    user_email: {
+      type: String,
+      require: true,
+    },
   },
   { timestamps: true }
 );
