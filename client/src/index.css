@@ -154,4 +154,48 @@ form.signup, form.login {
   padding: 20px;
   background: #fff;
   border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+
+
+/* article-page */
+
+.article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.article_title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.article_subtitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.article_image {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.article_content {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
 }

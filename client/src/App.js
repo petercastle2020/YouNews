@@ -7,6 +7,7 @@ import NewArticle from "./pages/NewArticle";
 import Navbar from "./components/Navbar";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import ArticlePage from "./pages/ArticlePage";
 
 function App() {
   const { user } = useAuthContext();
@@ -21,6 +22,7 @@ function App() {
               element={user ? <Home /> : <Navigate to="/login" />}
             />
             <Route path="/new-article" element={<NewArticle />} />
+            <Route path="/api/articles/:id" element={<ArticlePage />} />
             <Route
               path="/signup"
               element={user ? <Navigate to="/" /> : <Signup />}

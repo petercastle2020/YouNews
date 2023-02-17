@@ -15,14 +15,14 @@ const {
 } = require("../controllers/articleController");
 const requireAuth = require("../middleware/requireAuth");
 
-// require auth for all following routes.
-router.use(requireAuth);
-
 // GET all articles
 router.get("/", getArticles);
 
 // GET single articles
 router.get("/:id", getSingleArticle);
+
+// require auth for all following routes.
+router.use(requireAuth);
 
 // POST new articles
 router.post("/", upload.single("file"), createArticle);
