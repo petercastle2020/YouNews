@@ -14,7 +14,9 @@ const getAllArticles = async (req, res) => {
 // GET MINE all articles
 
 const getAllMyArticles = async (req, res) => {
+  console.log(req.user);
   const user_id = req.user._id;
+  console.log(user_id);
 
   const articles = await Article.find({ user_id: user_id }).sort({
     createAt: -1,

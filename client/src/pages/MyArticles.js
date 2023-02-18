@@ -11,6 +11,10 @@ const MyArticles = () => {
 
   useEffect(() => {
     const fetchArticles = async () => {
+      if (!user.token) {
+        // Wait for 1 second before trying again
+        setTimeout(() => fetchArticles(), 1000);
+      }
       const response = await fetch("/api/articles/my", {
         headers: {
           Authorization: `Bearer ${user.token}`,
