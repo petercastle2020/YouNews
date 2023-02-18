@@ -15,7 +15,6 @@ const getAllArticles = async (req, res) => {
 
 const getAllMyArticles = async (req, res) => {
   const user_id = req.user._id;
-  console.log(user_id);
 
   const articles = await Article.find({ user_id: user_id }).sort({
     createAt: -1,
@@ -45,6 +44,8 @@ const getSingleArticle = async (req, res) => {
 // CREATE new article
 
 const createArticle = async (req, res) => {
+  console.log(req.user._id);
+  console.log(req.user.email);
   const { title, subtitle, content } = req.body;
   let img = "";
   const imgPath = req.file.path;
@@ -89,7 +90,7 @@ const createArticle = async (req, res) => {
 
     try {
       const user_id = req.user._id;
-      const user_email = req.user.user_email;
+      const user_email = req.user.email;
       const article = await Article.create({
         title: title,
         subtitle: subtitle,
