@@ -13,9 +13,7 @@ const Home = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       const response = await fetch("/api/articles", {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
+        headers: {},
       });
       const json = await response.json();
 
@@ -36,7 +34,6 @@ const Home = () => {
             <ArticleDetails key={article._id} article={article} />
           ))}
       </div>
-      <ArticleForm />
     </div>
   );
 };

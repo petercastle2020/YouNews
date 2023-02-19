@@ -16,25 +16,25 @@ const {
 } = require("../controllers/articleController");
 const requireAuth = require("../middleware/requireAuth");
 
+// require auth for all following routes.(I've put specific Auth in each router.)
+//router.use(requireAuth);
+
 // GET ALL articles
 router.get("/", getAllArticles);
 
-// GET single articles
-router.get("/:id", getSingleArticle);
-
-// require auth for all following routes.
-router.use(requireAuth);
-
 // GET Mine all articles
-router.get("/my", getAllMyArticles);
+router.get("/my", requireAuth, getAllMyArticles);
 
 // POST new articles
-router.post("/", upload.single("file"), createArticle);
+router.post("/", requireAuth, upload.single("file"), createArticle);
 
 // DELETE new articles
-router.delete("/:id", deleteArticle);
+router.delete("/:id", requireAuth, deleteArticle);
 
 // EDIT new articles
-router.patch("/:id", updateArticle);
+router.patch("/:id", requireAuth, updateArticle);
+
+// GET single articles
+router.get("/:id", getSingleArticle);
 
 module.exports = router;
