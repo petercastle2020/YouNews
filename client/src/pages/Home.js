@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 // Components
-import ArticleDetails from "../components/ArticleDetails";
-import ArticleForm from "../components/ArticleForm";
+import ArticleCard from "../components/ArticleCard";
 import { useArticlesContext } from "../hooks/useArticlesContext";
 
 const Home = () => {
@@ -31,7 +30,7 @@ const Home = () => {
       <div className="articles">
         {articles &&
           articles.map((article) => (
-            <ArticleDetails key={article._id} article={article} />
+            <ArticleCard key={article._id} article={article} />
           ))}
       </div>
     </div>
