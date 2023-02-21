@@ -17,10 +17,15 @@ function Navbar() {
         <Link to="/">
           <h1>You News</h1>
         </Link>
+        <Link className="add-article-button" to="/new-article">
+          Add New Article
+        </Link>
         <nav>
           {user && (
             <div>
-              <span>{user.email}</span>
+              <Link className="nav-link" to="/my">
+                {user.email}
+              </Link>
               <button onClick={handleClick}>Log out</button>
             </div>
           )}
