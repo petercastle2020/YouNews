@@ -93,6 +93,15 @@ header a {
   position: relative;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
 }
+
+.card-date {
+  margin-top: auto;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+
 .article-card h4 {
   margin: 0 0 10px 0;
   font-size: 1.2em;
@@ -109,6 +118,8 @@ header a {
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+
 
 /* new workout form */
 label,

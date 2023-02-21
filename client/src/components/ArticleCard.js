@@ -16,7 +16,9 @@ const ArticleCard = ({ article }) => {
         <p>{article.content}</p>
         <Link to={`/api/articles/${article._id}`}>Read more...</Link>
       </pre>
-      <p>{format(new Date(article.createdAt), "MM/dd/yyyy")}</p>
+      <p className="card-date">
+        {format(new Date(article.createdAt), "MM/dd/yyyy")}
+      </p>
     </div>
   );
 };
