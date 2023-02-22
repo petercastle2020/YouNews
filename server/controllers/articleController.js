@@ -23,6 +23,18 @@ const getAllMyArticles = async (req, res) => {
   res.status(200).json(articles);
 };
 
+// GET specific user articles
+
+const getSpecificUserArticles = async (req, res) => {
+  user_id = req.params.id;
+
+  const articles = await Article.find({ user_id: user_id }).sort({
+    createAt: -1,
+  });
+
+  res.status(200).json(articles);
+};
+
 // GET single article
 const getSingleArticle = async (req, res) => {
   const { id } = req.params;
@@ -156,4 +168,5 @@ module.exports = {
   getSingleArticle,
   deleteArticle,
   updateArticle,
+  getSpecificUserArticles,
 };

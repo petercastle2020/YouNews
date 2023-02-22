@@ -13,6 +13,7 @@ const {
   getSingleArticle,
   deleteArticle,
   updateArticle,
+  getSpecificUserArticles,
 } = require("../controllers/articleController");
 const requireAuth = require("../middleware/requireAuth");
 
@@ -33,6 +34,9 @@ router.delete("/:id", requireAuth, deleteArticle);
 
 // EDIT new articles
 router.patch("/:id", requireAuth, updateArticle);
+
+//GET specific user articles "/api/articles"
+router.get("/user/:id/articles", getSpecificUserArticles);
 
 // GET single articles
 router.get("/:id", getSingleArticle);
