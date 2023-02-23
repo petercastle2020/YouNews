@@ -82,44 +82,67 @@ header a {
 
 /* Article card styles */
 
-.article-card {
-  background: #fff;
-  border-radius: 4px;
-  margin: 20px auto;
-  padding: 20px;
-  max-width: 70vw;
+.articles {
+  margin: 0 auto;
+  width: 80%;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  position: relative;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.article-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0px 1px 2px #ddd;
+  margin-bottom: 20px;
+  padding: 20px;
+  flex: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-subtitle {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.card-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.card-content {
+  margin-bottom: 10px;
+}
+
+.card-link-readmore {
+  color: #007bff;
+  display: block;
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+
+.card-link-readmore:hover {
+  text-decoration: underline;
 }
 
 .card-date {
-  margin-top: auto;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #999;
+    text-align: right;
 }
-
-
-.article-card h4 {
-  margin: 0 0 10px 0;
-  font-size: 1.2em;
-  /* color: var(--primary); */
-}
-.article-card p {
-  margin: 0;
-  font-size: 1.125rem;
-  color: #222;
-  font-family: "Source Sans Pro", sans-serif;
-  font-family: "Merriweather", serif;
-  font-weight: 400;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
 
 
 /* new workout form */

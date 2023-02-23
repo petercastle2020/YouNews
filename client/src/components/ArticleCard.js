@@ -5,20 +5,23 @@ import { Link } from "react-router-dom";
 import { format } from "date-fns";
 
 const ArticleCard = ({ article }) => {
+  const { title, subtitle, img, content, createdAt, _id } = article;
+  const MAX_PREVIEW_CHARS = 150;
+  const preview = content.substr(0, MAX_PREVIEW_CHARS) + "...";
   return (
-    <div className="article-card">
-      <h2>
-        <strong>{article.title}</strong>
+    <div className="article-card ">
+      <h2 className="card-title">
+        <strong>{title}</strong>
       </h2>
-      <h4>{article.subtitle}</h4>
-      <img src={article.img} alt="article-img" />
+      <p className="card-subtitle">{subtitle}</p>
+      <img src={img} alt="article-img" className="card-img" />
       <pre>
-        <p>{article.content}</p>
-        <Link to={`/api/articles/${article._id}`}>Read more...</Link>
+        <p className="card-content">{preview}</p>
+        <Link to={`/api/articles/${_id}`} className="card-link-readmore">
+          Read more
+        </Link>
       </pre>
-      <p className="card-date">
-        {format(new Date(article.createdAt), "MM/dd/yyyy")}
-      </p>
+      <p className="card-date">{format(new Date(createdAt), "MM/dd/yyyy")}</p>
     </div>
   );
 };
