@@ -35,8 +35,8 @@ const signupUser = async (req, res) => {
   }
 };
 
-// user data
-const getUser = async (req, res) => {
+// get user data using :id
+const getUserById = async (req, res) => {
   const user_id = req.params.id;
 
   try {
@@ -47,8 +47,21 @@ const getUser = async (req, res) => {
   }
 };
 
+// get user data using :email
+const getUserIdByEmail = async (req, res) => {
+  const user_email = req.params.email;
+
+  try {
+    const user = await User.findOne({ email: user_email });
+    res.status(200).json({ user_id: user._id });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   loginUser,
   signupUser,
-  getUser,
+  getUserById,
+  getUserIdByEmail,
 };
