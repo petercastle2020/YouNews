@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { useArticlesContext } from "../hooks/useArticlesContext";
@@ -10,6 +10,16 @@ import { format } from "date-fns";
 const ArticleDetails = ({ article }) => {
   const { dispatch } = useArticlesContext();
   const { user } = useAuthContext();
+  const ellipsisRef = useRef(null);
+
+  // destructuring.
+  const { title, subtitle, img, content, createdAt, _id } = article;
+  const MAX_PREVIEW_CHARS = 150;
+  const preview = content.substr(0, MAX_PREVIEW_CHARS) + "...";
+
+  const handleEllipsisClick = () => {
+    ellipsisRef.current.focus();
+  };
 
   const handleClick = async () => {
     if (!user) {
@@ -31,19 +41,51 @@ const ArticleDetails = ({ article }) => {
   };
 
   return (
-    <div className="article-details">
-      <h2>
-        <strong>{article.title}</strong>
+    <div className="article-card ">
+      <button
+        class="card-ellipsis"
+        tabindex="0"
+        ref={ellipsisRef}
+        onClick={handleEllipsisClick}
+      >
+        &#8942;
+      </button>
+      <ul class="card-dropdown-menu">
+        <li>
+          <span href="#">Edit</span>
+        </li>
+        <li>
+          <span href="#">Delete</span>
+        </li>
+      </ul>
+      <h2 className="card-title">
+        <strong>{title}</strong>
       </h2>
-      <h4>{article.subtitle}</h4>
-      <img src={article.img} alt="article-img" />
+      <p className="card-subtitle">{subtitle}</p>
+      <img src={img} alt="article-img" className="card-img" />
       <pre>
-        <p>{article.content}</p>
-        <Link to={`/api/articles/${article._id}`}>Read more...</Link>
+        <p className="card-content">{preview}</p>
+        <Link to={`/api/articles/${_id}`} className="card-link-readmore">
+          Read more
+        </Link>
       </pre>
-      <p>{format(new Date(article.createdAt), "MM/dd/yyyy")}</p>
+      <p className="card-date">{format(new Date(createdAt), "MM/dd/yyyy")}</p>
       <span onClick={handleClick}>delete</span>
     </div>
+
+    // <div className="article-details">
+    //   <h2>
+    //     <strong>{title}</strong>
+    //   </h2>
+    //   <h4>{subtitle}</h4>
+    //   <img src={img} alt="article-img" />
+    //   <pre>
+    //     <p>{content}</p>
+    //     <Link to={`/api/articles/${_id}`}>Read more...</Link>
+    //   </pre>
+    //   <p>{format(new Date(article.createdAt), "MM/dd/yyyy")}</p>
+    //   <span onClick={handleClick}>delete</span>
+    // </div>
   );
 };
 
