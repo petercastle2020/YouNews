@@ -178,13 +178,20 @@ header a {
   
 }
 
-ul li {
+.card-dropdown-menu li {
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  padding: 5px;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  list-style: none;
 }
+
+.card-dropdown-menu li span {
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
 
 ul li:hover {
   background-color: #f1f1f1;
@@ -211,8 +218,8 @@ ul li span {
 .article-card .card-dropdown-menu {
   display: none; /* Hide the dropdown menu items by default */
   position: absolute;
-  top: 0;
-  left: 100%; /* Position the menu to the right of the ellipsis button */
+  top: 40px;
+  left: 100%;
   transform: translateX(-100%); /* Move the menu back by the width of the menu to align the top-left corner with the top-right corner of the ellipsis button */
   background-color: #fff;
   border: 1px solid #ddd;
@@ -221,6 +228,7 @@ ul li span {
   z-index: 1;
   margin: 0;
   transition: opacity 0.2s ease-in-out;
+  padding: 0;
 }
 
 .article-card .card-ellipsis:focus + .card-dropdown-menu {
@@ -228,20 +236,6 @@ ul li span {
   opacity: 1;
 }
 
-.article-card .card-dropdown-menu li {
-  list-style: none;
-  margin: 5px 0;
-}
-
-.article-card .card-dropdown-menu li a {
-  color: #007bff;
-  text-decoration: none;
-  font-size: 1.1rem;
-}
-
-.article-card .card-dropdown-menu li a:hover {
-  text-decoration: underline;
-}
 
 
 /* new workout form */
