@@ -4,9 +4,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap");
 /* layout */
 :root {
-  --primary: #1aac83;
+  --bg-color: #202324;
+  --primary-color: #181A1B;
+  --secondary-color: #B9CDDA;
+  --accent-color: #FFCB69;
+  --text-color: #e8e6e3;
+  /* --primary: #1aac83;
   --primary-dark: #168a62;
-  --error: #e7195a;
+  --error: #e7195a; */
 }
 body {
   background: #f1f1f1;
