@@ -18,16 +18,27 @@ const ArticleForm = () => {
 
   // Fetch article data from your API or database using the id parameter
   useEffect(() => {
-    fetch(`/api/articles/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setTitle(data.title);
-        setSubtitle(data.subtitle);
-        setImg(data.img);
-        setContent(data.content);
-      })
-      .catch((error) => console.error(error));
+    if (id) {
+      fetch(`/api/articles/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setTitle(data.title);
+          setSubtitle(data.subtitle);
+          setImg(data.img);
+          setContent(data.content);
+        })
+        .catch((error) => setError(error));
+    }
   }, [id]);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImg(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,54 +48,56 @@ const ArticleForm = () => {
       return;
     }
 
-    const formData = new FormData();
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("subtitle", subtitle);
+      formData.append("file", img);
+      formData.append("content", content);
 
-    formData.append("title", title);
-    formData.append("subtitle", subtitle);
-    formData.append("file", img);
-    formData.append("content", content);
+      const options = {
+        method: "POST",
+        headers: {
+          // If you add this, upload won't work
+          // headers: {
+          //   'Content-Type': 'multipart/form-data',
+          // }
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: formData,
+      };
 
-    const options = {
-      method: "POST",
-      headers: {
-        // If you add this, upload won't work
-        // headers: {
-        //   'Content-Type': 'multipart/form-data',
-        // }
-        Authorization: `Bearer ${user.token}`,
-      },
-      body: formData,
-    };
+      // Remove 'Content-Type' header to allow browser to add
+      // along with the correct 'boundary'
+      delete options.headers["Content-Type"];
+      // I guess you could set hears: {"Content-Type": undefined} !!!!!!!!!
 
-    // Remove 'Content-Type' header to allow browser to add
-    // along with the correct 'boundary'
-    delete options.headers["Content-Type"];
-    // I guess you could set hears: {"Content-Type": undefined} !!!!!!!!!
+      const response = await fetch("/api/articles", options)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+          setError(error || "Something went wrong.");
+        });
 
-    const response = await fetch("/api/articles", options)
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
-
-    const json = await response.json();
-
-    if (!response.ok) {
-      setError(json.error);
-      setEmptyFields(json.emptyFields);
-      console.log(emptyFields);
-    }
-
-    if (response.ok) {
-      setEmptyFields([]);
-      setError(null);
-      setTitle("");
-      setSubtitle("");
-      setImg("");
-      setContent("");
-      console.log("new article added.", json);
-      dispatch({ type: "CREATE_ARTICLE", payload: json });
+      if (!response.ok) {
+        const json = await response.json();
+        setError(json.error);
+        setEmptyFields(json.emptyFields);
+      } else {
+        const json = await response.json();
+        setEmptyFields([]);
+        setError(null);
+        setTitle("");
+        setSubtitle("");
+        setImg("");
+        setContent("");
+        console.log("new article added.", json);
+        dispatch({ type: "CREATE_ARTICLE", payload: json });
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -116,8 +129,8 @@ const ArticleForm = () => {
       <input
         id="file"
         type="file"
-        onChange={(e) => setImg(e.target.files[0])}
-        value={img[0]}
+        onChange={handleImageChange}
+        value={img}
         name="uploadFile"
         className={emptyFields.includes("img") ? "error" : ""}
       />

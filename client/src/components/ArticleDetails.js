@@ -43,16 +43,18 @@ const ArticleDetails = ({ article }) => {
   return (
     <div className="article-card ">
       <button
-        class="card-ellipsis"
-        tabindex="0"
+        className="card-ellipsis"
+        tabIndex="0"
         ref={ellipsisRef}
         onClick={handleEllipsisClick}
       >
         &#8942;
       </button>
-      <ul class="card-dropdown-menu">
+      <ul className="card-dropdown-menu">
         <li>
-          <span href="#">Edit</span>
+          <Link to={`/api/articles/edit/${_id}`} className="card-link">
+            Edit
+          </Link>
         </li>
         <li>
           <span href="#">Delete</span>
