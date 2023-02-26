@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 import { useArticlesContext } from "../hooks/useArticlesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
-const NewArticle = () => {
+const ArticleForm = () => {
+  const { id } = useParams();
   const { dispatch } = useArticlesContext();
   const { user } = useAuthContext();
 
@@ -13,6 +15,19 @@ const NewArticle = () => {
   const [content, setContent] = useState("");
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
+
+  // Fetch article data from your API or database using the id parameter
+  useEffect(() => {
+    fetch(`/api/articles/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setTitle(data.title);
+        setSubtitle(data.subtitle);
+        setImg(data.img);
+        setContent(data.content);
+      })
+      .catch((error) => console.error(error));
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -124,4 +139,4 @@ const NewArticle = () => {
   );
 };
 
-export default NewArticle;
+export default ArticleForm;
