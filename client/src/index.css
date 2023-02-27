@@ -191,7 +191,6 @@ header a {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
   list-style: none;
 }
 
@@ -208,9 +207,9 @@ ul li:hover {
 
 ul li .card-link {
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Center the text horizontally */
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
 }
 
 .card-dropdown::after {
@@ -240,7 +239,12 @@ ul li .card-link {
   padding: 0;
 }
 
-.article-card .card-ellipsis:focus + .card-dropdown-menu {
+/* .article-card .card-ellipsis:focus + .card-dropdown-menu {
+  display: block; 
+  opacity: 1;
+} */
+
+.card-dropdown-menu.open {
   display: block; /* Show the dropdown menu items when the ellipsis button is clicked and focused */
   opacity: 1;
 }

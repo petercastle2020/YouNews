@@ -16,6 +16,8 @@ const ArticleForm = () => {
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
 
+  const [isEditing, setIsEditing] = useState(false);
+
   // Fetch article data from your API or database using the id parameter
   useEffect(() => {
     if (id) {
@@ -26,18 +28,34 @@ const ArticleForm = () => {
           setSubtitle(data.subtitle);
           setImg(data.img);
           setContent(data.content);
+          setIsEditing(true);
         })
         .catch((error) => setError(error));
     }
   }, [id]);
 
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     setImg(reader.result);
+  //   };
+  //   reader.readAsDataURL(file);
+  // };
+
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImg(reader.result);
-    };
-    reader.readAsDataURL(file);
+    if (id) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImg(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      const file = e.target.files[0];
+      setImg(file);
+      console.log(file);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -129,10 +147,11 @@ const ArticleForm = () => {
       <input
         id="file"
         type="file"
+        accept="image/*"
         onChange={handleImageChange}
-        value={img}
         name="uploadFile"
         className={emptyFields.includes("img") ? "error" : ""}
+        {...(!isEditing && { required: true })}
       />
       <label>Content:</label>
       <div className="text-area-parent">
@@ -146,7 +165,7 @@ const ArticleForm = () => {
           className={emptyFields.includes("content") ? "error" : ""}
         />
       </div>
-      <button>Add Article</button>
+      <button>{id ? "Edit" : "Publish"}</button>
       {error && <div className="error">{error}</div>}
     </form>
   );

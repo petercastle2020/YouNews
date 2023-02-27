@@ -24,8 +24,11 @@ function App() {
               path="/"
               element={user ? <Home /> : <Navigate to="/login" />}
             />
-            <Route path="/new-article" element={<ArticleForm />} />
-            <Route path="/api/articles/edit/:id" element={<ArticleForm />} />
+            <Route
+              path="/new-article"
+              element={<ArticleForm action="create" />}
+            />
+            <Route path="/edit/:id" element={<ArticleForm action="edit" />} />
             <Route path="/api/user/:id" element={<UserProfile />} />
             <Route path="/api/articles/:id" element={<ArticlePage />} />
             <Route

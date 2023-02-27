@@ -1,4 +1,4 @@
-import { React, useRef } from "react";
+import { React, useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { useArticlesContext } from "../hooks/useArticlesContext";
@@ -10,15 +10,33 @@ import { format } from "date-fns";
 const ArticleDetails = ({ article }) => {
   const { dispatch } = useArticlesContext();
   const { user } = useAuthContext();
-  const ellipsisRef = useRef(null);
+  const dropdownMenuRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   // destructuring.
   const { title, subtitle, img, content, createdAt, _id } = article;
   const MAX_PREVIEW_CHARS = 150;
   const preview = content.substr(0, MAX_PREVIEW_CHARS) + "...";
 
-  const handleEllipsisClick = () => {
-    ellipsisRef.current.focus();
+  useEffect(() => {
+    // Add event listener to detect clicks outside of the dropdown menu
+    const handleDocumentClick = (e) => {
+      if (
+        !dropdownMenuRef.current.contains(e.target) &&
+        e.target.className !== "card-ellipsis"
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("click", handleDocumentClick);
+    // remove event listener on component unmount
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+    };
+  }, []);
+
+  const handleDropdownClick = () => {
+    setIsOpen(!isOpen);
   };
 
   const handleClick = async () => {
@@ -42,22 +60,27 @@ const ArticleDetails = ({ article }) => {
 
   return (
     <div className="article-card ">
-      <button
-        className="card-ellipsis"
-        tabIndex="0"
-        ref={ellipsisRef}
-        onClick={handleEllipsisClick}
-      >
+      <button className="card-ellipsis" onClick={handleDropdownClick}>
         &#8942;
       </button>
-      <ul className="card-dropdown-menu">
+      <ul
+        className={`card-dropdown-menu ${isOpen ? "open" : ""}`}
+        ref={dropdownMenuRef}
+      >
         <li>
-          <Link to={`/api/articles/edit/${_id}`} className="card-link">
+          <Link
+            to={`/edit/${_id}`}
+            className="card-link"
+            onClick={(e) => {
+              console.log("Link clicked");
+              e.stopPropagation();
+            }}
+          >
             Edit
           </Link>
         </li>
         <li>
-          <span href="#">Delete</span>
+          <Link className="card-link">Delete</Link>
         </li>
       </ul>
       <h2 className="card-title">
