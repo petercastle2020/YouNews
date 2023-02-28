@@ -72,7 +72,6 @@ const ArticleDetails = ({ article }) => {
             to={`/edit/${_id}`}
             className="card-link"
             onClick={(e) => {
-              console.log("Link clicked");
               e.stopPropagation();
             }}
           >

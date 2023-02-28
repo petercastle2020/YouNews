@@ -143,16 +143,21 @@ const deleteArticle = async (req, res) => {
 
 const updateArticle = async (req, res) => {
   const { id } = req.params;
+  console.log("I GOT HERE");
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "document do not exist." });
   }
 
   try {
-    const article = await Article.findOneAndUpdate(
+    const article = await Article.findByIdAndUpdate(
       { _id: id },
-      { ...req.body }
+      { ...req.body },
+      { new: true } // returns the update version of the document that was updated.
     );
+    console.log(req);
+    console.log(req.body);
+    console.log("Updated article:", article);
     res.status(200).json(article);
   } catch (error) {
     return res

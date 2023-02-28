@@ -44,7 +44,7 @@ const ArticleForm = () => {
   // };
 
   const handleImageChange = (e) => {
-    if (id) {
+    if (isEditing) {
       const file = e.target.files[0];
       const reader = new FileReader();
       reader.onload = () => {
@@ -73,8 +73,10 @@ const ArticleForm = () => {
       formData.append("file", img);
       formData.append("content", content);
 
+      const URL = isEditing ? `/api/articles/${id}` : "/api/articles";
+      const method = isEditing ? "PATCH" : "POST";
       const options = {
-        method: "POST",
+        method: method,
         headers: {
           // If you add this, upload won't work
           // headers: {
@@ -90,16 +92,20 @@ const ArticleForm = () => {
       delete options.headers["Content-Type"];
       // I guess you could set hears: {"Content-Type": undefined} !!!!!!!!!
 
-      const response = await fetch("/api/articles", options)
+      const response = await fetch(URL, options)
         .then((res) => {
           console.log(res);
+          if (!res.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return res;
         })
         .catch((error) => {
           console.log(error);
           setError(error || "Something went wrong.");
         });
 
-      if (!response.ok) {
+      if (response && !response.ok) {
         const json = await response.json();
         setError(json.error);
         setEmptyFields(json.emptyFields);
@@ -111,7 +117,7 @@ const ArticleForm = () => {
         setSubtitle("");
         setImg("");
         setContent("");
-        console.log("new article added.", json);
+        console.log(isEditing ? "article edited." : "new article added.", json);
         dispatch({ type: "CREATE_ARTICLE", payload: json });
       }
     } catch (error) {
@@ -142,8 +148,11 @@ const ArticleForm = () => {
         value={subtitle}
         className={emptyFields.includes("subtitle") ? "error" : ""}
       />
-      <label>Image:</label>
-
+      <label>
+        {isEditing && img
+          ? `Image already uploaded: ${img}`
+          : "Choose an image:"}
+      </label>
       <input
         id="file"
         type="file"
@@ -165,7 +174,7 @@ const ArticleForm = () => {
           className={emptyFields.includes("content") ? "error" : ""}
         />
       </div>
-      <button>{id ? "Edit" : "Publish"}</button>
+      <button>{isEditing ? "Edit" : "Publish"}</button>
       {error && <div className="error">{error}</div>}
     </form>
   );
