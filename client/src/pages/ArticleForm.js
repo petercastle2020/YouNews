@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
+// utils
+import { convertImageUrlToBase64 } from "../utils/convertImageUrlToBase64";
+//
 import { useArticlesContext } from "../hooks/useArticlesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
@@ -70,8 +73,17 @@ const ArticleForm = () => {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("subtitle", subtitle);
-      formData.append("file", img);
+      // Check if img is a string (URL) or a File object
+      if (typeof img === "string" && isEditing) {
+        // img is a URL, convert to base64
+        const base64Img = await convertImageUrlToBase64(img);
+        formData.append("file", base64Img);
+      } else {
+        formData.append("file", img);
+      }
       formData.append("content", content);
+
+      console.log(formData);
 
       const URL = isEditing ? `/api/articles/${id}` : "/api/articles";
       const method = isEditing ? "PATCH" : "POST";
