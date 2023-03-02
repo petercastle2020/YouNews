@@ -155,7 +155,6 @@ const updateArticle = async (req, res) => {
       { ...req.body },
       { new: true } // returns the update version of the document that was updated.
     );
-    console.log(req);
     console.log(req.body);
     console.log("Updated article:", article);
     res.status(200).json(article);

@@ -37,28 +37,10 @@ const ArticleForm = () => {
     }
   }, [id]);
 
-  // const handleImageChange = (e) => {
-  //   const file = e.target.files[0];
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     setImg(reader.result);
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
-
   const handleImageChange = (e) => {
-    if (isEditing) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImg(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      const file = e.target.files[0];
-      setImg(file);
-      console.log(file);
-    }
+    const file = e.target.files[0];
+    setImg(file);
+    console.log(file);
   };
 
   const handleSubmit = async (e) => {
@@ -76,8 +58,18 @@ const ArticleForm = () => {
       // Check if img is a string (URL) or a File object
       if (typeof img === "string" && isEditing) {
         // img is a URL, convert to base64
+        // const base64Img = await convertImageUrlToBase64(img);
+        // const blob = new Blob([atob(base64Img.split(",")[1])], {
+        //   type: "image/png",
+        // });
         const base64Img = await convertImageUrlToBase64(img);
-        formData.append("file", base64Img);
+        const binaryImg = Uint8Array.from(atob(base64Img.split(",")[1]), (c) =>
+          c.charCodeAt(0)
+        );
+        const blob = new Blob([binaryImg], { type: "image/png" });
+        setImg(blob);
+        console.log(blob);
+        formData.append("file", img);
       } else {
         formData.append("file", img);
       }
@@ -103,7 +95,6 @@ const ArticleForm = () => {
       // along with the correct 'boundary'
       delete options.headers["Content-Type"];
       // I guess you could set hears: {"Content-Type": undefined} !!!!!!!!!
-
       const response = await fetch(URL, options)
         .then((res) => {
           console.log(res);
