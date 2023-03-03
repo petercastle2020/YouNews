@@ -33,7 +33,7 @@ router.post("/", requireAuth, upload.single("file"), createArticle);
 router.delete("/:id", requireAuth, deleteArticle);
 
 // EDIT new articles
-router.patch("/:id", requireAuth, updateArticle);
+router.patch("/:id", requireAuth, upload.single("file"), updateArticle);
 
 //GET specific user articles "/api/articles"
 router.get("/user/:id/articles", getSpecificUserArticles);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 // utils
 import { convertImageUrlToBase64 } from "../utils/convertImageUrlToBase64";
@@ -11,6 +11,7 @@ const ArticleForm = () => {
   const { id } = useParams();
   const { dispatch } = useArticlesContext();
   const { user } = useAuthContext();
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
@@ -67,15 +68,18 @@ const ArticleForm = () => {
           c.charCodeAt(0)
         );
         const blob = new Blob([binaryImg], { type: "image/png" });
-        setImg(blob);
-        console.log(blob);
-        formData.append("file", img);
+
+        const file = new File([blob], "image.png", { type: "image/png" });
+        formData.append("file", file);
       } else {
         formData.append("file", img);
       }
       formData.append("content", content);
 
-      console.log(formData);
+      console.log("title", formData.get("title"));
+      console.log("subtitle", formData.get("subtitle"));
+      console.log("file", formData.get("file"));
+      console.log("content", formData.get("content"));
 
       const URL = isEditing ? `/api/articles/${id}` : "/api/articles";
       const method = isEditing ? "PATCH" : "POST";
@@ -123,6 +127,9 @@ const ArticleForm = () => {
         console.log(isEditing ? "article edited." : "new article added.", json);
         dispatch({ type: "CREATE_ARTICLE", payload: json });
       }
+
+      // redirect to home page
+      navigate("/my");
     } catch (error) {
       console.log(error);
     }
