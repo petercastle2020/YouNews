@@ -144,23 +144,25 @@ const deleteArticle = async (req, res) => {
 const updateArticle = async (req, res) => {
   const { id } = req.params;
   const { title, subtitle, content } = req.body;
-  const imgPath = req.file.path;
-
-  // img here will be used on body for the update.
-  img = await uploadIMG(imgPath);
-  console.log("IMG URL -->", img);
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "document do not exist." });
   }
 
   try {
+    let updateFields = { title, subtitle, content };
+    if (req.file) {
+      const imgPath = req.file.path;
+      // img here will be used on body for the update.
+      const img = await uploadIMG(imgPath);
+      updateFields = { ...updateFields, img };
+    }
+
     const article = await Article.findByIdAndUpdate(
       { _id: id },
-      { title: title, subtitle: subtitle, img: img, content: content },
+      updateFields,
       { new: true } // returns the update version of the document that was updated.
     );
-    console.log(req.body);
     console.log("Updated article:", article);
     res.status(200).json(article);
   } catch (error) {

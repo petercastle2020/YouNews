@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 // utils
-import { convertImageUrlToBase64 } from "../utils/convertImageUrlToBase64";
+//import { convertImageUrlToBase64 } from "../utils/convertImageUrlToBase64";
 //
 import { useArticlesContext } from "../hooks/useArticlesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -38,6 +38,15 @@ const ArticleForm = () => {
     }
   }, [id]);
 
+  const fileInputExists = () => {
+    const fileInput = document.getElementById("file");
+    if (!fileInput || fileInput.files.length === 0) {
+      console.log("No file iput or file not selected.");
+      return false;
+    }
+    return true;
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImg(file);
@@ -56,13 +65,15 @@ const ArticleForm = () => {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("subtitle", subtitle);
+      // ckeck if img input has a file, IF NOT then skip the file input.
+      if (fileInputExists) {
+        formData.append("file", img);
+      }
+
+      /*
       // Check if img is a string (URL) or a File object
       if (typeof img === "string" && isEditing) {
         // img is a URL, convert to base64
-        // const base64Img = await convertImageUrlToBase64(img);
-        // const blob = new Blob([atob(base64Img.split(",")[1])], {
-        //   type: "image/png",
-        // });
         const base64Img = await convertImageUrlToBase64(img);
         const binaryImg = Uint8Array.from(atob(base64Img.split(",")[1]), (c) =>
           c.charCodeAt(0)
@@ -73,7 +84,8 @@ const ArticleForm = () => {
         formData.append("file", file);
       } else {
         formData.append("file", img);
-      }
+      }                                                               */
+
       formData.append("content", content);
 
       console.log("title", formData.get("title"));
