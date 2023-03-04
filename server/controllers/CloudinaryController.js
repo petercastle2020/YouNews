@@ -8,6 +8,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+//Upload IMG Cloudinary
 const uploadIMG = async (imgPath) => {
   // Cloudinary uploader and return IMG URL with .try and catch;
 
@@ -54,4 +55,28 @@ const uploadIMG = async (imgPath) => {
     });
 };
 
-module.exports = uploadIMG;
+//Delete IMG Cloudinary.
+const deleteIMG = (imageURL) => {
+  return new Promise((resolve, reject) => {
+    const url = imageURL;
+    const publicId = url.substring(
+      url.lastIndexOf("/") + 1,
+      url.lastIndexOf(".")
+    );
+    /* url.lastIndexOf("/") + 1, url.lastIndexOf(".")
+  takes the substring variable, starting at the index of the
+  character after the last forward slash
+  and ending at the index of the last period character. */
+    cloudinary.uploader.destroy(publicId, (error, result) => {
+      if (error) {
+        console.log("Error deleting image:", error.message);
+        reject(error);
+        return;
+      }
+      console.log("Image deleted successfully", result);
+      resolve(result);
+    });
+  });
+};
+
+module.exports = { uploadIMG, deleteIMG };

@@ -1,6 +1,6 @@
 const Article = require("../models/articleModel");
 const mongoose = require("mongoose");
-const uploadIMG = require("./ImgUploadController");
+const { uploadIMG, deleteIMG } = require("./CloudinaryController");
 
 // GET ALL articles
 const getAllArticles = async (req, res) => {
@@ -144,13 +144,29 @@ const deleteArticle = async (req, res) => {
 const updateArticle = async (req, res) => {
   const { id } = req.params;
   const { title, subtitle, content } = req.body;
+  let updateFields = { title, subtitle, content };
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "document do not exist." });
   }
 
   try {
-    let updateFields = { title, subtitle, content };
+    const article = await Article.findById(id);
+    if (!article) {
+      return res.status(404).json({ error: "document does not exist" });
+    }
+
+    //Delete the previous image if a new file is uploaded
+    try {
+      if (req.file && article.img) {
+        await deleteIMG(article.img);
+      }
+    } catch (error) {
+      console.error("Error deleting previous image:", error);
+      res.status(500).json({ error: "Error deleting previous image" });
+    }
+
+    // Upload the new image if a file is provided and spread the other data.
     if (req.file) {
       const imgPath = req.file.path;
       // img here will be used on body for the update.
@@ -158,13 +174,13 @@ const updateArticle = async (req, res) => {
       updateFields = { ...updateFields, img };
     }
 
-    const article = await Article.findByIdAndUpdate(
+    const updatedArticle = await Article.findByIdAndUpdate(
       { _id: id },
       updateFields,
       { new: true } // returns the update version of the document that was updated.
     );
-    console.log("Updated article:", article);
-    res.status(200).json(article);
+    console.log("Updated article:", updatedArticle);
+    res.status(200).json(updatedArticle);
   } catch (error) {
     return res
       .status(400)
