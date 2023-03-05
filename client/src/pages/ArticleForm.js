@@ -137,7 +137,13 @@ const ArticleForm = () => {
         setImg("");
         setContent("");
         console.log(isEditing ? "article edited." : "new article added.", json);
-        dispatch({ type: "CREATE_ARTICLE", payload: json });
+
+        // dispatch the appropriate action based on the isEditing state.
+        if (isEditing) {
+          dispatch({ type: "EDIT_ARTICLE", payload: json });
+        } else {
+          dispatch({ type: "CREATE_ARTICLE", payload: json });
+        }
       }
 
       // redirect to home page

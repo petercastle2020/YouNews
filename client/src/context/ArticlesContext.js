@@ -12,6 +12,19 @@ export const articlesReducer = (state, action) => {
       return {
         articles: [action.payload, ...state.articles],
       };
+    case "EDIT_ARTICLE":
+      const updatedArticles = state.articles.map((article) => {
+        if (article._id === action.payload._id) {
+          // If the current article's ID matches the ID of the edited article,
+          // return the edited article instead of the original article
+          return action.payload;
+        }
+        // Otherwise, return the original article.
+        return article;
+      });
+      return {
+        articles: updatedArticles,
+      };
     case "DELETE_ARTICLE":
       return {
         articles: state.articles.filter(

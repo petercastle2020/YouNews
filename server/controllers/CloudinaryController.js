@@ -37,7 +37,6 @@ const uploadIMG = async (imgPath) => {
       //3st param is the number of space characters to use for whitespace in formatting the output
       console.log("success", JSON.stringify(result, null, 2));
       img = result.secure_url;
-      console.log("inside getImgURL", img);
       //Deleting from Img from assets once it is uploaded.
       //get file name
       const imgName = result.original_filename;
