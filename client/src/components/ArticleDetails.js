@@ -39,22 +39,33 @@ const ArticleDetails = ({ article }) => {
     setIsOpen(!isOpen);
   };
 
-  const handleClick = async () => {
+  const handleDeleteClick = async (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
     if (!user) {
       console.log("must be logged in to delete.");
       return;
     }
-    const response = await fetch("/api/articles/" + article._id, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
-    });
 
-    const json = await response.json();
+    try {
+      const response = await fetch("/api/articles/" + article._id, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
-    if (response.ok) {
-      dispatch({ type: "DELETE_ARTICLE", payload: json });
+      if (response.ok) {
+        const json = await response.json();
+        dispatch({ type: "DELETE_ARTICLE", payload: json });
+      } else {
+        throw new Error(`HTTP error ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Error deleting article", error);
+      // customize the error message to show something more informative to user
+      alert("Error deleting article. Please try again later.");
     }
   };
 
@@ -79,7 +90,9 @@ const ArticleDetails = ({ article }) => {
           </Link>
         </li>
         <li>
-          <Link className="card-link">Delete</Link>
+          <Link to="#" className="card-link" onClick={handleDeleteClick}>
+            Delete
+          </Link>
         </li>
       </ul>
       <h2 className="card-title">
@@ -94,22 +107,7 @@ const ArticleDetails = ({ article }) => {
         </Link>
       </pre>
       <p className="card-date">{format(new Date(createdAt), "MM/dd/yyyy")}</p>
-      <span onClick={handleClick}>delete</span>
     </div>
-
-    // <div className="article-details">
-    //   <h2>
-    //     <strong>{title}</strong>
-    //   </h2>
-    //   <h4>{subtitle}</h4>
-    //   <img src={img} alt="article-img" />
-    //   <pre>
-    //     <p>{content}</p>
-    //     <Link to={`/api/articles/${_id}`}>Read more...</Link>
-    //   </pre>
-    //   <p>{format(new Date(article.createdAt), "MM/dd/yyyy")}</p>
-    //   <span onClick={handleClick}>delete</span>
-    // </div>
   );
 };
 

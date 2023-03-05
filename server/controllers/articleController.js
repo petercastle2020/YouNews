@@ -130,6 +130,20 @@ const deleteArticle = async (req, res) => {
   }
 
   try {
+    const article = await Article.findById(id);
+    if (!article) {
+      return res.status(404).json({ error: "document does not exist" });
+    }
+    //Delete the previous image if a new file is uploaded
+    try {
+      if (article && article.img) {
+        await deleteIMG(article.img);
+      }
+    } catch (error) {
+      console.error("Error deleting previous image:", error);
+      res.status(500).json({ error: "Error deleting previous image" });
+    }
+
     const foundArticle = await Article.findOneAndDelete({ _id: id });
     res.status(200).json(foundArticle);
   } catch (error) {
