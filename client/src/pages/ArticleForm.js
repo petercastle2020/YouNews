@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
+// Text Editor.
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
 // utils
 //import { convertImageUrlToBase64 } from "../utils/convertImageUrlToBase64";
 //
@@ -21,22 +25,34 @@ const ArticleForm = () => {
   const [emptyFields, setEmptyFields] = useState([]);
 
   const [isEditing, setIsEditing] = useState(false);
-
+  // get/set TinyMCE API KEY from server.
+  //const [apiKey, setApiKey] = useState("");
   // Fetch article data from your API or database using the id parameter
   useEffect(() => {
-    if (id) {
-      fetch(`/api/articles/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
+    const fetchData = async () => {
+      try {
+        // const response = await fetch("/api/tinymce/", {
+        //   headers: { Authorization: `Bearer ${user.token}` },
+        // });
+        // const apiKey = await response.text();
+        // setApiKey(apiKey);
+
+        if (id) {
+          const res = await fetch(`/api/articles/${id}`);
+          const data = await res.json();
           setTitle(data.title);
           setSubtitle(data.subtitle);
           setImg(data.img);
           setContent(data.content);
           setIsEditing(true);
-        })
-        .catch((error) => setError(error));
-    }
-  }, [id]);
+        }
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchData();
+  }, [id, user]);
 
   const fileInputExists = () => {
     const fileInput = document.getElementById("file");
@@ -192,7 +208,7 @@ const ArticleForm = () => {
       />
       <label>Content:</label>
       <div className="text-area-parent">
-        <textarea
+        {/* <textarea
           id="content"
           type="text"
           rows="10"
@@ -200,6 +216,13 @@ const ArticleForm = () => {
           onChange={(e) => setContent(e.target.value)}
           value={content}
           className={emptyFields.includes("content") ? "error" : ""}
+        /> */}
+        {/* <TextEditor /> */}
+        <ReactQuill
+          className="react-quill"
+          theme="snow"
+          value={content}
+          onChange={setContent}
         />
       </div>
       <button>{isEditing ? "Edit" : "Publish"}</button>
