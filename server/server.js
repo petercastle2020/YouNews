@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 
 const articleRoutes = require("./routes/articles");
 const userRoutes = require("./routes/user");
-const TinymceRoutes = require("./routes/tinymce");
 
 // express app
 const app = express();
@@ -21,8 +20,6 @@ app.use((req, res, next) => {
 app.use("/api/articles", articleRoutes);
 
 app.use("/api/user", userRoutes);
-
-app.use("/api/tinymce", TinymceRoutes);
 
 // connect to db
 mongoose

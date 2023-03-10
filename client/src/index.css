@@ -260,22 +260,33 @@ input {
   display: block;
 }
 input {
-  padding: 10px;
-  margin-top: 10px;
+  padding: 5px;
+  margin-top: 5px;
   margin-bottom: 20px;
   width: 100%;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
 }
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  margin: auto;
+  
+}
 form button {
-  background: var(--primary);
+  display: inline-block;
+  background-color: var(--primary-color);
   border: 0;
   color: #fff;
   padding: 10px;
   font-family: "Poppins";
   border-radius: 4px;
   cursor: pointer;
+}
+form button:hover {
+  background-color: var(--accent-color-secondary);
 }
 div.error {
   padding: 10px;
@@ -291,16 +302,15 @@ input.error {
 
 /* text-area */
 .text-area-parent {
-  display: block;
-  height: 40vh;
-  width: 80vw;
-  margin: 0;
+   display: flex;
+  flex-wrap: wrap;
 }
-.text-area-parent > textarea {
-  height: 40vh;
-  box-sizing: border-box;
-  border: 1px solid #ddd;
-  font-size: 1.31rem;
+
+.react-quill-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
   font-family: "Source Sans Pro", sans-serif;
 }
 

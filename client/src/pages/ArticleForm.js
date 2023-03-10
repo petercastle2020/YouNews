@@ -218,12 +218,15 @@ const ArticleForm = () => {
           className={emptyFields.includes("content") ? "error" : ""}
         /> */}
         {/* <TextEditor /> */}
-        <ReactQuill
-          className="react-quill"
-          theme="snow"
-          value={content}
-          onChange={setContent}
-        />
+        <div className="react-quill-wrapper">
+          <ReactQuill
+            className="react-quill"
+            theme="snow"
+            value={content}
+            onChange={setContent}
+            style={{ height: "400px", width: "800px" }}
+          />
+        </div>
       </div>
       <button>{isEditing ? "Edit" : "Publish"}</button>
       {error && <div className="error">{error}</div>}
