@@ -7,18 +7,20 @@ const ArticlePage = () => {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    fetch(`/api/articles/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        // get unique article by id
+        const response = await fetch(`/api/articles/${id}`);
+        //data has the document and document's user_id
+        const data = await response.json();
         setArticlePage(data);
-        fetch(`/api/user/email/${data.user_email}`)
-          .then((response) => response.json())
-          .then((userData) => {
-            setUserId(userData.user_id);
-          })
-          .catch((error) => console.error(error));
-      })
-      .catch((error) => console.error(error));
+        setUserId(data.user_id);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
   }, [id]);
 
   if (!ArticlePage) {

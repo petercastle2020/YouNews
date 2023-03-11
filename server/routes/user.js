@@ -14,7 +14,5 @@ router.post("/login", loginUser);
 router.post("/signup", signupUser);
 // get user data using ":id"
 router.get("/:id", getUserById);
-//get user data using "email"
-router.get("/email/:email", getUserIdByEmail);
 
 module.exports = router;
