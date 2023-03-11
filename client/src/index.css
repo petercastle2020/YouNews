@@ -260,9 +260,9 @@ input {
   display: block;
 }
 input {
-  padding: 5px;
+  padding: 8px;
   margin-top: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   width: 100%;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -298,6 +298,10 @@ div.error {
 }
 input.error {
   border: 1px solid var(--error);
+}
+
+h3.new-article {
+  margin-top: 0;
 }
 
 /* text-area */

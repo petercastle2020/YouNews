@@ -146,8 +146,8 @@ const ArticleForm = () => {
       className="create"
       onSubmit={handleSubmit}
     >
-      <h3>Add a New Article</h3>
-      <label>Title:</label>
+      <h3 className="new-article">New Article</h3>
+      <label>Title :</label>
       <input
         id="title"
         type="text"
@@ -155,7 +155,7 @@ const ArticleForm = () => {
         value={title}
         className={emptyFields.includes("title") ? "error" : ""}
       />
-      <label>SubTitle:</label>
+      <label>SubTitle :</label>
       <input
         id="subtitle"
         type="text"
@@ -166,7 +166,7 @@ const ArticleForm = () => {
       <label>
         {isEditing && img
           ? `Image already uploaded: ${img}`
-          : "Choose an image:"}
+          : "Choose an image :"}
       </label>
       <input
         id="file"
@@ -177,7 +177,7 @@ const ArticleForm = () => {
         className={emptyFields.includes("img") ? "error" : ""}
         {...(!isEditing && { required: true })}
       />
-      <label>Content:</label>
+      <label>Content :</label>
       <div className="text-area-parent">
         <div className="react-quill-wrapper">
           <ReactQuill
