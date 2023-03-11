@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
+// Sanitize
+import { sanitizeFormData } from "../utils/sanitizeFormData";
 // Text Editor.
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-
-// utils
-//import { convertImageUrlToBase64 } from "../utils/convertImageUrlToBase64";
-//
+// Context
 import { useArticlesContext } from "../hooks/useArticlesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
@@ -25,18 +24,10 @@ const ArticleForm = () => {
   const [emptyFields, setEmptyFields] = useState([]);
 
   const [isEditing, setIsEditing] = useState(false);
-  // get/set TinyMCE API KEY from server.
-  //const [apiKey, setApiKey] = useState("");
   // Fetch article data from your API or database using the id parameter
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await fetch("/api/tinymce/", {
-        //   headers: { Authorization: `Bearer ${user.token}` },
-        // });
-        // const apiKey = await response.text();
-        // setApiKey(apiKey);
-
         if (id) {
           const res = await fetch(`/api/articles/${id}`);
           const data = await res.json();
@@ -52,7 +43,7 @@ const ArticleForm = () => {
     };
 
     fetchData();
-  }, [id, user]);
+  }, [id]);
 
   const fileInputExists = () => {
     const fileInput = document.getElementById("file");
@@ -66,7 +57,6 @@ const ArticleForm = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImg(file);
-    console.log(file);
   };
 
   const handleSubmit = async (e) => {
@@ -86,28 +76,9 @@ const ArticleForm = () => {
         formData.append("file", img);
       }
 
-      /*
-      // Check if img is a string (URL) or a File object
-      if (typeof img === "string" && isEditing) {
-        // img is a URL, convert to base64
-        const base64Img = await convertImageUrlToBase64(img);
-        const binaryImg = Uint8Array.from(atob(base64Img.split(",")[1]), (c) =>
-          c.charCodeAt(0)
-        );
-        const blob = new Blob([binaryImg], { type: "image/png" });
-
-        const file = new File([blob], "image.png", { type: "image/png" });
-        formData.append("file", file);
-      } else {
-        formData.append("file", img);
-      }                                                               */
-
       formData.append("content", content);
 
-      console.log("title", formData.get("title"));
-      console.log("subtitle", formData.get("subtitle"));
-      console.log("file", formData.get("file"));
-      console.log("content", formData.get("content"));
+      sanitizeFormData(formData);
 
       const URL = isEditing ? `/api/articles/${id}` : "/api/articles";
       const method = isEditing ? "PATCH" : "POST";
@@ -208,16 +179,6 @@ const ArticleForm = () => {
       />
       <label>Content:</label>
       <div className="text-area-parent">
-        {/* <textarea
-          id="content"
-          type="text"
-          rows="10"
-          cols="60"
-          onChange={(e) => setContent(e.target.value)}
-          value={content}
-          className={emptyFields.includes("content") ? "error" : ""}
-        /> */}
-        {/* <TextEditor /> */}
         <div className="react-quill-wrapper">
           <ReactQuill
             className="react-quill"

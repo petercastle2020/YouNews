@@ -1,6 +1,8 @@
 import { React, useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import DOMPurify from "dompurify";
+import { getSanitizedAndTruncatedText } from "../utils/getSanitizedAndTruncatedText";
+//Context
 import { useArticlesContext } from "../hooks/useArticlesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
@@ -16,7 +18,10 @@ const ArticleDetails = ({ article }) => {
   // destructuring.
   const { title, subtitle, img, content, createdAt, _id } = article;
   const MAX_PREVIEW_CHARS = 150;
-  const preview = content.substr(0, MAX_PREVIEW_CHARS) + "...";
+
+  const sanitizedTitle = DOMPurify.sanitize(title);
+  const sanitizedSubtitle = DOMPurify.sanitize(subtitle);
+  const preview = getSanitizedAndTruncatedText(content, MAX_PREVIEW_CHARS);
 
   useEffect(() => {
     // Add event listener to detect clicks outside of the dropdown menu
@@ -96,9 +101,9 @@ const ArticleDetails = ({ article }) => {
         </li>
       </ul>
       <h2 className="card-title">
-        <strong>{title}</strong>
+        <strong>{sanitizedTitle}</strong>
       </h2>
-      <p className="card-subtitle">{subtitle}</p>
+      <p className="card-subtitle">{sanitizedSubtitle}</p>
       <img src={img} alt="article-img" className="card-img" />
       <pre>
         <p className="card-content">{preview}</p>
