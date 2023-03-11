@@ -436,7 +436,7 @@ form.signup, form.login {
   margin-bottom: 1rem;
 }
 
-.articlecontent {
+.article-content {
   font-size: 1.2rem;
   line-height: 1.6;
   margin-top: 1rem;
@@ -447,7 +447,6 @@ form.signup, form.login {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
 }
 
 .article-title {
@@ -469,6 +468,13 @@ form.signup, form.login {
 .article-author-link {
   color: #666;
   text-decoration: none;
+}
+
+.author-and-date-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
 }
 
 

@@ -12,7 +12,10 @@ const ArticleCard = ({ article }) => {
 
   const sanitizedTitle = DOMPurify.sanitize(title);
   const sanitizedSubtitle = DOMPurify.sanitize(subtitle);
-  const preview = getSanitizedAndTruncatedText(content, MAX_PREVIEW_CHARS);
+  const sanitizedContent = getSanitizedAndTruncatedText(
+    content,
+    MAX_PREVIEW_CHARS
+  );
 
   return (
     <div className="article-card ">
@@ -22,7 +25,7 @@ const ArticleCard = ({ article }) => {
       <p className="card-subtitle">{sanitizedSubtitle}</p>
       <img src={img} alt="article-img" className="card-img" />
       <div>
-        <p className="card-content">{preview}</p>
+        <p className="card-content">{sanitizedContent}</p>
         <Link to={`/api/articles/${_id}`} className="card-link-readmore">
           Read more
         </Link>
