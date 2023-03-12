@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import format from "date-fns/format";
 // DOMPurify
 import DOMPurify from "dompurify";
+// Parse HTML into text and keep format
+import Parser from "html-react-parser";
+
 import { getSanitizedAndTruncatedText } from "../utils/getSanitizedAndTruncatedText";
 
 const ArticlePage = () => {
@@ -58,7 +61,7 @@ const ArticlePage = () => {
       </div>
 
       <img src={img} alt="article-img" className="article-image" />
-      <p className="article-content">{sanitizedContent}</p>
+      <div className="article-content">{Parser(sanitizedContent)}</div>
     </div>
   );
 };

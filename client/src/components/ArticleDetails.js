@@ -8,6 +8,8 @@ import { useAuthContext } from "../hooks/useAuthContext";
 
 // date fns
 import { format } from "date-fns";
+// Parse HTML into text and keep format
+import Parser from "html-react-parser";
 
 const ArticleDetails = ({ article }) => {
   const { dispatch } = useArticlesContext();
@@ -108,12 +110,10 @@ const ArticleDetails = ({ article }) => {
       </h2>
       <p className="card-subtitle">{sanitizedSubtitle}</p>
       <img src={img} alt="article-img" className="card-img" />
-      <pre>
-        <p className="card-content">{sanitizedContent}</p>
-        <Link to={`/api/articles/${_id}`} className="card-link-readmore">
-          Read more
-        </Link>
-      </pre>
+      <div className="card-content">{Parser(sanitizedContent)}</div>
+      <Link to={`/api/articles/${_id}`} className="card-link-readmore">
+        Read more
+      </Link>
       <p className="card-date">{format(new Date(createdAt), "MM/dd/yyyy")}</p>
     </div>
   );

@@ -141,6 +141,11 @@ const ArticleForm = () => {
     }
   };
 
+  const quillConfig = {
+    // other options
+    preserveWhitespace: true,
+  };
+
   return (
     <form
       encType="multipart/form-data"
@@ -187,6 +192,8 @@ const ArticleForm = () => {
             value={content}
             onChange={setContent}
             style={{ height: "400px", width: "800px" }}
+            config={quillConfig}
+            preserveWhitespace={true}
           />
         </div>
       </div>

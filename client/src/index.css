@@ -112,6 +112,7 @@ header a {
   margin-bottom: 20px;
   padding: 20px;
   flex: 1;
+  max-width: 500px;
   word-wrap: break-word;
   overflow-wrap: break-word;
   position: relative;
@@ -322,7 +323,7 @@ h3.new-article {
   height: 100%;
   width: 100%;
   margin: 0;
-  
+
 }
 
 
@@ -442,6 +443,7 @@ form.signup, form.login {
   line-height: 1.6;
   margin-top: 1rem;
   margin-bottom: 2rem;
+  white-space: pre-wrap;
 }
 
 .article-header {

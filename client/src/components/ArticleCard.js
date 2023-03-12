@@ -5,6 +5,8 @@ import { getSanitizedAndTruncatedText } from "../utils/getSanitizedAndTruncatedT
 
 // date fns
 import { format } from "date-fns";
+// Parse HTML into text and keep format
+import Parser from "html-react-parser";
 
 const ArticleCard = ({ article }) => {
   const { title, subtitle, img, content, createdAt, _id } = article;
@@ -25,7 +27,7 @@ const ArticleCard = ({ article }) => {
       <p className="card-subtitle">{sanitizedSubtitle}</p>
       <img src={img} alt="article-img" className="card-img" />
       <div>
-        <p className="card-content">{sanitizedContent}</p>
+        <div className="card-content">{Parser(sanitizedContent)}</div>
         <Link to={`/api/articles/${_id}`} className="card-link-readmore">
           Read more
         </Link>
