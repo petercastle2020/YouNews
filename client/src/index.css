@@ -459,6 +459,7 @@ form.signup, form.login {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 100%;
 }
 
 .article-title {
