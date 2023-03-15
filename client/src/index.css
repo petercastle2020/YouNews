@@ -323,7 +323,12 @@ h3.new-article {
   height: 100%;
   width: 100%;
   margin: 0;
+  font-size: larger;
+}
 
+/* rendered by react-quill on the fly.*/
+.ql-container {
+  font-size: 1rem;
 }
 
 

@@ -38,7 +38,7 @@ export const articlesReducer = (state, action) => {
 
 export const ArticlesContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(articlesReducer, {
-    articles: null,
+    articles: [],
   });
 
   return (

@@ -191,7 +191,7 @@ const ArticleForm = () => {
             theme="snow"
             value={content}
             onChange={setContent}
-            style={{ height: "400px", width: "800px" }}
+            style={{ height: "400px", width: "700px" }}
             config={quillConfig}
             preserveWhitespace={true}
           />
