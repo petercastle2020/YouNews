@@ -445,9 +445,13 @@ form.signup, form.login {
 
 .article-content {
   font-size: 1.2rem;
+}
+
+.article-content > p {
+  font-size: 1.2rem;
+  margin: 0; /* Remove margin */
+  padding: 0; /* Remove padding */
   line-height: 1.6;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
   white-space: pre-wrap;
 }
 
