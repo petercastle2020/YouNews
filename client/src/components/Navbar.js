@@ -18,7 +18,7 @@ function Navbar() {
           <h1>You News</h1>
         </Link>
         <Link className="add-article-button" to="/new-article">
-          Add New Article
+          Write article
         </Link>
         <nav>
           {user && (
