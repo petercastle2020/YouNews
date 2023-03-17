@@ -4,7 +4,8 @@ import { useAuthContext } from "./hooks/useAuthContext";
 // pages & components
 import Home from "./pages/Home";
 import ArticleForm from "./pages/ArticleForm";
-import Navbar from "./components/Navbar";
+// import Navbar from "./components/Navbar";
+import ResponsiveAppBar from "./components/Navbar";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ArticlePage from "./pages/ArticlePage";
@@ -16,7 +17,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
+        <ResponsiveAppBar />
         <div className="pages">
           <Routes>
             <Route path="/my" element={<MyArticles />} />
