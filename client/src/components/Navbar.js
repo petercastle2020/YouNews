@@ -114,6 +114,7 @@ function ResponsiveAppBar() {
                         >
                           <Box sx={{ width: "100%" }}>
                             <Link
+                              className="settings-links"
                               to={setting.link}
                               onClick={
                                 index === settings.length - 1

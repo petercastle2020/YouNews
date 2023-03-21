@@ -382,8 +382,8 @@ nav button:hover {
 }
 
 .nav-link {
-  margin: 0.5rem;
   color: inherit;
+  margin: 0.5rem;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
   -webkit-transition: all 0.2s ease-in-out;
@@ -396,6 +396,9 @@ nav button:hover {
   color: var(--accent-color-secondary);
 }
 
+.settings-links {
+  color: inherit;
+}
 
 
 
