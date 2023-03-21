@@ -382,6 +382,7 @@ nav button:hover {
 }
 
 .nav-link {
+  margin: 0.5rem;
   color: inherit;
   text-decoration: none;
   transition: all 0.2s ease-in-out;

@@ -10,37 +10,32 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
-
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   // Auth
   const { logout } = useLogout();
   const { user } = useAuthContext();
 
-  const handleClick = () => {
+  const handleLogoutClick = () => {
     logout();
   };
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
+  // const settings = ["Profile", "Account", "Logout"];
+  const settings = [
+    { name: "Profile", link: "/my" },
+    { name: "Write Article", link: "/new-article" },
+    { name: "Account", link: "/account" },
+    { name: "Logout", link: "/logout", onClick: handleLogoutClick },
+  ];
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -69,14 +64,6 @@ function ResponsiveAppBar() {
           >
             You News
           </Typography>
-          {/* {user && (
-            <div>
-              <Link className="nav-link" to="/my">
-                {user.email}
-              </Link>
-              <button onClick={handleClick}>Log out</button>
-            </div>
-          )} */}
           {user && (
             <>
               <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
@@ -119,9 +106,34 @@ function ResponsiveAppBar() {
                       open={Boolean(anchorElUser)}
                       onClose={handleCloseUserMenu}
                     >
-                      {settings.map((setting) => (
-                        <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                          <Typography textAlign="center">{setting}</Typography>
+                      {settings.map((setting, index) => (
+                        <MenuItem
+                          sx={{ padding: 0, margin: 0 }}
+                          key={setting}
+                          onClick={handleCloseUserMenu}
+                        >
+                          <Box sx={{ width: "100%" }}>
+                            <Link
+                              to={setting.link}
+                              onClick={
+                                index === settings.length - 1
+                                  ? handleLogoutClick
+                                  : null
+                              }
+                              style={{
+                                display: "block",
+                                width: "100%",
+                                textDecoration: "none",
+                              }}
+                            >
+                              <Typography
+                                textAlign="center"
+                                sx={{ padding: "0.5rem 1rem 0.5rem 1rem" }}
+                              >
+                                {setting.name}
+                              </Typography>
+                            </Link>
+                          </Box>
                         </MenuItem>
                       ))}
                     </Menu>
@@ -131,60 +143,19 @@ function ResponsiveAppBar() {
             </>
           )}
 
-          {/* {!user && (
-                <div>
-                  <Link to="/signup">SignUp</Link>
-                  <Link to="/login">Login</Link>
-                </div>
-              )} */}
           {!user && (
-            <div>
-              <Link to="/signup">SignUp</Link>
-              <Link to="/login">Login</Link>
-            </div>
+            <Box sx={{ flexGrow: 0, marginLeft: "auto", display: "flex" }}>
+              <Link className="nav-link" to="/signup">
+                SignUp
+              </Link>
+              <Link className="nav-link" to="/login">
+                Login
+              </Link>
+            </Box>
           )}
         </Toolbar>
       </Container>
     </AppBar>
-  );
-}
-
-function Navbar() {
-  const { logout } = useLogout();
-  const { user } = useAuthContext();
-
-  const handleClick = () => {
-    logout();
-  };
-
-  return (
-    <header>
-      <div className="container">
-        <Link to="/">
-          <h1>You News</h1>
-        </Link>
-        <Link className="add-article-button" to="/new-article">
-          Write article
-        </Link>
-        <nav>
-          {user && (
-            <div>
-              <Link className="nav-link" to="/my">
-                {user.email}
-              </Link>
-              <button onClick={handleClick}>Log out</button>
-            </div>
-          )}
-
-          {!user && (
-            <div>
-              <Link to="/signup">SignUp</Link>
-              <Link to="/login">Login</Link>
-            </div>
-          )}
-        </nav>
-      </div>
-    </header>
   );
 }
 
