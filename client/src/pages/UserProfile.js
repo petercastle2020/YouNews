@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import ArticleCard from "../components/ArticleCard";
+import ArticleCard from "../components/MediaCard";
 
 const UserProfile = () => {
   const { id } = useParams();

@@ -5,7 +5,7 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import Home from "./pages/Home";
 import ArticleForm from "./pages/ArticleForm";
 // import Navbar from "./components/Navbar";
-import ResponsiveAppBar from "./components/Navbar";
+import ResponsiveAppBar from "./components/ResponsiveAppBar";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ArticlePage from "./pages/ArticlePage";
