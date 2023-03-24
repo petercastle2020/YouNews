@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
 
@@ -53,7 +53,7 @@ function ResponsiveAppBar() {
             href="/"
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
+              display: { xs: "inline-block", md: "flex" },
               fontFamily: "Source Sans Pro, sans-serif",
               fontWeight: 700,
               letterSpacing: ".3rem",
@@ -71,17 +71,17 @@ function ResponsiveAppBar() {
                   <Typography
                     sx={{
                       mr: 2,
-                      display: { xs: "none", md: "flex" },
+                      display: { xs: "none", sm: "flex", md: "flex" },
                       fontFamily: "Source Sans Pro, sans-serif",
                       fontWeight: 700,
-                      // letterSpacing: ".3rem",
+                      fontSize: { xs: "0.8rem", sm: "1rem", md: "1.2rem" },
                       color: "inherit",
                       textDecoration: "none",
                     }}
                   >
-                    <Link className="nav-link" to="/my">
+                    <RouterLink className="nav-link" to="/my">
                       {user.email}
-                    </Link>
+                    </RouterLink>
                   </Typography>
 
                   <Box sx={{ flexGrow: 0 }}>
@@ -113,7 +113,7 @@ function ResponsiveAppBar() {
                           onClick={handleCloseUserMenu}
                         >
                           <Box sx={{ width: "100%" }}>
-                            <Link
+                            <RouterLink
                               className="settings-links"
                               to={setting.link}
                               onClick={
@@ -133,7 +133,7 @@ function ResponsiveAppBar() {
                               >
                                 {setting.name}
                               </Typography>
-                            </Link>
+                            </RouterLink>
                           </Box>
                         </MenuItem>
                       ))}
@@ -146,12 +146,12 @@ function ResponsiveAppBar() {
 
           {!user && (
             <Box sx={{ flexGrow: 0, marginLeft: "auto", display: "flex" }}>
-              <Link className="nav-link" to="/signup">
+              <RouterLink className="nav-link" to="/signup">
                 SignUp
-              </Link>
-              <Link className="nav-link" to="/login">
+              </RouterLink>
+              <RouterLink className="nav-link" to="/login">
                 Login
-              </Link>
+              </RouterLink>
             </Box>
           )}
         </Toolbar>
