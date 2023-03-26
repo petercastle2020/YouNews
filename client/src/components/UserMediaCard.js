@@ -161,7 +161,11 @@ const UserMediaCard = ({ article }) => {
       <CardMediaStyled image={img} />
       <CardContentStyled>
         <Typography variant="h6">{sanitizedTitle}</Typography>
-        <Typography variant="body1">
+        <Typography
+          variant="subtitle1"
+          color="text.secondary"
+          sx={{ marginTop: "1rem", marginBottom: "1rem" }}
+        >
           {bull} {sanitizedSubtitle}
         </Typography>
         <IconButtonStyled
@@ -179,8 +183,8 @@ const UserMediaCard = ({ article }) => {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          {menuItems.map((item) => (
-            <MenuItem key={item.text} onClick={item.onClick}>
+          {menuItems.map((item, index) => (
+            <MenuItem key={index} onClick={item.onClick}>
               {item.text}
             </MenuItem>
           ))}

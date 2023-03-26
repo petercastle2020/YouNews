@@ -15,10 +15,17 @@ import UserProfile from "./pages/UserProfile";
 
 // MUI
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 
 const lightTheme = createTheme({
   palette: {
     mode: "light",
+    primary: {
+      main: "#1976d2",
+    },
+    secondary: {
+      main: "#f50057",
+    },
   },
   // other properties
 });
@@ -26,6 +33,12 @@ const lightTheme = createTheme({
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
+    primary: {
+      main: "#90caf9",
+    },
+    secondary: {
+      main: "#f48fb1",
+    },
   },
   // other properties
 });
@@ -42,35 +55,46 @@ function App() {
   };
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        <BrowserRouter>
-          <ResponsiveAppBar toggleTheme={toggleTheme} />
-          <div className="pages">
-            <Routes>
-              <Route path="/my" element={<MyArticles />} />
-              <Route
-                path="/"
-                element={user ? <Home /> : <Navigate to="/login" />}
-              />
-              <Route
-                path="/new-article"
-                element={<ArticleForm action="create" />}
-              />
-              <Route path="/edit/:id" element={<ArticleForm action="edit" />} />
-              <Route path="/api/user/:id" element={<UserProfile />} />
-              <Route path="/api/articles/:id" element={<ArticlePage />} />
-              <Route
-                path="/signup"
-                element={user ? <Navigate to="/" /> : <Signup />}
-              />
-              <Route
-                path="/login"
-                element={user ? <Navigate to="/" /> : <Login />}
-              />
-            </Routes>
-          </div>
-        </BrowserRouter>
-      </div>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "#212121" : "#f5f5f5",
+        }}
+      >
+        <div className="App">
+          <BrowserRouter>
+            <ResponsiveAppBar toggleTheme={toggleTheme} />
+            <div className="pages">
+              <Routes>
+                <Route path="/my" element={<MyArticles />} />
+                <Route
+                  path="/"
+                  element={user ? <Home /> : <Navigate to="/login" />}
+                />
+                <Route
+                  path="/new-article"
+                  element={<ArticleForm action="create" />}
+                />
+                <Route
+                  path="/edit/:id"
+                  element={<ArticleForm action="edit" />}
+                />
+                <Route path="/api/user/:id" element={<UserProfile />} />
+                <Route path="/api/articles/:id" element={<ArticlePage />} />
+                <Route
+                  path="/signup"
+                  element={user ? <Navigate to="/" /> : <Signup />}
+                />
+                <Route
+                  path="/login"
+                  element={user ? <Navigate to="/" /> : <Login />}
+                />
+              </Routes>
+            </div>
+          </BrowserRouter>
+        </div>
+      </Box>
     </ThemeProvider>
   );
 }

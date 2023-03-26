@@ -20,6 +20,9 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 
+// useTheme
+import { useTheme } from "@mui/material/styles";
+
 // Theme Switch
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -69,7 +72,12 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 function ResponsiveAppBar({ toggleTheme }) {
+  const theme = useTheme();
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const appBarStyle = {
+    backgroundColor: theme.palette.mode === "dark" ? "#212121" : "#00bcd4",
+  };
 
   const handleThemeChange = () => {
     toggleTheme();
@@ -99,7 +107,7 @@ function ResponsiveAppBar({ toggleTheme }) {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={appBarStyle}>
       <Container maxWidth="xl" disableGutters>
         <Toolbar disableGutters>
           <Typography
@@ -109,13 +117,18 @@ function ResponsiveAppBar({ toggleTheme }) {
             href="/"
             sx={{
               mr: 2,
+              ml: 2,
               display: { xs: "inline-block", md: "flex" },
-              fontFamily: "Source Sans Pro, sans-serif",
+              fontFamily: "Verdana, 'Source Sans Pro', sans-serif",
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
               paddingLeft: "0.3rem",
+              "&:hover": {
+                color: "#00a9e0",
+                transition: "color 0.3s easy-in-out",
+              },
             }}
           >
             You News
@@ -128,9 +141,9 @@ function ResponsiveAppBar({ toggleTheme }) {
                     sx={{
                       mr: 2,
                       display: { xs: "none", sm: "flex", md: "flex" },
-                      fontFamily: "Source Sans Pro, sans-serif",
-                      fontWeight: 700,
-                      fontSize: { xs: "0.8rem", sm: "1rem", md: "1.2rem" },
+                      fontFamily: "Verdana, 'Source Sans Pro', sans-serif",
+                      fontWeight: 300,
+                      fontSize: { xs: "0.5rem", sm: "0.8rem", md: "1rem" },
                       color: "inherit",
                       textDecoration: "none",
                     }}
@@ -165,10 +178,16 @@ function ResponsiveAppBar({ toggleTheme }) {
                       {settings.map((setting, index) => (
                         <MenuItem
                           sx={{ padding: 0, margin: 0 }}
-                          key={setting}
+                          key={setting.name}
                           onClick={handleCloseUserMenu}
                         >
-                          <Box sx={{ width: "100%" }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              width: "100%",
+                              alignItems: "center",
+                            }}
+                          >
                             <RouterLink
                               className="settings-links"
                               to={setting.link}
@@ -178,17 +197,14 @@ function ResponsiveAppBar({ toggleTheme }) {
                                   : null
                               }
                               style={{
-                                display: "block",
+                                display: "flex",
                                 width: "100%",
+                                justifyContent: "center",
+                                padding: "0.5rem",
                                 textDecoration: "none",
                               }}
                             >
-                              <Typography
-                                textAlign="center"
-                                sx={{ padding: "0.5rem 1rem 0.5rem 1rem" }}
-                              >
-                                {setting.name}
-                              </Typography>
+                              {setting.name}
                             </RouterLink>
                           </Box>
                         </MenuItem>

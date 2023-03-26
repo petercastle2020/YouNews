@@ -39,6 +39,8 @@ const MediaCard = ({ article }) => {
     content,
     MAX_PREVIEW_CHARS
   );
+  // Parse content with tags
+  const displayContent = Parser(sanitizedContent);
 
   const navigateToReadMore = () => {
     navigate(`/api/articles/${_id}`);
@@ -46,7 +48,7 @@ const MediaCard = ({ article }) => {
 
   return (
     <Card sx={{ width: "100%", maxWidth: 500, marginBottom: "1.5rem" }}>
-      <CardMedia sx={{ height: 300 }} image={img} title="green iguana" />
+      <CardMedia sx={{ height: 300 }} image={img} title="card-img" />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {sanitizedTitle}
@@ -54,13 +56,11 @@ const MediaCard = ({ article }) => {
         <Typography
           variant="subtitle1"
           color="text.secondary"
-          sx={{ marginTop: "1rem" }}
+          sx={{ marginTop: "1rem", marginBottom: "1rem" }}
         >
           {bull} {sanitizedSubtitle}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {Parser(sanitizedContent)}
-        </Typography>
+        <div>{displayContent}</div>
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Button size="small" onClick={navigateToReadMore}>
