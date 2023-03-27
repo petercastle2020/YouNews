@@ -63,7 +63,7 @@ const MediaCard = ({ article }) => {
         <div>{displayContent}</div>
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
-        <Button size="small" onClick={navigateToReadMore}>
+        <Button size="small" onClick={navigateToReadMore} color="link">
           Read More
         </Button>
         <Typography

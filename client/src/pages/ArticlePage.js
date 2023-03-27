@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link as RouterLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 //date format
 import format from "date-fns/format";
@@ -8,8 +8,13 @@ import DOMPurify from "dompurify";
 import Parser from "html-react-parser";
 
 import { getSanitizedAndTruncatedText } from "../utils/getSanitizedAndTruncatedText";
+// MUI
+import { useTheme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 const ArticlePage = () => {
+  const theme = useTheme();
   const { id } = useParams();
   const [ArticlePage, setArticlePage] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -43,26 +48,60 @@ const ArticlePage = () => {
   const sanitizedContent = getSanitizedAndTruncatedText(content);
 
   return (
-    <div className="article">
-      <div className="article-header">
-        <h1 className="article-title">{sanitizedTitle}</h1>
-        <h2 className="article-subtitle">{sanitizedSubtitle}</h2>
-        <div className="author-and-date-wrapper">
-          <div className="article-author">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        margin: "1rem auto 0 auto",
+        maxWidth: "650px",
+        color: theme.palette.primary.main,
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.5rem",
+          width: "100%",
+        }}
+      >
+        <Typography variant="h4">{sanitizedTitle}</Typography>
+        <Typography variant="h5" sx={{ color: theme.palette.secondary.main }}>
+          {sanitizedSubtitle}
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            variant="body1"
+            sx={{ display: "flex", alignItems: "center" }}
+          >
             By{" "}
-            <Link className="article-author-link" to={`/api/user/${userId}`}>
+            <RouterLink
+              className="article-author-link"
+              to={`/api/user/${userId}`}
+            >
               {user_email}
-            </Link>
-          </div>
+            </RouterLink>
+          </Typography>
           <div className="date">
             <p>{format(new Date(createdAt), "MM/dd/yyyy")}</p>
           </div>
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       <img src={img} alt="article-img" className="article-image" />
-      <div className="article-content">{Parser(sanitizedContent)}</div>
-    </div>
+      <Box
+        sx={{ fontSize: "1.2rem", fontFamily: "'Source Sans Pro', sans-serif" }}
+      >
+        {Parser(sanitizedContent)}
+      </Box>
+    </Box>
   );
 };
 

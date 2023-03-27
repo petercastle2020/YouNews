@@ -20,29 +20,9 @@
 
 }
 body {
-  background: #f1f1f1; 
+  background: #f1f1f1;
   margin: 0;
   font-family: "Source Sans Pro", sans-serif;
-}
-header {
-  background: #fff;
-}
-header .container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-header a {
-  color: #333;
-  text-decoration: none;
-}
-.pages {
-  max-width: 1400px;
-  padding: 20px;
-  margin: 0 auto;
 }
 
 /* homepage */
@@ -57,47 +37,8 @@ header a {
     grid-template-columns: 1fr;
   }
 }
-.article-details {
-  background: #fff;
-  border-radius: 4px;
-  margin: 20px auto;
-  padding: 20px;
-  max-width: 70vw;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  position: relative;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
-}
-.article-details h4 {
-  margin: 0 0 10px 0;
-  font-size: 1.2em;
-  /* color: var(--primary); */
-}
-.article-details p {
-  margin: 0;
-  font-size: 1.125rem;
-  color: #222;
-  font-family: "Source Sans Pro", sans-serif;
-  font-family: "Merriweather", serif;
-  font-weight: 400;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-.article-details span {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  background: #f1f1f1;
-  padding: 6px;
-  border-radius: 50%;
-  color: #333;
-}
 
-
-/* Article card styles */
+/* Article and page containers */
 
 .user-articles {
   margin: 0 auto;
@@ -108,6 +49,12 @@ header a {
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
+}
+
+.pages {
+  max-width: 1400px;
+  padding: 1rem;
+  margin: 0 auto;
 }
 
 .articles {
@@ -121,105 +68,15 @@ header a {
   align-items: flex-start;
 }
 
-.article-card {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0px 1px 2px #ddd;
-  margin-bottom: 20px;
-  padding: 0 20px;
-  flex: 1;
-  max-width: 500px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  position: relative;
+@media screen and (max-width: 550px) {
+  .articles {
+    width: 100%;
+  }
+  .pages {
+    padding: 0.5rem;
+  }
 }
 
-.card-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.card-subtitle {
-  font-size: 1rem;
-  margin-bottom: 10px;
-  color: #666;
-}
-
-.card-img {
-  max-width: 100%;
-  width: 100%;
-  height: 300px;
-  margin-bottom: 10px;
-}
-
-
-
-.card-link-readmore {
-  color: var(--accent-color-secondary);
-  display: block;
-  margin-top: 10px;
-  font-size: 1.1rem;
-}
-
-.card-link-readmore:hover {
-  text-decoration: underline;
-}
-
-.card-date {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #999;
-    text-align: right;
-}
-
-.card-ellipsis {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  background-color: inherit;
-  border: none;
-  font-size: 24px;
-}
-
-.card-dropdown {
-  position: absolute;
-  top: 25px;
-  right: 0;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0px 1px 2px #ddd;
-  display: none;
-  padding: 10px;
-}
-
-.card-dropdown ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  
-}
-
-.card-dropdown-menu li {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  list-style: none;
-}
-
-.card-dropdown-menu li .card-link {
-  text-decoration: none;
-  font-size: 1.1rem;
-  color: #000;
-}
 
 
 ul li:hover {
@@ -232,45 +89,6 @@ ul li .card-link {
   width: 100%;
   padding: 0.5rem 1.5rem 0.5rem 1.5rem;
 }
-
-.card-dropdown::after {
-  content: "";
-  position: absolute;
-  top: -10px;
-  right: 10px;
-  border-top: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid #ddd;
-  border-left: 10px solid transparent;
-}
-
-.article-card .card-dropdown-menu {
-  display: none; /* Hide the dropdown menu items by default */
-  position: absolute;
-  top: 40px;
-  left: 100%;
-  transform: translateX(-100%); /* Move the menu back by the width of the menu to align the top-left corner with the top-right corner of the ellipsis button */
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-shadow: 0px 1px 2px #ddd;
-  z-index: 1;
-  margin: 0;
-  transition: opacity 0.2s ease-in-out;
-  padding: 0;
-}
-
-/* .article-card .card-ellipsis:focus + .card-dropdown-menu {
-  display: block; 
-  opacity: 1;
-} */
-
-.card-dropdown-menu.open {
-  display: block; /* Show the dropdown menu items when the ellipsis button is clicked and focused */
-  opacity: 1;
-}
-
-
 
 /* new workout form */
 label,
@@ -350,30 +168,6 @@ h3.new-article {
 
 
 /* navbar */
-nav {
-  display: flex;
-  align-items: center;
-}
-nav a, nav button {
-  margin-left: 10px;
-}
-
-a h1:hover {
-  color: var(--accent-color-secondary);
-}
-nav button {
-  background: var(--primary-color);
-  color: #fff;
-  border: 2px solid var(--primary);
-  padding: 6px 10px;
-  border-radius: 4px;
-  font-family: "Poppins";
-  cursor: pointer;
-  font-size: 1em;
-  margin-left: 10px;
-  transition: all 0.2s ease-in-out;
-}
-
 nav button:hover {
   background-color: var(--accent-color-secondary);
 }
@@ -416,8 +210,6 @@ nav button:hover {
   color: inherit;
 }
 
-
-
 /* auth forms */
 form.signup, form.login {
   max-width: 400px;
@@ -434,28 +226,6 @@ form.signup, form.login {
 
 /* article-page */
 
-.article {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 auto;
-  max-width: 650px;
-}
-
-.article-title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-}
-
-.article-subtitle {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
 .article-image {
   width: 100%;
   max-height: 500px;
@@ -466,50 +236,15 @@ form.signup, form.login {
 
 .article-content {
   font-size: 1.2rem;
-}
-
-.article-content > p {
-  font-size: 1.2rem;
-  margin: 0; /* Remove margin */
-  padding: 0; /* Remove padding */
-  line-height: 1.6;
-  white-space: pre-wrap;
-}
-
-.article-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-}
-
-.article-title {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-.article-subtitle {
-  font-size: 1.5rem;
-  font-weight: normal;
-  color: #666;
-}
-
-.article-author {
-  margin-top: 1rem;
-  align-self: flex-start;
+  text-align: left;
 }
 
 .article-author-link {
   color: #666;
   text-decoration: none;
+  margin: 0.5rem;
 }
 
-.author-and-date-wrapper {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-}
 
 
 
