@@ -34,6 +34,9 @@ const lightTheme = createTheme({
     link: {
       main: "#1976d2",
     },
+    heartRed: {
+      main: "#FF2D55",
+    },
   },
 
   // other properties
@@ -50,6 +53,9 @@ const darkTheme = createTheme({
     },
     link: {
       main: "#1976d2",
+    },
+    heartRed: {
+      main: "#FF2D55",
     },
   },
   // other properties

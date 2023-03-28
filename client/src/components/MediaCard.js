@@ -1,17 +1,19 @@
 // MUI
 import * as React from "react";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import {
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+} from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
-
 import DOMPurify from "dompurify";
 import { getSanitizedAndTruncatedText } from "../utils/getSanitizedAndTruncatedText";
+import LikeButton from "./LikeButton";
 
 // date fns
 import { format } from "date-fns";
@@ -46,6 +48,19 @@ const MediaCard = ({ article }) => {
     navigate(`/api/articles/${_id}`);
   };
 
+  const handleLikeClick = () => {
+    "jdskjfjdsfkjsdfjk";
+  };
+  // const handleLikeClick = async (liked) => {
+  //   const response = await fetch(`/api/posts/${id}/like`, {
+  //     method: liked ? "POST" : "DELETE",
+  //   });
+
+  //   if (response.ok) {
+  //     setIsLiked(liked);
+  //     setLikesCount((count) => (liked ? count + 1 : count - 1));
+  //   }
+
   return (
     <Card sx={{ width: "100%", maxWidth: 500, marginBottom: "1.5rem" }}>
       <CardMedia sx={{ height: 300 }} image={img} title="card-img" />
@@ -66,12 +81,17 @@ const MediaCard = ({ article }) => {
         <Button size="small" onClick={navigateToReadMore} color="link">
           Read More
         </Button>
-        <Typography
+        {/* <Typography
           variant="body2"
           sx={{ textAlign: "right", marginRight: "1rem" }}
         >
           {format(new Date(createdAt), "MM/dd/yyyy")}
-        </Typography>
+        </Typography> */}
+        <LikeButton
+          likesCount={999}
+          isLiked={false}
+          onClick={handleLikeClick}
+        ></LikeButton>
       </CardActions>
     </Card>
   );
