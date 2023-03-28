@@ -47,13 +47,16 @@ const ArticlePage = () => {
   const sanitizedSubtitle = DOMPurify.sanitize(subtitle);
   const sanitizedContent = getSanitizedAndTruncatedText(content);
 
+  // Parse content with tags
+  const displayContent = Parser(sanitizedContent);
+
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        margin: "1rem auto 0 auto",
+        margin: "1rem auto 1rem auto",
         maxWidth: "650px",
         color: theme.palette.primary.main,
       }}
@@ -97,9 +100,13 @@ const ArticlePage = () => {
 
       <img src={img} alt="article-img" className="article-image" />
       <Box
-        sx={{ fontSize: "1.2rem", fontFamily: "'Source Sans Pro', sans-serif" }}
+        sx={{
+          fontSize: "1.2rem",
+          fontFamily: "'Source Sans Pro', sans-serif",
+          "& p": { margin: 0 },
+        }}
       >
-        {Parser(sanitizedContent)}
+        {displayContent}
       </Box>
     </Box>
   );

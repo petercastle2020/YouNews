@@ -17,6 +17,11 @@ import UserProfile from "./pages/UserProfile";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 
+// #212121
+// #424242
+// #323232
+// #121212
+
 const lightTheme = createTheme({
   palette: {
     mode: "light",
@@ -66,7 +71,7 @@ function App() {
         sx={{
           minHeight: "100vh",
           backgroundColor: (theme) =>
-            theme.palette.mode === "dark" ? "#212121" : "#f5f5f5",
+            theme.palette.mode === "dark" ? "#323232" : "#f5f5f5",
         }}
       >
         <div className="App">
