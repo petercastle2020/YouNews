@@ -67,7 +67,13 @@ const deleteLike = async (req, res) => {
     if (!existingLike) {
       return res.status(400).json({ message: "Article not liked" });
     }
-    res.json(existingLike);
+    // Decrease the likeCount field in the Article document
+    const likeUpdatedArticle = await Article.findByIdAndUpdate(
+      articleId,
+      { $inc: { likeCount: -1 } },
+      { new: true }
+    );
+    res.json(likeUpdatedArticle, existingLike);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

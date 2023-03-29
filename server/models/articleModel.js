@@ -20,7 +20,8 @@ const articleSchema = new Schema(
       require: true,
     },
     user_id: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "User",
       require: true,
     },
     user_email: {
