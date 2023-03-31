@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
-import { useAuthContext } from "../hooks/useAuthContext";
 
 // Components
 import MediaCard from "../components/MediaCard";
 import { useArticlesContext } from "../hooks/useArticlesContext";
 
-const Home = () => {
+const Home = ({ user }) => {
   const { articles, dispatch } = useArticlesContext();
-  const { user } = useAuthContext();
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -30,7 +28,7 @@ const Home = () => {
       <div className="articles">
         {articles &&
           articles.map((article) => (
-            <MediaCard key={article._id} article={article} />
+            <MediaCard key={article._id} article={article} user={user} />
           ))}
       </div>
     </div>

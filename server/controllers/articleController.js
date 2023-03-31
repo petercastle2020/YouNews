@@ -68,8 +68,6 @@ const createArticle = async (req, res) => {
   const inputValidation = async () => {
     img = await uploadIMG(imgPath);
 
-    console.log("IMG URL -->", img);
-
     let emptyFields = [];
 
     if (!title) {
@@ -193,7 +191,6 @@ const updateArticle = async (req, res) => {
       updateFields,
       { new: true } // returns the update version of the document that was updated.
     );
-    console.log("Updated article:", updatedArticle);
     res.status(200).json(updatedArticle);
   } catch (error) {
     return res

@@ -6,9 +6,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
-const LikeButton = ({ likesCount, isLiked, onClick }) => {
+const LikeButton = ({ likesCount, isLiked, onUpdateLikes }) => {
   const handleClick = () => {
-    onClick(!isLiked);
+    onUpdateLikes(!isLiked);
   };
 
   return (
@@ -17,10 +17,14 @@ const LikeButton = ({ likesCount, isLiked, onClick }) => {
         {isLiked ? (
           <FavoriteIcon color="heartRed" />
         ) : (
-          <FavoriteBorderIcon color="heartRed" />
+          <FavoriteBorderIcon color="secondary" />
         )}
       </IconButton>
-      <Typography variant="body2">{likesCount}</Typography>
+      {likesCount !== 0 && (
+        <Typography variant="body2" color="secondary">
+          {likesCount}
+        </Typography>
+      )}
     </Box>
   );
 };

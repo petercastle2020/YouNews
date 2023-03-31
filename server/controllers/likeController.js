@@ -6,12 +6,14 @@ const router = require("../routes/articles");
 // Get all likes for a specific article
 const getLikes = async (req, res) => {
   try {
-    const article = await Article.findById(req.params.articleId);
+    const articleId = req.params.articleId;
+
+    const article = await Article.findById(articleId);
     if (!article) {
       return res.status(404).json({ message: "Article not found" });
     }
     const likes = await Like.find({ article: article._id });
-    res.json(likes);
+    res.status(200).json({ allLikes: likes });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -47,7 +49,12 @@ const postLike = async (req, res) => {
       { $inc: { likeCount: 1 } },
       { new: true }
     );
-    res.json(likeUpdatedArticle, like);
+
+    res.status(200).json({
+      article: likeUpdatedArticle,
+      AddedLike: like,
+      likeCount: likeUpdatedArticle.likeCount,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -56,13 +63,16 @@ const postLike = async (req, res) => {
 // Unlike an article
 const deleteLike = async (req, res) => {
   try {
-    const article = await Article.findById(req.params.articleId);
+    const articleId = req.params.articleId;
+    const userId = req.user._id;
+
+    const article = await Article.findById(articleId);
     if (!article) {
       return res.status(404).json({ message: "Article not found" });
     }
     const existingLike = await Like.findOneAndDelete({
-      post_id: article._id,
-      user_id: req.user._id,
+      post_id: articleId,
+      user_id: userId,
     });
     if (!existingLike) {
       return res.status(400).json({ message: "Article not liked" });
@@ -73,11 +83,57 @@ const deleteLike = async (req, res) => {
       { $inc: { likeCount: -1 } },
       { new: true }
     );
-    res.json(likeUpdatedArticle, existingLike);
+    res.status(200).json({
+      article: likeUpdatedArticle,
+      deletedLike: existingLike,
+      likeCount: likeUpdatedArticle.likeCount,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-module.exports = { getLikes, postLike, deleteLike };
+// Count likes for a specific article
+const getCountLikes = async (req, res) => {
+  try {
+    const articleId = req.params.articleId;
+
+    const article = await Article.findById(articleId);
+    if (!article) {
+      return res.status(404).json({ message: "Article not found" });
+    }
+
+    const likeCount = await Like.countDocuments({ post_id: article._id });
+
+    res.status(200).json({ likeCount: likeCount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Check If user liked specific post.
+const checkIfLiked = async (req, res) => {
+  try {
+    const articleId = req.params.articleId;
+    const userId = req.user;
+
+    const existingLike = await Like.findOne({
+      post_id: articleId,
+      user_id: userId,
+    });
+    res.status(200).json({ isLiked: Boolean(existingLike) });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = {
+  getLikes,
+  postLike,
+  deleteLike,
+  getCountLikes,
+  checkIfLiked,
+};
