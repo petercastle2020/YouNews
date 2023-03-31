@@ -9,9 +9,9 @@ import Parser from "html-react-parser";
 
 import { getSanitizedAndTruncatedText } from "../utils/getSanitizedAndTruncatedText";
 // MUI
+import * as React from "react";
 import { useTheme } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import { Skeleton, Typography, Box } from "@mui/material";
 
 const ArticlePage = () => {
   const theme = useTheme();
@@ -37,7 +37,42 @@ const ArticlePage = () => {
   }, [id]);
 
   if (!ArticlePage) {
-    return <div>Loading...</div>;
+    return (
+      <Box
+        sx={{
+          maxWidth: "650px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          height: "100vh",
+          margin: "1rem auto 1rem auto",
+        }}
+      >
+        <Skeleton animation="wave" variant="text" width="100%" height="10%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="10%" />
+        <Skeleton
+          animation="wave"
+          variant="rectangular"
+          width="100%"
+          height="50%"
+        />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+        <Skeleton animation="wave" variant="text" width="100%" height="3%" />
+      </Box>
+    );
   }
 
   // destructuring.

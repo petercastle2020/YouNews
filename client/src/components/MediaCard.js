@@ -11,18 +11,16 @@ import {
   Skeleton,
 } from "@mui/material";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSanitizedAndTruncatedText } from "../utils/getSanitizedAndTruncatedText";
-import { useAuthContext } from "../hooks/useAuthContext";
+
 import LikeButton from "./LikeButton";
 
+//DOMPurify
 import DOMPurify from "dompurify";
-// date fns
-import { format, max } from "date-fns";
 // Parse HTML into text and keep format
 import Parser from "html-react-parser";
-import { maxWidth } from "@mui/system";
 
 const bull = (
   <Box
@@ -38,7 +36,7 @@ const MediaCard = ({ article, user }) => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   // destructuring article
-  const { title, subtitle, img, content, createdAt, _id } = article;
+  const { title, subtitle, img, content, _id } = article;
   const MAX_PREVIEW_CHARS = 150;
 
   const sanitizedTitle = DOMPurify.sanitize(title);
@@ -64,22 +62,6 @@ const MediaCard = ({ article, user }) => {
     if (!user) return {};
     return { Authorization: `Bearer ${user.token}` };
   }, [user]);
-  // useEffect(() => {
-  //   if (user) {
-  //     setHeaders({ Authorization: `Bearer ${user.token}` });
-  //   }
-  // }, [user]);
-
-  // const fetchLikesCount = useCallback(async () => {
-  //   const res = await fetch(`/api/like/${_id}/count`);
-  //   const data = await res.json();
-  //   console.log("called");
-  //   setLikeCount(data.likeCount);
-  // }, [_id]);
-
-  // useEffect(() => {
-  //   fetchLikesCount();
-  // }, [fetchLikesCount]);
 
   // Get like Count from DB
   useEffect(() => {
@@ -164,12 +146,6 @@ const MediaCard = ({ article, user }) => {
             <Button size="small" onClick={navigateToReadMore} color="link">
               Read More
             </Button>
-            {/* <Typography
-          variant="body2"
-          sx={{ textAlign: "right", marginRight: "1rem" }}
-        >
-          {format(new Date(createdAt), "MM/dd/yyyy")}
-        </Typography> */}
             <LikeButton
               likesCount={likeCount}
               isLiked={isLiked}
