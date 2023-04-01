@@ -199,6 +199,23 @@ const updateArticle = async (req, res) => {
   }
 };
 
+// get Trending articles
+const getTrendingArticles = async (req, res) => {
+  try {
+    const trendingArticles = await Article.find()
+      .sort({ likeCount: -1 })
+      .limit(7);
+    if (!trendingArticles) {
+      return res.status(404).json({ message: "Article not found" });
+    }
+
+    res.status(200).json({ trendingArticles: trendingArticles });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   createArticle,
   getAllArticles,
@@ -207,4 +224,5 @@ module.exports = {
   deleteArticle,
   updateArticle,
   getSpecificUserArticles,
+  getTrendingArticles,
 };

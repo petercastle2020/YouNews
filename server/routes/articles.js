@@ -14,6 +14,7 @@ const {
   deleteArticle,
   updateArticle,
   getSpecificUserArticles,
+  getTrendingArticles,
 } = require("../controllers/articleController");
 const requireAuth = require("../middleware/requireAuth");
 
@@ -37,6 +38,9 @@ router.patch("/:id", requireAuth, upload.single("file"), updateArticle);
 
 //GET specific user articles "/api/articles"
 router.get("/user/:id/articles", getSpecificUserArticles);
+
+//GET trending articles
+router.get("/trending", getTrendingArticles);
 
 // GET single articles
 router.get("/:id", getSingleArticle);

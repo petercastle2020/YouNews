@@ -8,14 +8,18 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { format } from "date-fns";
 
 // MUI
-import { Card, CardContent, CardMedia } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Box,
+  Menu,
+  MenuItem,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/system";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 
 const bull = (
   <Box

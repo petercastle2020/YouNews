@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 // Components
 import MediaCard from "../components/MediaCard";
+import TrendingTab from "../components/TrendingTab";
 import { useArticlesContext } from "../hooks/useArticlesContext";
 
 const Home = ({ user }) => {
@@ -30,6 +31,9 @@ const Home = ({ user }) => {
           articles.map((article) => (
             <MediaCard key={article._id} article={article} user={user} />
           ))}
+      </div>
+      <div className="trending">
+        <TrendingTab />
       </div>
     </div>
   );
