@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 
+// useTheme
+import { useTheme } from "@mui/material/styles";
+
 // MUI
 import { Typography, Box, Skeleton, Alert } from "@mui/material";
 
@@ -7,6 +10,7 @@ import { Typography, Box, Skeleton, Alert } from "@mui/material";
 import TrendingCard from "./TrendingCard";
 
 const TrendingTab = () => {
+  const theme = useTheme();
   const [trendingArticles, setTrendingArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -37,12 +41,14 @@ const TrendingTab = () => {
     <Box
       sx={{
         mb: 2,
-        border: "1px solid #212121",
+        border: `1px solid ${
+          theme.palette.mode === "dark" ? "#212121" : "#aab4be"
+        }`,
         borderRadius: 1,
       }}
     >
       <Typography
-        variant="h6"
+        variant="h5"
         color="primary"
         sx={{ padding: "1rem", margin: 0, fontWeight: "bold" }}
         gutterBottom

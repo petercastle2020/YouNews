@@ -6,6 +6,8 @@ import { useArticlesContext } from "../hooks/useArticlesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 // date fns
 import { format } from "date-fns";
+//Components
+import CircularIndeterminate from "./CircularIndeterminate";
 
 // MUI
 import {
@@ -17,6 +19,9 @@ import {
   MenuItem,
   IconButton,
   Typography,
+  Snackbar,
+  Alert,
+  Skeleton,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -35,6 +40,7 @@ const CardStyled = styled(Card)({
   flexDirection: "row",
   alignItem: "center",
   width: "100%",
+  minHeight: 200,
   position: "relative",
   marginBottom: "1rem",
 
@@ -124,7 +130,7 @@ const UserMediaCard = ({ article }) => {
     navigate(`/api/articles/${_id}`);
   };
 
-  const handleDeleteClick = async (e) => {
+  const handleDelete = async (e) => {
     e.stopPropagation();
     e.preventDefault();
 
@@ -150,52 +156,120 @@ const UserMediaCard = ({ article }) => {
     } catch (error) {
       console.error("Error deleting article", error);
       // customize the error message to show something more informative to user
-      alert("Error deleting article. Please try again later.");
     }
+  };
+
+  // Spinner for Taking action / Type of Alert.
+  const [alertType, setAlertType] = useState(null);
+  const [isTakingAction, setIsTakingAction] = useState(false);
+  // Alert Display
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+
+  const handleDeleteAction = (e) => {
+    // set to load action
+    setIsTakingAction(true);
+
+    handleDelete(e)
+      .then(() => {
+        setAlertType("success");
+      })
+      .catch((error) => {
+        console.error("Error deleting article", error);
+        setAlertType("failure");
+      })
+      .finally(() => {
+        setIsTakingAction(false);
+        setIsAlertOpen(true);
+      });
+  };
+
+  const handleAlertClose = (event, reason) => {
+    console.log("I am being balled.");
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setIsAlertOpen(false);
   };
 
   const menuItems = [
     { text: "View", onClick: handleView },
     { text: "Edit", onClick: handleEditClick },
-    { text: "Delete", onClick: handleDeleteClick },
+    { text: "Delete", onClick: handleDeleteAction },
   ];
 
+  if (!article) {
+    return (
+      <CardStyled>
+        <Skeleton variant="rounded" width={"100%"} height={"100%"} />
+      </CardStyled>
+    );
+  }
+
   return (
-    <CardStyled>
-      <CardMediaStyled image={img} />
-      <CardContentStyled>
-        <Typography variant="h6">{sanitizedTitle}</Typography>
-        <Typography
-          variant="subtitle1"
-          color="text.secondary"
-          sx={{ marginTop: "1rem", marginBottom: "1rem" }}
-        >
-          {bull} {sanitizedSubtitle}
-        </Typography>
-        <IconButtonStyled
-          aria-label="settings"
-          aria-controls="card-actions-menu"
-          aria-haspopup="true"
-          onClick={handleMenuClick}
-        >
-          <MoreVertIcon />
-        </IconButtonStyled>
-        <Menu
-          id="card-actions-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-        >
-          {menuItems.map((item, index) => (
-            <MenuItem key={index} onClick={item.onClick}>
-              {item.text}
-            </MenuItem>
-          ))}
-        </Menu>
-        <DateTypography>{formattedDate}</DateTypography>
-      </CardContentStyled>
-    </CardStyled>
+    <>
+      <CardStyled>
+        {isTakingAction ? (
+          <>
+            <CircularIndeterminate />
+            <Skeleton variant="rounded" width={"100%"} height={"100%"} />
+          </>
+        ) : (
+          <>
+            <CardMediaStyled image={img} />
+
+            <CardContentStyled>
+              <Typography variant="h6">{sanitizedTitle}</Typography>
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                sx={{ marginTop: "1rem", marginBottom: "1rem" }}
+              >
+                {bull} {sanitizedSubtitle}
+              </Typography>
+              <IconButtonStyled
+                aria-label="settings"
+                aria-controls="card-actions-menu"
+                aria-haspopup="true"
+                onClick={handleMenuClick}
+              >
+                <MoreVertIcon />
+              </IconButtonStyled>
+              <Menu
+                id="card-actions-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                {menuItems.map((item, index) => (
+                  <MenuItem key={index} onClick={item.onClick}>
+                    {item.text}
+                  </MenuItem>
+                ))}
+              </Menu>
+              <DateTypography>{formattedDate}</DateTypography>
+            </CardContentStyled>
+          </>
+        )}
+      </CardStyled>
+      <Snackbar
+        open={isAlertOpen}
+        autoHideDuration={3000}
+        onClose={handleAlertClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        {alertType === "success" ? (
+          <Alert onClose={handleAlertClose} severity="success">
+            Item has been successfully deleted.
+          </Alert>
+        ) : (
+          <Alert onClose={handleAlertClose} severity="error">
+            Failed to delete item.
+          </Alert>
+        )}
+      </Snackbar>
+    </>
   );
 };
 
