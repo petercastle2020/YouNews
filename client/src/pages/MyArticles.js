@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 // Components
 import UserMediaCard from "../components/UserMediaCard";
 import { useArticlesContext } from "../hooks/useArticlesContext";
 
+// MUI
+import { Snackbar, Alert } from "@mui/material";
+
 const MyArticles = () => {
-  const { articles, dispatch } = useArticlesContext();
+  const { articles, showAlert, alertType, dispatch } = useArticlesContext();
   const { user } = useAuthContext();
 
   useEffect(() => {
@@ -31,6 +34,26 @@ const MyArticles = () => {
     }
   }, [dispatch, user]);
 
+  // ALERT STATES
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+
+  const handleAlertOpen = () => {
+    setIsAlertOpen(true);
+  };
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setIsAlertOpen(false);
+    dispatch({ type: "HIDE_ALERT" });
+  };
+
+  useEffect(() => {
+    if (showAlert) handleAlertOpen();
+  }, [showAlert]);
+
   return (
     <div className="home">
       <div className="user-articles">
@@ -39,6 +62,22 @@ const MyArticles = () => {
             <UserMediaCard key={article._id} article={article} />
           ))}
       </div>
+      <Snackbar
+        open={isAlertOpen}
+        autoHideDuration={3000}
+        onClose={handleAlertClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        {alertType === "success" ? (
+          <Alert onClose={handleAlertClose} severity="success">
+            Item has been successfully deleted.
+          </Alert>
+        ) : alertType === "failure" ? (
+          <Alert onClose={handleAlertClose} severity="error">
+            Failed to delete item.
+          </Alert>
+        ) : null}
+      </Snackbar>
     </div>
   );
 };

@@ -25,12 +25,28 @@ export const articlesReducer = (state, action) => {
       return {
         articles: updatedArticles,
       };
-    case "DELETE_ARTICLE":
+    case "DELETE_ARTICLE_SUCCESS":
       return {
+        ...state,
+        showAlert: true,
+        alertType: "success",
         articles: state.articles.filter(
           (article) => article._id !== action.payload._id
         ),
       };
+    case "DELETE_ARTICLE_FAILURE":
+      return {
+        ...state,
+        showAlert: true,
+        alertType: "failure",
+      };
+    case "HIDE_ALERT":
+      return {
+        ...state,
+        showAlert: false,
+        alertType: "",
+      };
+
     default:
       return state;
   }
@@ -39,6 +55,8 @@ export const articlesReducer = (state, action) => {
 export const ArticlesContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(articlesReducer, {
     articles: [],
+    showAlert: false,
+    alertType: "",
   });
 
   return (

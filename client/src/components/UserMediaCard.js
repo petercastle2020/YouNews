@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 //Context
@@ -19,8 +19,6 @@ import {
   MenuItem,
   IconButton,
   Typography,
-  Snackbar,
-  Alert,
   Skeleton,
 } from "@mui/material";
 import { styled } from "@mui/system";
@@ -101,6 +99,9 @@ const UserMediaCard = ({ article }) => {
   const { dispatch } = useArticlesContext();
   const { user } = useAuthContext();
 
+  // Spinner for Taking action
+  const [isTakingAction, setIsTakingAction] = useState(false);
+
   // destructuring.
   const { title, subtitle, img, createdAt, _id } = article;
 
@@ -134,6 +135,9 @@ const UserMediaCard = ({ article }) => {
     e.stopPropagation();
     e.preventDefault();
 
+    // set to load action
+    setIsTakingAction(true);
+
     if (!user) {
       console.log("must be logged in to delete.");
       return;
@@ -149,53 +153,24 @@ const UserMediaCard = ({ article }) => {
 
       if (response.ok) {
         const json = await response.json();
-        dispatch({ type: "DELETE_ARTICLE", payload: json });
+        dispatch({ type: "DELETE_ARTICLE_SUCCESS", payload: json });
+        setIsTakingAction(false);
       } else {
+        dispatch({ type: "DELETE_ARTICLE_FAILURE" });
+        setIsTakingAction(false);
         throw new Error(`HTTP error ${response.status}`);
       }
     } catch (error) {
+      setIsTakingAction(false);
       console.error("Error deleting article", error);
       // customize the error message to show something more informative to user
     }
   };
 
-  // Spinner for Taking action / Type of Alert.
-  const [alertType, setAlertType] = useState(null);
-  const [isTakingAction, setIsTakingAction] = useState(false);
-  // Alert Display
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
-
-  const handleDeleteAction = (e) => {
-    // set to load action
-    setIsTakingAction(true);
-
-    handleDelete(e)
-      .then(() => {
-        setAlertType("success");
-      })
-      .catch((error) => {
-        console.error("Error deleting article", error);
-        setAlertType("failure");
-      })
-      .finally(() => {
-        setIsTakingAction(false);
-        setIsAlertOpen(true);
-      });
-  };
-
-  const handleAlertClose = (event, reason) => {
-    console.log("I am being balled.");
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setIsAlertOpen(false);
-  };
-
   const menuItems = [
     { text: "View", onClick: handleView },
     { text: "Edit", onClick: handleEditClick },
-    { text: "Delete", onClick: handleDeleteAction },
+    { text: "Delete", onClick: handleDelete },
   ];
 
   if (!article) {
@@ -253,22 +228,6 @@ const UserMediaCard = ({ article }) => {
           </>
         )}
       </CardStyled>
-      <Snackbar
-        open={isAlertOpen}
-        autoHideDuration={3000}
-        onClose={handleAlertClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-      >
-        {alertType === "success" ? (
-          <Alert onClose={handleAlertClose} severity="success">
-            Item has been successfully deleted.
-          </Alert>
-        ) : (
-          <Alert onClose={handleAlertClose} severity="error">
-            Failed to delete item.
-          </Alert>
-        )}
-      </Snackbar>
     </>
   );
 };
