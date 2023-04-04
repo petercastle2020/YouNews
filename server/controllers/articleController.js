@@ -56,18 +56,11 @@ const getSingleArticle = async (req, res) => {
 // CREATE new article
 
 const createArticle = async (req, res) => {
-  console.log(req.user._id);
-  console.log(req.user.email);
   const { title, subtitle, content } = req.body;
-  let img = "";
   const imgPath = req.file.path;
-  console.log(req.body);
-  console.log(req.file);
-  console.log(req.file.path);
 
   const inputValidation = async () => {
-    img = await uploadIMG(imgPath);
-
+    let img = req.file.path;
     let emptyFields = [];
 
     if (!title) {
@@ -87,35 +80,35 @@ const createArticle = async (req, res) => {
     }
 
     if (emptyFields.length > 0) {
-      return res
-        .status(400)
-        .json({ error: "Please Fill in all the fields.", emptyFields });
-    }
-
-    return img;
-  };
-
-  const create = async () => {
-    img = await inputValidation();
-
-    try {
-      const user_id = req.user._id;
-      const user_email = req.user.email;
-      const article = await Article.create({
-        title: title,
-        subtitle: subtitle,
-        img: img,
-        content: content,
-        user_id: user_id,
-        user_email: user_email,
-      });
-      res.status(200).json(article);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+      throw new Error("Please Fill in all the fields.");
+    } else {
+      try {
+        const uploadedImg = await uploadIMG(imgPath);
+        return uploadedImg;
+      } catch (error) {
+        throw error;
+        // re-throw the error to be caught by the outer catch block
+      }
     }
   };
 
-  create();
+  try {
+    // Call inputValidation and wait for it to complete
+    const img = await inputValidation();
+    const user_id = req.user._id;
+    const user_email = req.user.email;
+    const article = await Article.create({
+      title: title,
+      subtitle: subtitle,
+      img: img,
+      content: content,
+      user_id: user_id,
+      user_email: user_email,
+    });
+    res.status(200).json(article);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 // DELETE article

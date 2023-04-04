@@ -77,7 +77,7 @@ const IconButtonStyled = styled(IconButton)({
     position: "absolute",
     top: "auto",
     left: "auto",
-    margin: "0.5rem 0.5rem 0 0",
+    margin: "0 0.5rem 0 0",
   },
 });
 
@@ -161,6 +161,7 @@ const UserMediaCard = ({ article }) => {
         throw new Error(`HTTP error ${response.status}`);
       }
     } catch (error) {
+      dispatch({ type: "DELETE_ARTICLE_FAILURE" });
       setIsTakingAction(false);
       console.error("Error deleting article", error);
       // customize the error message to show something more informative to user

@@ -60,6 +60,18 @@ const ArticleForm = () => {
     setImg(file);
   };
 
+  const createFormData = () => {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("subtitle", subtitle);
+    if (fileInputExists) {
+      formData.append("file", img);
+    }
+    formData.append("content", content);
+    sanitizeFormData(formData);
+    return formData;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -68,78 +80,138 @@ const ArticleForm = () => {
       return;
     }
 
+    const formData = createFormData();
+    const URL = isEditing ? `/api/articles/${id}` : "/api/articles";
+    const method = isEditing ? "PATCH" : "POST";
+
+    const options = {
+      method: method,
+      headers: {
+        // If you add this, upload won't work
+        // headers: {
+        //   'Content-Type': 'multipart/form-data',
+        // }
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: formData,
+    };
+
+    // Remove 'Content-Type' header to allow browser to add
+    // along with the correct 'boundary'
+    delete options.headers["Content-Type"];
+    // I guess you could set headers: {"Content-Type": undefined} !!!!!!!!!
+
     try {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("subtitle", subtitle);
-      // ckeck if img input has a file, IF NOT then skip the file input.
-      if (fileInputExists) {
-        formData.append("file", img);
+      const response = await fetch(URL, options);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
 
-      formData.append("content", content);
+      const json = await response.json();
 
-      sanitizeFormData(formData);
+      setEmptyFields([]);
+      setError(null);
+      setTitle("");
+      setSubtitle("");
+      setImg("");
+      setContent("");
 
-      const URL = isEditing ? `/api/articles/${id}` : "/api/articles";
-      const method = isEditing ? "PATCH" : "POST";
-      const options = {
-        method: method,
-        headers: {
-          // If you add this, upload won't work
-          // headers: {
-          //   'Content-Type': 'multipart/form-data',
-          // }
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: formData,
-      };
-
-      // Remove 'Content-Type' header to allow browser to add
-      // along with the correct 'boundary'
-      delete options.headers["Content-Type"];
-      // I guess you could set hears: {"Content-Type": undefined} !!!!!!!!!
-      const response = await fetch(URL, options)
-        .then((res) => {
-          console.log(res);
-          if (!res.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return res;
-        })
-        .catch((error) => {
-          console.log(error);
-          setError(error || "Something went wrong.");
-        });
-
-      if (response && !response.ok) {
-        const json = await response.json();
-        setError(json.error);
-        setEmptyFields(json.emptyFields);
+      if (isEditing) {
+        dispatch({ type: "EDIT_ARTICLE", payload: json });
       } else {
-        const json = await response.json();
-        setEmptyFields([]);
-        setError(null);
-        setTitle("");
-        setSubtitle("");
-        setImg("");
-        setContent("");
-        console.log(isEditing ? "article edited." : "new article added.", json);
-
-        // dispatch the appropriate action based on the isEditing state.
-        if (isEditing) {
-          dispatch({ type: "EDIT_ARTICLE", payload: json });
-        } else {
-          dispatch({ type: "CREATE_ARTICLE", payload: json });
-        }
+        dispatch({ type: "CREATE_ARTICLE", payload: json });
       }
 
       // redirect to home page
       navigate("/my");
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setError(error.message || "Something went wrong.");
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!user) {
+  //     setError("You must be logged in");
+  //     return;
+  //   }
+
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("title", title);
+  //     formData.append("subtitle", subtitle);
+  //     // ckeck if img input has a file, IF NOT then skip the file input.
+  //     if (fileInputExists) {
+  //       formData.append("file", img);
+  //     }
+
+  //     formData.append("content", content);
+
+  //     sanitizeFormData(formData);
+
+  //     const URL = isEditing ? `/api/articles/${id}` : "/api/articles";
+  //     const method = isEditing ? "PATCH" : "POST";
+  //     const options = {
+  //       method: method,
+  //       headers: {
+  //         // If you add this, upload won't work
+  //         // headers: {
+  //         //   'Content-Type': 'multipart/form-data',
+  //         // }
+  //         Authorization: `Bearer ${user.token}`,
+  //       },
+  //       body: formData,
+  //     };
+
+  //     // Remove 'Content-Type' header to allow browser to add
+  //     // along with the correct 'boundary'
+  //     delete options.headers["Content-Type"];
+  //     // I guess you could set hears: {"Content-Type": undefined} !!!!!!!!!
+  //     const response = await fetch(URL, options)
+  //       .then((res) => {
+  //         console.log(res);
+  //         if (!res.ok) {
+  //           throw new Error("Network response was not ok");
+  //         }
+
+  //         return res;
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //         setError(error || "Something went wrong.");
+  //       });
+
+  //     if (response && !response.ok) {
+  //       const json = await response.json();
+  //       setError(json.error);
+  //       setEmptyFields(json.emptyFields);
+  //     } else {
+  //       const json = await response.json();
+
+  //       setEmptyFields([]);
+  //       setError(null);
+  //       setTitle("");
+  //       setSubtitle("");
+  //       setImg("");
+  //       setContent("");
+  //       console.log(isEditing ? "article edited." : "new article added.", json);
+
+  //       // dispatch the appropriate action based on the isEditing state.
+  //       if (isEditing) {
+  //         dispatch({ type: "EDIT_ARTICLE", payload: json });
+  //       } else {
+  //         dispatch({ type: "CREATE_ARTICLE", payload: json });
+  //       }
+  //     }
+
+  //     // redirect to home page
+  //     navigate("/my");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const quillConfig = {
     // other options

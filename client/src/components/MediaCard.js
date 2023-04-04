@@ -1,3 +1,7 @@
+import { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { getSanitizedAndTruncatedText } from "../utils/getSanitizedAndTruncatedText";
+
 // MUI
 import * as React from "react";
 import {
@@ -11,10 +15,7 @@ import {
   Skeleton,
 } from "@mui/material";
 
-import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { getSanitizedAndTruncatedText } from "../utils/getSanitizedAndTruncatedText";
-
+// Component
 import LikeButton from "./LikeButton";
 
 //DOMPurify
@@ -36,7 +37,7 @@ const MediaCard = ({ article, user }) => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   // destructuring article
-  const { title, subtitle, img, content, _id } = article;
+  const { title, subtitle, img, content, _id, likeCount } = article;
   const MAX_PREVIEW_CHARS = 150;
 
   const sanitizedTitle = DOMPurify.sanitize(title);
@@ -52,9 +53,10 @@ const MediaCard = ({ article, user }) => {
     navigate(`/api/articles/${_id}`);
   };
 
+  // Use state to store the likeCount locally
+  const [localLikeCount, setLocalLikeCount] = useState(likeCount);
   // Likes
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
 
   //headers to pass the Auth
   //To avoid useEffect running headers dependence every time it re-render, the utilization of useMemo deployed.
@@ -62,17 +64,6 @@ const MediaCard = ({ article, user }) => {
     if (!user) return {};
     return { Authorization: `Bearer ${user.token}` };
   }, [user]);
-
-  // Get like Count from DB
-  useEffect(() => {
-    const fetchLikesCount = async () => {
-      const res = await fetch(`/api/like/${_id}/count`);
-      const data = await res.json();
-      setLikeCount(data.likeCount);
-    };
-
-    fetchLikesCount();
-  }, [_id]);
 
   // Check Like status
   useEffect(() => {
@@ -89,6 +80,13 @@ const MediaCard = ({ article, user }) => {
     fetchLikeCheck();
   }, [_id, user, headers]);
 
+  // Check to see Loading status.
+  useEffect(() => {
+    if (headers) {
+      setIsLoading(false);
+    }
+  }, [headers]);
+
   // Handle LIKE click
   const handleLikeClick = async (liked) => {
     setIsLiked(liked);
@@ -104,15 +102,8 @@ const MediaCard = ({ article, user }) => {
       headers: headers,
     });
     const data = await res.json();
-    setLikeCount(data.likeCount);
+    setLocalLikeCount(data.likeCount);
   };
-
-  // Check to see Loading status.
-  useEffect(() => {
-    if (headers) {
-      setIsLoading(false);
-    }
-  }, [headers]);
 
   return (
     <>
@@ -147,7 +138,7 @@ const MediaCard = ({ article, user }) => {
               Read More
             </Button>
             <LikeButton
-              likesCount={likeCount}
+              likesCount={localLikeCount}
               isLiked={isLiked}
               onUpdateLikes={handleLikeClick}
             ></LikeButton>
