@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
+// MUI
+import { Alert, AlertTitle } from "@mui/material";
+
 // Sanitize
 import { sanitizeFormData } from "../utils/sanitizeFormData";
 // Text Editor.
@@ -22,7 +25,7 @@ const ArticleForm = () => {
   const [img, setImg] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState(null);
-  const [emptyFields, setEmptyFields] = useState([]);
+  // const [emptyFields, setEmptyFields] = useState([]);
 
   const [isEditing, setIsEditing] = useState(false);
   // Fetch article data from your API or database using the id parameter
@@ -79,8 +82,23 @@ const ArticleForm = () => {
       setError("You must be logged in");
       return;
     }
-
+    // Build and sanitize the formData
     const formData = createFormData();
+    // Check that required fields are not empty
+    const requiredFields = ["title", "subtitle", "content"];
+    const emptyFields = requiredFields.filter((field) => !formData.get(field));
+    if (emptyFields.length > 0) {
+      setError(
+        `Please fill in all the required fields: ${emptyFields.join(", ")}`
+      );
+      return;
+    }
+    // Check that img field is not empty
+    if (!img) {
+      setError("Please select an Image");
+      return;
+    }
+
     const URL = isEditing ? `/api/articles/${id}` : "/api/articles";
     const method = isEditing ? "PATCH" : "POST";
 
@@ -109,7 +127,6 @@ const ArticleForm = () => {
 
       const json = await response.json();
 
-      setEmptyFields([]);
       setError(null);
       setTitle("");
       setSubtitle("");
@@ -130,89 +147,6 @@ const ArticleForm = () => {
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!user) {
-  //     setError("You must be logged in");
-  //     return;
-  //   }
-
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("title", title);
-  //     formData.append("subtitle", subtitle);
-  //     // ckeck if img input has a file, IF NOT then skip the file input.
-  //     if (fileInputExists) {
-  //       formData.append("file", img);
-  //     }
-
-  //     formData.append("content", content);
-
-  //     sanitizeFormData(formData);
-
-  //     const URL = isEditing ? `/api/articles/${id}` : "/api/articles";
-  //     const method = isEditing ? "PATCH" : "POST";
-  //     const options = {
-  //       method: method,
-  //       headers: {
-  //         // If you add this, upload won't work
-  //         // headers: {
-  //         //   'Content-Type': 'multipart/form-data',
-  //         // }
-  //         Authorization: `Bearer ${user.token}`,
-  //       },
-  //       body: formData,
-  //     };
-
-  //     // Remove 'Content-Type' header to allow browser to add
-  //     // along with the correct 'boundary'
-  //     delete options.headers["Content-Type"];
-  //     // I guess you could set hears: {"Content-Type": undefined} !!!!!!!!!
-  //     const response = await fetch(URL, options)
-  //       .then((res) => {
-  //         console.log(res);
-  //         if (!res.ok) {
-  //           throw new Error("Network response was not ok");
-  //         }
-
-  //         return res;
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //         setError(error || "Something went wrong.");
-  //       });
-
-  //     if (response && !response.ok) {
-  //       const json = await response.json();
-  //       setError(json.error);
-  //       setEmptyFields(json.emptyFields);
-  //     } else {
-  //       const json = await response.json();
-
-  //       setEmptyFields([]);
-  //       setError(null);
-  //       setTitle("");
-  //       setSubtitle("");
-  //       setImg("");
-  //       setContent("");
-  //       console.log(isEditing ? "article edited." : "new article added.", json);
-
-  //       // dispatch the appropriate action based on the isEditing state.
-  //       if (isEditing) {
-  //         dispatch({ type: "EDIT_ARTICLE", payload: json });
-  //       } else {
-  //         dispatch({ type: "CREATE_ARTICLE", payload: json });
-  //       }
-  //     }
-
-  //     // redirect to home page
-  //     navigate("/my");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const quillConfig = {
     // other options
     preserveWhitespace: true,
@@ -231,7 +165,6 @@ const ArticleForm = () => {
         type="text"
         onChange={(e) => setTitle(e.target.value)}
         value={title}
-        className={emptyFields.includes("title") ? "error" : ""}
       />
       <label>SubTitle :</label>
       <input
@@ -239,7 +172,6 @@ const ArticleForm = () => {
         type="text"
         onChange={(e) => setSubtitle(e.target.value)}
         value={subtitle}
-        className={emptyFields.includes("subtitle") ? "error" : ""}
       />
       <label>
         {isEditing && img
@@ -252,8 +184,6 @@ const ArticleForm = () => {
         accept="image/*"
         onChange={handleImageChange}
         name="uploadFile"
-        className={emptyFields.includes("img") ? "error" : ""}
-        {...(!isEditing && { required: true })}
       />
       <label>Content :</label>
       <div className="text-area-parent">
@@ -269,8 +199,14 @@ const ArticleForm = () => {
           />
         </div>
       </div>
+
       <button>{isEditing ? "Edit" : "Publish"}</button>
-      {error && <div className="error">{error}</div>}
+      {error && (
+        <Alert severity="warning" sx={{ marginTop: "1rem" }}>
+          <AlertTitle>Warning</AlertTitle>
+          <strong>{error}</strong>
+        </Alert>
+      )}
     </form>
   );
 };

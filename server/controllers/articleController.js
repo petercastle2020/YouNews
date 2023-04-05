@@ -86,8 +86,8 @@ const createArticle = async (req, res) => {
         const uploadedImg = await uploadIMG(imgPath);
         return uploadedImg;
       } catch (error) {
-        throw error;
-        // re-throw the error to be caught by the outer catch block
+        console.error(error);
+        throw new Error("Failed to upload image.");
       }
     }
   };
