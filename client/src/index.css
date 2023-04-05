@@ -126,26 +126,13 @@ form button {
 form button:hover {
   background-color: var(--accent-color-secondary);
 }
-div.error {
-  padding: 10px;
-  background: #ffefef;
-  border: 1px solid var(--error);
-  color: var(--error);
-  border-radius: 4px;
-  margin: 20px 0;
-}
-input.error {
-  border: 1px solid var(--error);
-}
 
-h3.new-article {
-  margin-top: 0;
-}
 
 /* text-area */
 .text-area-parent {
    display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .react-quill-wrapper {
@@ -168,6 +155,9 @@ h3.new-article {
   font-size: 1rem;
 }
 
+.ql-toolbar {
+  background-color: white;
+}
 
 /* navbar */
 nav button:hover {

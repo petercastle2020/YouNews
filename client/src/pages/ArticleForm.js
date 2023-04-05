@@ -1,8 +1,17 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
 
 // MUI
-import { Alert, AlertTitle } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  TextField,
+  Input,
+  Typography,
+  InputLabel,
+} from "@mui/material";
 
 // Sanitize
 import { sanitizeFormData } from "../utils/sanitizeFormData";
@@ -15,6 +24,7 @@ import { useArticlesContext } from "../hooks/useArticlesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 const ArticleForm = () => {
+  const theme = useTheme();
   const { id } = useParams();
   const { dispatch } = useArticlesContext();
   const { user } = useAuthContext();
@@ -153,61 +163,72 @@ const ArticleForm = () => {
   };
 
   return (
-    <form
-      encType="multipart/form-data"
-      className="create"
-      onSubmit={handleSubmit}
-    >
-      <h3 className="new-article">New Article</h3>
-      <label>Title :</label>
-      <input
-        id="title"
-        type="text"
-        onChange={(e) => setTitle(e.target.value)}
-        value={title}
-      />
-      <label>SubTitle :</label>
-      <input
-        id="subtitle"
-        type="text"
-        onChange={(e) => setSubtitle(e.target.value)}
-        value={subtitle}
-      />
-      <label>
-        {isEditing && img
-          ? `Image already uploaded: ${img}`
-          : "Choose an image :"}
-      </label>
-      <input
-        id="file"
-        type="file"
-        accept="image/*"
-        onChange={handleImageChange}
-        name="uploadFile"
-      />
-      <label>Content :</label>
-      <div className="text-area-parent">
-        <div className="react-quill-wrapper">
-          <ReactQuill
-            className="react-quill"
-            theme="snow"
-            value={content}
-            onChange={setContent}
-            style={{ height: "400px", width: "700px" }}
-            config={quillConfig}
-            preserveWhitespace={true}
-          />
+    <Box color={theme.palette.mode === "dark" ? "#f5f5f5" : "#323232"}>
+      <form
+        encType="multipart/form-data"
+        className="create"
+        onSubmit={handleSubmit}
+      >
+        <Typography
+          variant="h5"
+          component="h3"
+          sx={{ textAlign: "center", fontWeight: "bold" }}
+        >
+          New Article
+        </Typography>
+        <TextField
+          required
+          id="outlined-required"
+          label="Title"
+          onChange={(e) => setTitle(e.target.value)}
+          value={title}
+          sx={{ margin: "1rem 0 1rem 0" }}
+        />
+        <TextField
+          required
+          id="outlined-required"
+          label="Subtitle"
+          onChange={(e) => setSubtitle(e.target.value)}
+          value={subtitle}
+          sx={{ margin: "1rem 0 1rem 0" }}
+        />
+        <InputLabel htmlFor="image-input">
+          {isEditing && img
+            ? `Image already uploaded: ${img}`
+            : "Choose an image :"}
+        </InputLabel>
+        <Input
+          id="image-input"
+          type="file"
+          accept="image/*"
+          disableUnderline
+          onChange={handleImageChange}
+          name="uploadFile"
+          sx={{ marginBottom: "1rem" }}
+        />
+        <div className="text-area-parent">
+          <div className="react-quill-wrapper">
+            <ReactQuill
+              className="react-quill"
+              theme="snow"
+              value={content}
+              onChange={setContent}
+              style={{ height: "400px", width: "700px" }}
+              config={quillConfig}
+              preserveWhitespace={true}
+            />
+          </div>
         </div>
-      </div>
 
-      <button>{isEditing ? "Edit" : "Publish"}</button>
-      {error && (
-        <Alert severity="warning" sx={{ marginTop: "1rem" }}>
-          <AlertTitle>Warning</AlertTitle>
-          <strong>{error}</strong>
-        </Alert>
-      )}
-    </form>
+        <button>{isEditing ? "Edit" : "Publish"}</button>
+        {error && (
+          <Alert severity="warning" sx={{ marginTop: "1rem" }}>
+            <AlertTitle>Warning</AlertTitle>
+            <strong>{error}</strong>
+          </Alert>
+        )}
+      </form>
+    </Box>
   );
 };
 
