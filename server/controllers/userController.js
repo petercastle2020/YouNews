@@ -21,10 +21,10 @@ const loginUser = async (req, res) => {
 };
 // signup user
 const signupUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, confirmPassword } = req.body;
 
   try {
-    const user = await User.signup(email, password);
+    const user = await User.signup(email, password, confirmPassword);
 
     // create jwt token.
     const token = createToken(user._id);
