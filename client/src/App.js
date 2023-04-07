@@ -85,20 +85,30 @@ function App() {
             <ResponsiveAppBar toggleTheme={toggleTheme} />
             <div className="pages">
               <Routes>
-                <Route path="/my" element={<MyArticles />} />
                 <Route
-                  path="/"
+                  path="/my"
+                  element={user ? <MyArticles /> : <Navigate to="/login" />}
+                />
+                <Route path="/" element={<Home user={user} />} />
+                <Route
+                  path="/new-article"
                   element={
-                    user ? <Home user={user} /> : <Navigate to="/login" />
+                    user ? (
+                      <ArticleForm action="create" />
+                    ) : (
+                      <Navigate to="/login" />
+                    )
                   }
                 />
                 <Route
-                  path="/new-article"
-                  element={<ArticleForm action="create" />}
-                />
-                <Route
                   path="/edit/:id"
-                  element={<ArticleForm action="edit" />}
+                  element={
+                    user ? (
+                      <ArticleForm action="edit" />
+                    ) : (
+                      <Navigate to="/login" />
+                    )
+                  }
                 />
                 <Route path="/api/user/:id" element={<UserProfile />} />
                 <Route path="/api/articles/:id" element={<ArticlePage />} />

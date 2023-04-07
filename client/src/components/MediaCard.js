@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSanitizedAndTruncatedText } from "../utils/getSanitizedAndTruncatedText";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 // MUI
 import * as React from "react";
@@ -14,6 +15,9 @@ import {
   Typography,
   Skeleton,
 } from "@mui/material";
+
+// MUI Alert imports
+import { Snackbar, Alert } from "@mui/material";
 
 // Component
 import LikeButton from "./LikeButton";
@@ -33,6 +37,7 @@ const bull = (
 );
 
 const MediaCard = ({ article, user }) => {
+  const { dispatch, authError } = useAuthContext();
   // check userAuth is ready and set Loading to False.
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -89,6 +94,16 @@ const MediaCard = ({ article, user }) => {
 
   // Handle LIKE click
   const handleLikeClick = async (liked) => {
+    // Check if user is authenticated
+    if (!user) {
+      dispatch({
+        type: "SET_AUTH_ERROR",
+        payload: "Please, You've must be logged in.",
+      });
+      setIsSnackbarOpen(true);
+      return;
+    }
+
     setIsLiked(liked);
 
     // method
@@ -105,6 +120,17 @@ const MediaCard = ({ article, user }) => {
     setLocalLikeCount(data.likeCount);
   };
 
+  // dispatch null value for authError when snackbar closes.
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setIsSnackbarOpen(false);
+    dispatch({ type: "SET_AUTH_ERROR" });
+  };
+
+  const [SnackbarOpen, setIsSnackbarOpen] = useState(false);
+
   return (
     <>
       {isLoading ? (
@@ -118,32 +144,44 @@ const MediaCard = ({ article, user }) => {
           }}
         />
       ) : (
-        <Card sx={{ width: "100%", maxWidth: 500, marginBottom: "1.5rem" }}>
-          <CardMedia sx={{ height: 300 }} image={img} title="card-img" />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {sanitizedTitle}
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              sx={{ marginTop: "1rem", marginBottom: "1rem" }}
-            >
-              {bull} {sanitizedSubtitle}
-            </Typography>
-            <div>{displayContent}</div>
-          </CardContent>
-          <CardActions sx={{ justifyContent: "space-between" }}>
-            <Button size="small" onClick={navigateToReadMore} color="link">
-              Read More
-            </Button>
-            <LikeButton
-              likesCount={localLikeCount}
-              isLiked={isLiked}
-              onUpdateLikes={handleLikeClick}
-            ></LikeButton>
-          </CardActions>
-        </Card>
+        <>
+          <Card sx={{ width: "100%", maxWidth: 500, marginBottom: "1.5rem" }}>
+            <CardMedia sx={{ height: 300 }} image={img} title="card-img" />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                {sanitizedTitle}
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                sx={{ marginTop: "1rem", marginBottom: "1rem" }}
+              >
+                {bull} {sanitizedSubtitle}
+              </Typography>
+              <div>{displayContent}</div>
+            </CardContent>
+            <CardActions sx={{ justifyContent: "space-between" }}>
+              <Button size="small" onClick={navigateToReadMore} color="link">
+                Read More
+              </Button>
+              <LikeButton
+                likesCount={localLikeCount}
+                isLiked={isLiked}
+                onUpdateLikes={handleLikeClick}
+              ></LikeButton>
+            </CardActions>
+          </Card>
+          <Snackbar
+            open={SnackbarOpen}
+            autoHideDuration={3000}
+            onClose={handleSnackbarClose}
+            anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          >
+            <Alert onClose={handleSnackbarClose} severity="error">
+              {authError}
+            </Alert>
+          </Snackbar>
+        </>
       )}
     </>
   );

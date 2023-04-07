@@ -19,9 +19,8 @@ const Home = ({ user }) => {
         dispatch({ type: "SET_ARTICLES", payload: json });
       }
     };
-    if (user) {
-      fetchArticles();
-    }
+
+    fetchArticles();
   }, [dispatch, user]);
 
   return (

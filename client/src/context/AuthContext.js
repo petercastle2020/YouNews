@@ -8,6 +8,10 @@ export const authReducer = (state, action) => {
       return { user: action.payload };
     case "LOGOUT":
       return { user: null };
+    case "SET_AUTH_ERROR":
+      return { ...state, authError: action.payload };
+    case "HIDE_AUTH_ALERT":
+      return { ...state, authError: null };
     default:
       return state;
   }
@@ -16,6 +20,7 @@ export const authReducer = (state, action) => {
 export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, {
     user: null,
+    authError: null,
   });
 
   useEffect(() => {
