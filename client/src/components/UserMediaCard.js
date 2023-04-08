@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 //Context
@@ -187,7 +187,7 @@ const UserMediaCard = ({ article }) => {
       <CardStyled>
         {isTakingAction ? (
           <>
-            <CircularIndeterminate />
+            <CircularIndeterminate size={50} />
             <Skeleton variant="rounded" width={"100%"} height={"100%"} />
           </>
         ) : (

@@ -107,7 +107,7 @@ function ResponsiveAppBar({ toggleTheme }) {
   };
 
   return (
-    <AppBar position="static" sx={appBarStyle}>
+    <AppBar position="sticky" sx={appBarStyle}>
       <Container maxWidth="xl" disableGutters>
         <Toolbar disableGutters>
           <Typography

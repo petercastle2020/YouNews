@@ -45,6 +45,7 @@ const TrendingTab = () => {
           theme.palette.mode === "dark" ? "#212121" : "#aab4be"
         }`,
         borderRadius: 1,
+        maxWidth: "80%",
       }}
     >
       <Typography

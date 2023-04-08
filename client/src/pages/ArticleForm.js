@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import CircularIndeterminate from "../components/CircularIndeterminate";
 
 // MUI
 import {
@@ -35,7 +36,7 @@ const ArticleForm = () => {
   const [img, setImg] = useState("");
   const [content, setContent] = useState("");
   const [error, setError] = useState(null);
-  // const [emptyFields, setEmptyFields] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
   // Fetch article data from your API or database using the id parameter
@@ -87,9 +88,11 @@ const ArticleForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (!user) {
       setError("You must be logged in");
+      setIsLoading(false);
       return;
     }
     // Build and sanitize the formData
@@ -101,11 +104,13 @@ const ArticleForm = () => {
       setError(
         `Please fill in all the required fields: ${emptyFields.join(", ")}`
       );
+      setIsLoading(false);
       return;
     }
     // Check that img field is not empty
     if (!img) {
       setError("Please select an Image");
+      setIsLoading(false);
       return;
     }
 
@@ -132,6 +137,7 @@ const ArticleForm = () => {
     try {
       const response = await fetch(URL, options);
       if (!response.ok) {
+        setIsLoading(false);
         throw new Error("Network response was not ok");
       }
 
@@ -148,12 +154,13 @@ const ArticleForm = () => {
       } else {
         dispatch({ type: "CREATE_ARTICLE", payload: json });
       }
-
+      setIsLoading(false);
       // redirect to home page
       navigate("/my");
     } catch (error) {
       console.error(error);
       setError(error.message || "Something went wrong.");
+      setIsLoading(false);
     }
   };
 
@@ -228,6 +235,24 @@ const ArticleForm = () => {
           </Alert>
         )}
       </form>
+      {isLoading && (
+        <Box
+          sx={{
+            position: "absolute",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 2,
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+          }}
+        >
+          <CircularIndeterminate size={100} />
+        </Box>
+      )}
     </Box>
   );
 };

@@ -3,10 +3,55 @@ import React, { useEffect } from "react";
 // Components
 import MediaCard from "../components/MediaCard";
 import TrendingTab from "../components/TrendingTab";
+import SideNavbar from "../components/SideNavbar";
 import { useArticlesContext } from "../hooks/useArticlesContext";
+
+// MUI
+import { Box } from "@mui/material";
+import { styled } from "@mui/system";
+import { useTheme } from "@mui/system";
+
+const BoxStyled = styled(Box)({
+  minHeight: "100%",
+  display: "grid",
+  // gridTemplateColumns: "2fr 1fr",
+  gridTemplateColumns: "1fr 2fr 1fr",
+  gap: "2rem",
+  // height: "100vh",
+  // overflow: "hidden",
+
+  "@media (max-width: 800px)": {
+    gridTemplateColumns: "1fr",
+  },
+});
+
+const BoxArticlesStyled = styled(Box)({
+  margin: "0 auto",
+  width: "100%",
+  maxWidth: "1200px",
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "space-around",
+  alignItems: "flex-start",
+  // scroll
+  // height: "100vh",
+  // overflowY: "scroll",
+  // hide scrollbar
+  // "::-webkit-scrollbar": {
+  //   display: "none",
+  // },
+  // for firefox
+  // scrollbarWidth: "none",
+
+  "@media (max-width: 550px)": {
+    with: "100%",
+    padding: "0.5rem",
+  },
+});
 
 const Home = ({ user }) => {
   const { articles, dispatch } = useArticlesContext();
+  const theme = useTheme();
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -24,17 +69,29 @@ const Home = ({ user }) => {
   }, [dispatch, user]);
 
   return (
-    <div className="home">
-      <div className="articles">
+    <BoxStyled>
+      <Box>
+        <SideNavbar />
+      </Box>
+      <BoxArticlesStyled
+        sx={{
+          border: `1px solid ${
+            theme.palette.mode === "dark" ? "#212121" : "#aab4be"
+          }`,
+          borderRadius: 1,
+        }}
+      >
         {articles &&
           articles.map((article) => (
             <MediaCard key={article._id} article={article} user={user} />
           ))}
-      </div>
-      <div className="trending">
-        <TrendingTab />
-      </div>
-    </div>
+      </BoxArticlesStyled>
+      <Box position="relative">
+        <Box sx={{ position: "fixed" }}>
+          <TrendingTab />
+        </Box>
+      </Box>
+    </BoxStyled>
   );
 };
 

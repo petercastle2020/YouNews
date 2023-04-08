@@ -98,7 +98,7 @@ const MediaCard = ({ article, user }) => {
     if (!user) {
       dispatch({
         type: "SET_AUTH_ERROR",
-        payload: "Please, You've must be logged in.",
+        payload: "Please, you must be logged in.",
       });
       setIsSnackbarOpen(true);
       return;
@@ -145,7 +145,7 @@ const MediaCard = ({ article, user }) => {
         />
       ) : (
         <>
-          <Card sx={{ width: "100%", maxWidth: 500, marginBottom: "1.5rem" }}>
+          <Card sx={{ width: "100%", maxWidth: 550, marginBottom: "1.5rem" }}>
             <CardMedia sx={{ height: 300 }} image={img} title="card-img" />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
@@ -177,7 +177,7 @@ const MediaCard = ({ article, user }) => {
             onClose={handleSnackbarClose}
             anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
           >
-            <Alert onClose={handleSnackbarClose} severity="error">
+            <Alert onClose={handleSnackbarClose} severity="info">
               {authError}
             </Alert>
           </Snackbar>

@@ -2,7 +2,7 @@ import * as React from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
-const CircularIndeterminate = () => {
+const CircularIndeterminate = ({ size }) => {
   return (
     <Box
       sx={{
@@ -12,7 +12,7 @@ const CircularIndeterminate = () => {
         margin: "1rem",
       }}
     >
-      <CircularProgress />
+      <CircularProgress size={size} />
     </Box>
   );
 };

@@ -5,7 +5,7 @@ const { uploadIMG, deleteIMG } = require("./CloudinaryController");
 // GET ALL articles
 const getAllArticles = async (req, res) => {
   const articles = await Article.find({}).sort({
-    createAt: -1,
+    createdAt: -1,
   });
 
   res.status(200).json(articles);
@@ -17,7 +17,7 @@ const getAllMyArticles = async (req, res) => {
   const user_id = req.user._id;
 
   const articles = await Article.find({ user_id: user_id }).sort({
-    createAt: -1,
+    createdAt: -1,
   });
 
   res.status(200).json(articles);
@@ -29,7 +29,7 @@ const getSpecificUserArticles = async (req, res) => {
   user_id = req.params.id;
 
   const articles = await Article.find({ user_id: user_id }).sort({
-    createAt: -1,
+    createdAt: -1,
   });
 
   res.status(200).json(articles);
