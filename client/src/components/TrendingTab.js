@@ -41,11 +41,12 @@ const TrendingTab = () => {
     <Box
       sx={{
         mb: 2,
-        border: `1px solid ${
-          theme.palette.mode === "dark" ? "#212121" : "#aab4be"
-        }`,
+        marginRight: "1rem",
+        border: "1px solid",
+        borderColor: `${theme.palette.contrastBorder.main}`,
         borderRadius: 1,
-        maxWidth: "80%",
+        maxWidth: "100%",
+        backgroundColor: `${theme.palette.contrastFromBackGround.main}`,
       }}
     >
       <Typography

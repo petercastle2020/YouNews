@@ -31,8 +31,17 @@ const lightTheme = createTheme({
     secondary: {
       main: "#666",
     },
+    contrastFromBackGround: {
+      main: "#ffffff",
+    },
+    contrastBorder: {
+      main: "#aab4be",
+    },
     link: {
       main: "#1976d2",
+    },
+    blueHover: {
+      main: "#00a9e0",
     },
     heartRed: {
       main: "#FF2D55",
@@ -51,8 +60,17 @@ const darkTheme = createTheme({
     secondary: {
       main: "#aab4be",
     },
+    contrastFromBackGround: {
+      main: "#434242",
+    },
+    contrastBorder: {
+      main: "#212121",
+    },
     link: {
       main: "#1976d2",
+    },
+    blueHover: {
+      main: "#00a9e0",
     },
     heartRed: {
       main: "#FF2D55",

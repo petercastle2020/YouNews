@@ -15,7 +15,7 @@ const BoxStyled = styled(Box)({
   minHeight: "100%",
   display: "grid",
   // gridTemplateColumns: "2fr 1fr",
-  gridTemplateColumns: "1fr 2fr 1fr",
+  gridTemplateColumns: "1fr 3fr 2fr",
   gap: "2rem",
   // height: "100vh",
   // overflow: "hidden",
@@ -70,14 +70,15 @@ const Home = ({ user }) => {
 
   return (
     <BoxStyled>
-      <Box>
-        <SideNavbar />
+      <Box position="relative">
+        <Box sx={{ position: "fixed" }}>
+          <SideNavbar />
+        </Box>
       </Box>
       <BoxArticlesStyled
         sx={{
-          border: `1px solid ${
-            theme.palette.mode === "dark" ? "#212121" : "#aab4be"
-          }`,
+          border: "1px solid",
+          borderColor: `${theme.palette.contrastBorder.main}`,
           borderRadius: 1,
         }}
       >
