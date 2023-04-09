@@ -1,6 +1,7 @@
 import { Link as RouterLink } from "react-router-dom";
 import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
+import SearchBox from "./SearchBox";
 
 // MUI
 import * as React from "react";
@@ -133,6 +134,7 @@ function ResponsiveAppBar({ toggleTheme }) {
           >
             You News
           </Typography>
+          <SearchBox />
           {user && (
             <>
               <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>

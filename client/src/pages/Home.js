@@ -70,11 +70,10 @@ const Home = ({ user }) => {
 
   return (
     <BoxStyled>
-      <Box position="relative">
-        <Box sx={{ position: "fixed" }}>
-          <SideNavbar />
-        </Box>
+      <Box>
+        <SideNavbar />
       </Box>
+
       <BoxArticlesStyled
         sx={{
           border: "1px solid",

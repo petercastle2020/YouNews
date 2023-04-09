@@ -192,7 +192,7 @@ const UserMediaCard = ({ article }) => {
           </>
         ) : (
           <>
-            <CardMediaStyled image={img} />
+            <CardMediaStyled image={img} alt="card-media-img" />
 
             <CardContentStyled>
               <Typography variant="h6">{sanitizedTitle}</Typography>
