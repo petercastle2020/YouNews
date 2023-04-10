@@ -1,12 +1,47 @@
 // MUI
-import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, Box } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 
-const SearchResult = ({ img, title, onClick }) => {
+import { useTheme } from "@mui/system";
+
+const SearchResult = ({ _id, img, title, email, onClick }) => {
+  const theme = useTheme();
+
+  const handleClick = () => {
+    const userOrArticle = email ? "user" : "article";
+    onClick(_id, userOrArticle);
+  };
+
   return (
-    <Card onClick={onClick}>
-      <CardMedia image={img} alt="card-media-img" sx={{ width: "30%" }} />
-      <CardContent>
-        <Typography variant="h6">{title}</Typography>
+    <Card
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+        cursor: "pointer",
+        "&:hover": {
+          backgroundColor: theme.palette.blueHover.main,
+          cursor: "pointer",
+        },
+      }}
+      onClick={handleClick}
+    >
+      {email ? (
+        <Box
+          sx={{
+            width: "30%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Avatar alt="Avatar" src="" />
+        </Box>
+      ) : (
+        <CardMedia image={img} alt="card-media-img" sx={{ width: "30%" }} />
+      )}
+      <CardContent sx={{ display: "flex", padding: "10px" }}>
+        <Typography variant="subtitle1">{title ? title : email}</Typography>
       </CardContent>
     </Card>
   );

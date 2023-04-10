@@ -3,6 +3,10 @@ import { Box, InputBase } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 
+import { useTheme } from "@mui/system";
+
+import { useNavigate } from "react-router-dom";
+
 import { useState } from "react";
 // COMPONENTS
 import SearchResult from "./SearchResult";
@@ -48,21 +52,31 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const SearchBox = () => {
+  const navigate = useNavigate();
+  const theme = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
-  const pic =
-    "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1680977690/h8qciuuhzrbpzeuzlhyf.webp";
+  // const pic =
+  //   "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1680977690/h8qciuuhzrbpzeuzlhyf.webp";
 
   const handleSearch = () => {
-    // SET results state, and show it.
-    console.log("djfljdsfsljsdlfj");
-    setSearchResults([
-      {
-        img: pic,
-        title: "this is the title.",
-      },
-    ]);
+    // searchQuery will be the search term.
+    const searchArticlesAndUsers = async (searchQuery) => {
+      try {
+        const response = await fetch(`/api/searchData/search?q=${searchQuery}`);
+        const data = await response.json();
+        const resultsArray = data.SearchResponse;
+        console.log(data);
+        // here will set the searchResults.
+        setSearchResults(resultsArray);
+        // return data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    searchArticlesAndUsers(searchQuery);
   };
 
   const handleKeyDown = (e) => {
@@ -71,9 +85,21 @@ const SearchBox = () => {
     }
   };
 
-  const handleResultClick = () => {
-    // Send user to result.
-    console.log("Result CLICKED...");
+  const handleResultClick = (docId, type) => {
+    // Send user to result(REDIRECT TO RESOURCE).
+    // user Profile router = "/api/user/:id"
+    // article router = "/api/articles/:id"
+    const userRoute = `/api/user/${docId}`;
+    const articleRoute = `/api/articles/${docId}`;
+
+    // hide previous old results
+    setSearchResults([]);
+
+    if (type === "user") {
+      navigate(userRoute);
+    } else {
+      navigate(articleRoute);
+    }
   };
 
   return (
@@ -103,15 +129,13 @@ const SearchBox = () => {
             backgroundColor: "background.paper",
             zIndex: 2,
             boxShadow: 1,
+            border: "1px solid",
+            borderColor: `${theme.palette.contrastBorder.main}`,
+            borderRadius: 1,
           }}
         >
           {searchResults.map((result, index) => (
-            <SearchResult
-              key={index}
-              img={result.img}
-              title={result.title}
-              onClick={handleResultClick}
-            />
+            <SearchResult key={index} {...result} onClick={handleResultClick} />
           ))}
         </Box>
       )}

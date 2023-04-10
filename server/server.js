@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 const articleRoutes = require("./routes/articles");
 const userRoutes = require("./routes/user");
+const searchRoutes = require("./routes/search");
 const likeRoutes = require("./routes/like");
 
 // express app
@@ -21,6 +22,8 @@ app.use((req, res, next) => {
 app.use("/api/articles", articleRoutes);
 
 app.use("/api/user", userRoutes);
+
+app.use("/api/searchData", searchRoutes);
 
 app.use("/api/like", likeRoutes);
 
