@@ -55,7 +55,7 @@ const MediaCard = ({ article, user }) => {
   const displayContent = Parser(sanitizedContent);
 
   const navigateToReadMore = () => {
-    navigate(`/api/articles/${_id}`);
+    navigate(`/articles/${_id}`);
   };
 
   // Use state to store the likeCount locally

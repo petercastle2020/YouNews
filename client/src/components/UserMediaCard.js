@@ -128,7 +128,7 @@ const UserMediaCard = ({ article }) => {
   };
 
   const handleView = async (e) => {
-    navigate(`/api/articles/${_id}`);
+    navigate(`/articles/${_id}`);
   };
 
   const handleDelete = async (e) => {

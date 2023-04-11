@@ -40,7 +40,7 @@ const TrendingCard = ({ article }) => {
 
   // handle TrendingCard click
   const handleTrendingCardClick = () => {
-    navigate(`/api/articles/${_id}`);
+    navigate(`/articles/${_id}`);
   };
 
   return (

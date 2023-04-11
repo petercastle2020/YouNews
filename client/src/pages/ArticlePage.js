@@ -120,10 +120,7 @@ const ArticlePage = () => {
             sx={{ display: "flex", alignItems: "center" }}
           >
             By{" "}
-            <RouterLink
-              className="article-author-link"
-              to={`/api/user/${userId}`}
-            >
+            <RouterLink className="article-author-link" to={`/user/${userId}`}>
               {user_email}
             </RouterLink>
           </Typography>

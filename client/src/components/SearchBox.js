@@ -89,8 +89,8 @@ const SearchBox = () => {
     // Send user to result(REDIRECT TO RESOURCE).
     // user Profile router = "/api/user/:id"
     // article router = "/api/articles/:id"
-    const userRoute = `/api/user/${docId}`;
-    const articleRoute = `/api/articles/${docId}`;
+    const userRoute = `/user/${docId}`;
+    const articleRoute = `/articles/${docId}`;
 
     // hide previous old results
     setSearchResults([]);

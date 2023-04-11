@@ -128,8 +128,8 @@ function App() {
                     )
                   }
                 />
-                <Route path="/api/user/:id" element={<UserProfile />} />
-                <Route path="/api/articles/:id" element={<ArticlePage />} />
+                <Route path="/user/:id" element={<UserProfile />} />
+                <Route path="/articles/:id" element={<ArticlePage />} />
                 <Route
                   path="/signup"
                   element={user ? <Navigate to="/" /> : <Signup />}

@@ -7,21 +7,11 @@ const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [articles, setArticles] = useState([]);
 
-  //   useEffect(() => {
-  //     fetch(`/api/user/${id}`)
-  //       .then((response) => response.json())
-  //       .then((data) => setUser(data))
-  //       .catch((error) => console.error(error));
-
-  //     fetch(`/api/articles/user/${id}/articles`)
-  //       .then((response) => response.json())
-  //       .then((data) => setArticles(data))
-  //       .catch((error) => console.error(error));
-  //   }, [id]);
-
   useEffect(() => {
     Promise.all([
+      // get User
       fetch(`/api/user/${id}`).then((response) => response.json()),
+      //get all articles from User
       fetch(`/api/articles/user/${id}/articles`).then((response) =>
         response.json()
       ),
