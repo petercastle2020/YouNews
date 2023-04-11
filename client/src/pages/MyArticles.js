@@ -6,7 +6,7 @@ import UserMediaCard from "../components/UserMediaCard";
 import { useArticlesContext } from "../hooks/useArticlesContext";
 
 // MUI
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, Box } from "@mui/material";
 
 const MyArticles = () => {
   const { articles, showAlert, alertType, dispatch } = useArticlesContext();
@@ -56,12 +56,12 @@ const MyArticles = () => {
 
   return (
     <div className="home">
-      <div className="user-articles">
+      <Box sx={{ padding: "1rem" }}>
         {articles &&
           articles.map((article) => (
             <UserMediaCard key={article._id} article={article} />
           ))}
-      </div>
+      </Box>
       <Snackbar
         open={isAlertOpen}
         autoHideDuration={3000}

@@ -1,6 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ArticleCard from "../components/MediaCard";
+import UserProfileDisplay from "../components/UserProfileDisplay";
+
+// MUI
+import { Box, Typography } from "@mui/material";
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -29,18 +33,22 @@ const UserProfile = () => {
 
   return (
     <div className="user-profile">
-      <h1>{user.user_email}'s Profile</h1>
-      <p>would be the user info.</p>
-
-      <h2>Articles</h2>
+      <UserProfileDisplay handle={user.user_email} />
       {articles.length === 0 ? (
         <p>No articles to display</p>
       ) : (
-        <div className="articles">
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            paddingTop: "2rem",
+          }}
+        >
           {articles.map((article) => (
             <ArticleCard key={article._id} article={article} />
           ))}
-        </div>
+        </Box>
       )}
     </div>
   );
