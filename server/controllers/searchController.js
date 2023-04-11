@@ -22,4 +22,18 @@ const searchUserAndArticle = async (req, res) => {
   }
 };
 
-module.exports = { searchUserAndArticle };
+const searchUserByEmail = async (req, res) => {
+  try {
+    const { email } = req.query;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = { searchUserAndArticle, searchUserByEmail };

@@ -1,5 +1,6 @@
 //MUI
 import { Box, CardMedia, Typography } from "@mui/material";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 import { useTheme } from "@mui/system";
 
@@ -46,7 +47,14 @@ const UserProfileDisplay = ({ handle }) => {
         <Typography variant="body1" sx={{ marginTop: "1rem" }}>
           {handle}
         </Typography>
-        <Typography variant="body2">Joined: April 2023</Typography>
+
+        <Typography
+          variant="body2"
+          sx={{ display: "flex", alignItems: "center", marginTop: "1rem" }}
+        >
+          <CalendarMonthIcon sx={{ marginRight: "0.2rem" }} />
+          Joined: April 2023
+        </Typography>
       </Box>
     </Box>
   );

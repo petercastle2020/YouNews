@@ -3,6 +3,8 @@ import { useAuthContext } from "../hooks/useAuthContext";
 
 // Components
 import UserMediaCard from "../components/UserMediaCard";
+import UserProfileDisplay from "../components/UserProfileDisplay";
+import CircularIndeterminate from "../components/CircularIndeterminate";
 import { useArticlesContext } from "../hooks/useArticlesContext";
 
 // MUI
@@ -11,6 +13,7 @@ import { Snackbar, Alert, Box } from "@mui/material";
 const MyArticles = () => {
   const { articles, showAlert, alertType, dispatch } = useArticlesContext();
   const { user } = useAuthContext();
+  const [userData, setUserData] = useState(null); // initialize userData state
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -34,6 +37,27 @@ const MyArticles = () => {
     }
   }, [dispatch, user]);
 
+  // GET user info
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!user.token) {
+        // Wait for 1 second before trying again
+        setTimeout(() => fetchUserData(), 1000);
+      }
+      const response = await fetch(`/api/searchData/users?email=${user.email}`);
+      const json = await response.json();
+
+      if (response.ok) {
+        setUserData(json); // set userData state with user data
+      }
+    };
+    if (user) {
+      fetchUserData();
+    }
+  }, [user]);
+
+  console.log(userData);
+
   // ALERT STATES
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 
@@ -54,8 +78,27 @@ const MyArticles = () => {
     if (showAlert) handleAlertOpen();
   }, [showAlert]);
 
+  if (!userData) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100vw",
+          height: "100vh",
+        }}
+      >
+        <CircularIndeterminate size={100} />
+      </Box>
+    );
+  }
+
+  // STOP THE TOKEN FROM THE USER.
+
   return (
-    <div className="home">
+    <Box>
+      {userData && <UserProfileDisplay handle={userData.email} />}
       <Box sx={{ padding: "1rem" }}>
         {articles &&
           articles.map((article) => (
@@ -78,7 +121,7 @@ const MyArticles = () => {
           </Alert>
         ) : null}
       </Snackbar>
-    </div>
+    </Box>
   );
 };
 

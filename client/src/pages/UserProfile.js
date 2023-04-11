@@ -4,7 +4,7 @@ import ArticleCard from "../components/MediaCard";
 import UserProfileDisplay from "../components/UserProfileDisplay";
 
 // MUI
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 const UserProfile = () => {
   const { id } = useParams();
