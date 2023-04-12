@@ -10,6 +10,7 @@ import ResponsiveAppBar from "./components/ResponsiveAppBar";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ArticlePage from "./pages/ArticlePage";
+import AccountPage from "./pages/AccountPage";
 import MyArticles from "./pages/MyArticles";
 import UserProfile from "./pages/UserProfile";
 
@@ -107,6 +108,7 @@ function App() {
                   path="/my"
                   element={user ? <MyArticles /> : <Navigate to="/login" />}
                 />
+                <Route path="/account" element={<AccountPage user={user} />} />
                 <Route path="/" element={<Home user={user} />} />
                 <Route
                   path="/new-article"

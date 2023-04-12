@@ -25,7 +25,7 @@ const searchUserAndArticle = async (req, res) => {
 const searchUserByEmail = async (req, res) => {
   try {
     const { email } = req.query;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("_id email");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

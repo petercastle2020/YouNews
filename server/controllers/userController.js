@@ -14,7 +14,14 @@ const loginUser = async (req, res) => {
 
     // create jwt token.
     const token = createToken(user._id);
-    res.status(200).json({ email, token });
+    res.status(200).json({
+      email: user.email,
+      name: user.name,
+      handle: user.handle,
+      avatar: user.avatar,
+      joinedAt: user.createdAt,
+      token,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -29,7 +36,14 @@ const signupUser = async (req, res) => {
     // create jwt token.
     const token = createToken(user._id);
 
-    res.status(200).json({ email, token });
+    res.status(200).json({
+      email: user.email,
+      name: user.name,
+      handle: user.handle,
+      avatar: user.avatar,
+      joinedAt: user.createdAt,
+      token,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -46,6 +60,25 @@ const getUserById = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+// const update = async (req, res) => {
+//   meu = "63e92529db245d6610ae66dd";
+//   pic =
+//     "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1680977690/h8qciuuhzrbpzeuzlhyf.webp";
+
+//   date = new Date();
+//   const user = await User.findOneAndUpdate(
+//     { _id: meu },
+//     {
+//       avatar: pic,
+//       name: "Peter Castle",
+//       handle: "@petercastle",
+//       createdAt: date,
+//     }
+//   );
+// };
+
+// update();
 
 module.exports = {
   loginUser,

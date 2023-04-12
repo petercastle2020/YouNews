@@ -70,7 +70,7 @@ const Signup = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign Up
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -154,23 +154,6 @@ const Signup = () => {
       )}
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
-    // <form className="signup" onSubmit={handleSubmit}>
-    //   <h3>Sign up</h3>
-    //   <label>Email:</label>
-    //   <input
-    //     type="email"
-    //     onChange={(e) => setEmail(e.target.value)}
-    //     value={email}
-    //   />
-    //   <label>Password:</label>
-    //   <input
-    //     type="password"
-    //     onChange={(e) => setPassword(e.target.value)}
-    //     value={password}
-    //   />
-    //   <button disabled={isLoading}>Sign up</button>
-    //   {error && <div className="error">{error}</div>}
-    // </form>
   );
 };
 

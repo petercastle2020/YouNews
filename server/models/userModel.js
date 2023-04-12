@@ -3,17 +3,46 @@ const bcrypt = require("bcrypt");
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
+const userSchema = new Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      default: function () {
+        console.log(this.email);
+        const name = this.email.split("@")[0];
+        const randomStr = Math.random().toString(36).slice(-6);
+        return name + "-" + randomStr;
+      },
+      unique: true,
+    },
+    handle: {
+      type: String,
+      default: function () {
+        const handle = "@" + this.name;
+        const randomStr = Math.random().toString(36).slice(-6);
+        return handle + "-" + randomStr;
+      },
+      unique: true,
+    },
+    avatar: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1680977690/h8qciuuhzrbpzeuzlhyf.webp",
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 // static signup method
 userSchema.statics.signup = async function (email, password, confirmPassword) {

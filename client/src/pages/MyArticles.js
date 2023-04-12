@@ -94,8 +94,6 @@ const MyArticles = () => {
     );
   }
 
-  // STOP THE TOKEN FROM THE USER.
-
   return (
     <Box>
       {userData && <UserProfileDisplay handle={userData.email} />}
