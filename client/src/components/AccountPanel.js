@@ -1,3 +1,5 @@
+import { useState, useRef } from "react";
+
 // MUI
 import {
   Box,
@@ -10,6 +12,8 @@ import {
 
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+// import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
+import SaveIcon from "@mui/icons-material/Save";
 
 import { useTheme } from "@mui/system";
 
@@ -24,10 +28,22 @@ const AccountPanel = ({
   handleNameChange,
   handleEmailChange,
   handleHandleChange,
-  handleEditClick,
   handleSaveClick,
 }) => {
   const theme = useTheme();
+
+  const fileInputRef = useRef(null);
+
+  const handleFileInputOpen = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleNewFile = (event) => {
+    const selectedFile = event.target.files[0];
+    console.log(selectedFile);
+    // handleAvatarChange(selectedFile);
+  };
+
   return (
     <Box
       component="form"
@@ -53,6 +69,13 @@ const AccountPanel = ({
             boxSizing: "content-box",
           }}
         >
+          <input
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            ref={fileInputRef}
+            onChange={handleNewFile}
+          />
           <IconButton
             sx={{
               position: "absolute",
@@ -64,7 +87,7 @@ const AccountPanel = ({
             }}
             aria-label="change avatar"
             component="span"
-            onClick={handleAvatarChange}
+            onClick={handleFileInputOpen}
           >
             <PhotoCameraIcon />
           </IconButton>
@@ -122,6 +145,25 @@ const AccountPanel = ({
           Joined: {joinedAt}
         </Typography>
       </Box>
+      {editing ? (
+        <Box
+          sx={{
+            marginTop: "3rem",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          {/* <Button
+          variant="contained"
+          startIcon={<RestoreFromTrashIcon fontSize="large" />}
+        >
+          Discard changes
+        </Button> */}
+          <Button variant="contained" startIcon={<SaveIcon fontSize="large" />}>
+            Save
+          </Button>
+        </Box>
+      ) : null}
     </Box>
   );
 };

@@ -44,6 +44,7 @@ const deleteIMG = (imageURL) => {
       url.lastIndexOf("/") + 1,
       url.lastIndexOf(".")
     );
+    // https://res.cloudinary.com/dqjwxv8ck/image/upload/v1680977690/h8qciuuhzrbpzeuzlhyf.webp
     /* url.lastIndexOf("/") + 1, url.lastIndexOf(".")
   takes the substring variable, starting at the index of the
   character after the last forward slash
