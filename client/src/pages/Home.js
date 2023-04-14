@@ -14,6 +14,7 @@ import { useTheme } from "@mui/system";
 const BoxStyled = styled(Box)({
   minHeight: "100%",
   display: "grid",
+  paddingTop: "1rem",
   // gridTemplateColumns: "2fr 1fr",
   gridTemplateColumns: "1fr 3fr 2fr",
   gap: "2rem",

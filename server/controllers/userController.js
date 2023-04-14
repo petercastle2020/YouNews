@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const { uploadIMG, deleteIMG } = require("./CloudinaryController");
 
 const createToken = (_id) => {
   return jwt.sign({ _id: _id }, process.env.JWT_SECRET, { expiresIn: "90d" });
@@ -60,6 +61,57 @@ const getUserById = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+// UPDATE User Avatar
+const updateUserAvatar = async (req, res) => {
+  try {
+    const imgPath = req.file.path; // middleware multer
+    const newAvatar = await uploadIMG(imgPath);
+    res.status(200).json({ newAvatar });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to upload image." });
+  }
+};
+
+// DELETE User avatar
+const deleteUserAvatar = async (req, res) => {
+  try {
+    // URL to be deleted.
+    const imgURL = req.body.imgURL;
+    const deletedAvatar = await deleteIMG(imgURL);
+    res.status(200).json({ deletedAvatar });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to delete image." });
+  }
+};
+
+// PATCH USER DOC
+
+const updateUser = async (req, res) => {
+  try {
+    // User _id from middleware Auth.
+    user_id = req.user._id;
+    // changes
+    const updates = req.body;
+
+    const user = await User.findByIdAndUpdate(
+      { user_id },
+      {
+        ...updates,
+      },
+      { new: true }
+    ).select("_id avatar name email handle");
+
+    if (user) {
+      console.log({ user });
+      res.status(200).json({ user });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error." });
+  }
+};
 
 // const update = async (req, res) => {
 //   meu = "63e92529db245d6610ae66dd";
@@ -84,4 +136,7 @@ module.exports = {
   loginUser,
   signupUser,
   getUserById,
+  updateUserAvatar,
+  deleteUserAvatar,
+  updateUser,
 };

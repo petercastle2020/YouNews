@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 
 // MUI
 import {
@@ -41,7 +41,7 @@ const AccountPanel = ({
   const handleNewFile = (event) => {
     const selectedFile = event.target.files[0];
     console.log(selectedFile);
-    // handleAvatarChange(selectedFile);
+    handleAvatarChange(selectedFile);
   };
 
   return (
@@ -159,7 +159,11 @@ const AccountPanel = ({
         >
           Discard changes
         </Button> */}
-          <Button variant="contained" startIcon={<SaveIcon fontSize="large" />}>
+          <Button
+            type="submit"
+            variant="contained"
+            startIcon={<SaveIcon fontSize="large" />}
+          >
             Save
           </Button>
         </Box>
