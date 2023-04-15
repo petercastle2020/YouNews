@@ -56,7 +56,7 @@ const deleteIMG = (imageURL) => {
         return;
       }
       console.log("Image deleted successfully", result);
-      resolve(result.secure_url);
+      resolve(result);
     });
   });
 };

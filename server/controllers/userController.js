@@ -62,11 +62,29 @@ const getUserById = async (req, res) => {
   }
 };
 // UPDATE User Avatar
+// const updateUserAvatar = async (req, res) => {
+//   try {
+//     const imgPath = req.file.path; // middleware multer
+//     const newAvatar = await uploadIMG(imgPath);
+//     res.status(200).json({ newAvatar });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Failed to upload image." });
+//   }
+// };
+
+// UPDATE User Avatar
 const updateUserAvatar = async (req, res) => {
   try {
+    console.log("IMG FILE:", req.file.path);
+    console.log("DELETE URL:", req.body.deleteURL);
     const imgPath = req.file.path; // middleware multer
+    const deleteURL = req.body.deleteURL; // URL to be deleted.
     const newAvatar = await uploadIMG(imgPath);
-    res.status(200).json({ newAvatar });
+    // delete only after new Avatar is true.
+    const deletedAvatar = await deleteIMG(deleteURL);
+
+    res.status(200).json({ newAvatar, deletedAvatar });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to upload image." });
@@ -89,19 +107,23 @@ const deleteUserAvatar = async (req, res) => {
 // PATCH USER DOC
 
 const updateUser = async (req, res) => {
+  console.log("updateUser fucntion called in the controller.");
+  console.log(req.user._id);
+
   try {
     // User _id from middleware Auth.
-    user_id = req.user._id;
+    const user_id = req.user._id;
     // changes
     const updates = req.body;
+    console.log(updates);
 
     const user = await User.findByIdAndUpdate(
-      { user_id },
+      user_id,
       {
         ...updates,
       },
       { new: true }
-    ).select("_id avatar name email handle");
+    ).select("_id avatar name email handle token");
 
     if (user) {
       console.log({ user });
@@ -116,18 +138,19 @@ const updateUser = async (req, res) => {
 // const update = async (req, res) => {
 //   meu = "63e92529db245d6610ae66dd";
 //   pic =
-//     "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1680977690/h8qciuuhzrbpzeuzlhyf.webp";
+//     "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1681591697/a8jmvalqzltblxmkuvt1.webp";
 
 //   date = new Date();
 //   const user = await User.findOneAndUpdate(
 //     { _id: meu },
 //     {
 //       avatar: pic,
-//       name: "Peter Castle",
-//       handle: "@petercastle",
-//       createdAt: date,
 //     }
 //   );
+
+//   if (user) {
+//     console.log("IMG UPDATED>");
+//   }
 // };
 
 // update();
