@@ -78,16 +78,43 @@ const updateUserAvatar = async (req, res) => {
   try {
     console.log("IMG FILE:", req.file.path);
     console.log("DELETE URL:", req.body.deleteURL);
+    console.log("BODY:", req.body);
+    const user_id = req.user._id; // User _id from middleware Auth.
     const imgPath = req.file.path; // middleware multer
     const deleteURL = req.body.deleteURL; // URL to be deleted.
+    const { name, email, handle } = req.body;
+    // upload new avatar
     const newAvatar = await uploadIMG(imgPath);
     // delete only after new Avatar is true.
     const deletedAvatar = await deleteIMG(deleteURL);
+    // upload the user doc with text and new avatar
+    const userToUpdate = {};
+    if (name) {
+      userToUpdate.name = name;
+    }
+    if (email) {
+      userToUpdate.email = email;
+    }
+    if (handle) {
+      userToUpdate.handle = handle;
+    }
+    if (newAvatar && deletedAvatar) {
+      userToUpdate.avatar = newAvatar;
+    }
 
-    res.status(200).json({ newAvatar, deletedAvatar });
+    console.log(userToUpdate, "<<<< USER TO UPDATE");
+
+    const user = await User.findByIdAndUpdate(user_id, userToUpdate, {
+      new: true,
+    }).select("_id avatar name email handle token");
+
+    if (user) {
+      console.log({ user });
+      res.status(200).json({ user });
+    }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to upload image." });
+    res.status(500).json({ error: "Server error." });
   }
 };
 
@@ -138,7 +165,7 @@ const updateUser = async (req, res) => {
 // const update = async (req, res) => {
 //   meu = "63e92529db245d6610ae66dd";
 //   pic =
-//     "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1681591697/a8jmvalqzltblxmkuvt1.webp";
+//     "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1681681842/bw3pudnw0aqwii2kzhpa.webp";
 
 //   date = new Date();
 //   const user = await User.findOneAndUpdate(

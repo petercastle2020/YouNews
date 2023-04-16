@@ -19,7 +19,9 @@ const AccountPage = () => {
   // field to be updated.
   const [oldAvatar, setOldAvatar] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
-  const updatedUser = {};
+
+  //Track user changes
+  const [userDataChanges, setUserDataChanges] = useState({});
 
   // User Auth Token
 
@@ -72,20 +74,32 @@ const AccountPage = () => {
   //   return json.newAvatar;
   // };
 
-  const uploadAvatar = async (selectedFile) => {
+  const updateUserData = async (newAvatarFile, toBeDeletedURL, JsonBody) => {
     if (!user) {
       // handle the case where user is not available
       console.log("USER without Auth.");
       return;
     }
+
+    if (!newAvatarFile && !JsonBody) {
+      // INFO ABOUT NO CHANGES.
+      return;
+    }
+
     // create formData
     const formData = new FormData();
-    formData.append("file", selectedFile);
-    formData.append("deleteURL", oldAvatar);
+    formData.append("file", newAvatarFile);
+    formData.append("deleteURL", toBeDeletedURL);
+    // iterate over the keys in JsonBody and append any non-empty values to the form data
+    for (const [key, value] of Object.entries(JsonBody)) {
+      if (value !== undefined && value !== "") {
+        formData.append(key, value);
+      }
+    }
 
     console.log(user.token);
-
-    const response = await fetch("/api/user/upload", {
+    // >>>>>>>>>>>>>>>>>>>>>>CHANGE THE NAME ROUTE.
+    const response = await fetch("/api/user/update", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -96,14 +110,13 @@ const AccountPage = () => {
 
     const json = await response.json();
     console.log(json);
+    console.log(json.user);
 
     if (response.ok) {
       // console.log(json.newAvatar);
       console.log(json);
+      return json.user;
     }
-
-    // return json.newAvatar;
-    return json.newAvatar;
   };
 
   // const deleteAvatar = async (imgURL) => {
@@ -125,30 +138,30 @@ const AccountPage = () => {
   //   return json.deletedAvatar;
   // };
 
-  const updateUser = async (jsonBody) => {
-    if (!user) {
-      // handle the case where user is not available
-      console.log("USER without Auth.");
-      return;
-    }
+  // const updateUser = async (jsonBody) => {
+  //   if (!user) {
+  //     // handle the case where user is not available
+  //     console.log("USER without Auth.");
+  //     return;
+  //   }
 
-    const response = await fetch(`/api/user/update`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(jsonBody),
-    });
+  //   const response = await fetch(`/api/user/update`, {
+  //     method: "PATCH",
+  //     headers: {
+  //       Authorization: `Bearer ${user.token}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(jsonBody),
+  //   });
 
-    const json = await response.json();
+  //   const json = await response.json();
 
-    if (response.ok) {
-      console.log(json.user);
-    }
+  //   if (response.ok) {
+  //     console.log(json.user);
+  //   }
 
-    return json.user;
-  };
+  //   return json.user;
+  // };
 
   const handleAvatarChange = (selectedFile) => {
     const url = URL.createObjectURL(selectedFile);
@@ -160,35 +173,50 @@ const AccountPage = () => {
   const handleNameChange = (event) => {
     setName(event.target.value);
     setEditing(true);
-    updatedUser.name = event.target.value;
+    setUserDataChanges({
+      ...userDataChanges,
+      name: event.target.value,
+    });
   };
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
     setEditing(true);
-    updatedUser.email = event.target.value;
+    setUserDataChanges({
+      ...userDataChanges,
+      email: event.target.value,
+    });
   };
 
   const handleHandleChange = (event) => {
     setHandle(event.target.value);
     setEditing(true);
-    updatedUser.handle = event.target.value;
+    setUserDataChanges({
+      ...userDataChanges,
+      handle: event.target.value,
+    });
   };
 
   const handleSaveClick = async () => {
     console.log("NUMBER OF TIMES");
     // Save changes to user account
-    if (avatarFile) {
-      const newAvatar = await uploadAvatar(avatarFile);
-      console.log("NEW AVATAR", newAvatar);
-      updatedUser.avatar = newAvatar;
-    }
-    // set user data OBJ to update the user doc.
-    const userNew = await updateUser(updatedUser);
+    // if (avatarFile) {
+    //   const newAvatar = await uploadAvatar(avatarFile);
+    //   console.log("NEW AVATAR", newAvatar);
+    //   updatedUser.avatar = newAvatar;
+    // }
+    // // set user data OBJ to update the user doc.
+    // const userNew = await updateUser(updatedUser);
+    console.log(avatarFile, oldAvatar, userDataChanges);
+    const userNew = await updateUserData(
+      avatarFile,
+      oldAvatar,
+      userDataChanges
+    );
     console.log("AFTER FUnc, userNew result:", userNew);
     dispatch({ action: "LOGIN", payload: userNew });
     console.log("AFTER THE DISPATCH>");
-    // handle error, e.g. show error message to user
+
     setEditing(false);
   };
 

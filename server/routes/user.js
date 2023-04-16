@@ -25,10 +25,10 @@ router.post("/signup", signupUser);
 // get user data using ":id"
 router.get("/:id", getUserById);
 // update user avatar
-router.post("/upload", requireAuth, upload.single("file"), updateUserAvatar);
+router.post("/update", requireAuth, upload.single("file"), updateUserAvatar);
 // delete user avatar
 router.post("/delete", requireAuth, deleteUserAvatar);
 // Edit User
-router.patch("/update", requireAuth, updateUser);
+// router.patch("/update", requireAuth, updateUser);
 
 module.exports = router;
