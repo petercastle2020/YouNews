@@ -48,7 +48,7 @@ const AccountPanel = ({
     <Box
       component="form"
       sx={{ marginTop: "2rem", color: theme.palette.primary.main }}
-      onSubmit={handleSaveClick}
+      onSubmit={(e) => handleSaveClick(e)}
     >
       <Typography variant="h5" textAlign={"center"} gutterBottom>
         Account Information

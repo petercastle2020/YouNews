@@ -13,8 +13,6 @@ const {
   signupUser,
   getUserById,
   getUserIdByEmail,
-  updateUserAvatar,
-  deleteUserAvatar,
   updateUser,
 } = require("../controllers/userController");
 
@@ -24,11 +22,7 @@ router.post("/login", loginUser);
 router.post("/signup", signupUser);
 // get user data using ":id"
 router.get("/:id", getUserById);
-// update user avatar
-router.post("/update", requireAuth, upload.single("file"), updateUserAvatar);
-// delete user avatar
-router.post("/delete", requireAuth, deleteUserAvatar);
-// Edit User
-// router.patch("/update", requireAuth, updateUser);
+// update user
+router.post("/update", requireAuth, upload.single("file"), updateUser);
 
 module.exports = router;

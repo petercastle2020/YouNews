@@ -61,34 +61,27 @@ const getUserById = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-// UPDATE User Avatar
-// const updateUserAvatar = async (req, res) => {
-//   try {
-//     const imgPath = req.file.path; // middleware multer
-//     const newAvatar = await uploadIMG(imgPath);
-//     res.status(200).json({ newAvatar });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Failed to upload image." });
-//   }
-// };
 
-// UPDATE User Avatar
-const updateUserAvatar = async (req, res) => {
+// UPDATE User
+const updateUser = async (req, res) => {
   try {
-    console.log("IMG FILE:", req.file.path);
-    console.log("DELETE URL:", req.body.deleteURL);
-    console.log("BODY:", req.body);
     const user_id = req.user._id; // User _id from middleware Auth.
     const imgPath = req.file.path; // middleware multer
     const deleteURL = req.body.deleteURL; // URL to be deleted.
     const { name, email, handle } = req.body;
-    // upload new avatar
-    const newAvatar = await uploadIMG(imgPath);
-    // delete only after new Avatar is true.
-    const deletedAvatar = await deleteIMG(deleteURL);
-    // upload the user doc with text and new avatar
-    const userToUpdate = {};
+    const userToUpdate = {}; // user changes to be updated.
+
+    // UPLOAD new avatar
+    let newAvatar;
+    try {
+      newAvatar = await uploadIMG(imgPath);
+      userToUpdate.avatar = newAvatar;
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Image upload failed." });
+    }
+
+    // UPDATE user
     if (name) {
       userToUpdate.name = name;
     }
@@ -98,74 +91,92 @@ const updateUserAvatar = async (req, res) => {
     if (handle) {
       userToUpdate.handle = handle;
     }
-    if (newAvatar && deletedAvatar) {
-      userToUpdate.avatar = newAvatar;
+
+    try {
+      const user = await User.findByIdAndUpdate(user_id, userToUpdate, {
+        new: true,
+      }).select("_id avatar name email handle token");
+
+      if (user) {
+        // Create new JWT token to send back with updated data.
+        const newToken = createToken(user._id);
+        console.log({ ...user, newToken });
+        res.status(200).json({ user: { ...user.toObject(), token: newToken } });
+      }
+    } catch (error) {
+      console.error(error);
+      // If upload fails, delete the avatar uploaded.
+      try {
+        await deleteIMG(newAvatar);
+      } catch (error) {
+        console.error(error);
+      }
+      res.status(500).json({ error: "User update failed." });
     }
 
-    console.log(userToUpdate, "<<<< USER TO UPDATE");
-
-    const user = await User.findByIdAndUpdate(user_id, userToUpdate, {
-      new: true,
-    }).select("_id avatar name email handle token");
-
-    if (user) {
-      console.log({ user });
-      res.status(200).json({ user });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error." });
-  }
-};
-
-// DELETE User avatar
-const deleteUserAvatar = async (req, res) => {
-  try {
-    // URL to be deleted.
-    const imgURL = req.body.imgURL;
-    const deletedAvatar = await deleteIMG(imgURL);
-    res.status(200).json({ deletedAvatar });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to delete image." });
-  }
-};
-
-// PATCH USER DOC
-
-const updateUser = async (req, res) => {
-  console.log("updateUser fucntion called in the controller.");
-  console.log(req.user._id);
-
-  try {
-    // User _id from middleware Auth.
-    const user_id = req.user._id;
-    // changes
-    const updates = req.body;
-    console.log(updates);
-
-    const user = await User.findByIdAndUpdate(
-      user_id,
-      {
-        ...updates,
-      },
-      { new: true }
-    ).select("_id avatar name email handle token");
-
-    if (user) {
-      console.log({ user });
-      res.status(200).json({ user });
+    console.log(deleteURL);
+    // DELETE old avatar
+    if (deleteURL) {
+      try {
+        await deleteIMG(deleteURL);
+      } catch (error) {
+        console.error(error);
+        // delete failed, keep new avatar and user
+        return res.status(500).json({ error: "Avatar delete failed." });
+      }
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server error." });
   }
+
+  // try {
+  //   console.log("IMG FILE:", req.file.path);
+  //   console.log("DELETE URL:", req.body.deleteURL);
+  //   console.log("BODY:", req.body);
+  //   const user_id = req.user._id; // User _id from middleware Auth.
+  //   const imgPath = req.file.path; // middleware multer
+  //   const deleteURL = req.body.deleteURL; // URL to be deleted.
+  //   const { name, email, handle } = req.body;
+  //   // upload new avatar
+  //   const newAvatar = await uploadIMG(imgPath);
+  //   // delete only after new Avatar is true.
+  //   const deletedAvatar = await deleteIMG(deleteURL);
+  //   // upload the user doc with text and new avatar
+  //   const userToUpdate = {};
+  //   if (name) {
+  //     userToUpdate.name = name;
+  //   }
+  //   if (email) {
+  //     userToUpdate.email = email;
+  //   }
+  //   if (handle) {
+  //     userToUpdate.handle = handle;
+  //   }
+  //   if (newAvatar && deletedAvatar) {
+  //     userToUpdate.avatar = newAvatar;
+  //   }
+
+  //   console.log(userToUpdate, "<<<< USER TO UPDATE");
+
+  //   const user = await User.findByIdAndUpdate(user_id, userToUpdate, {
+  //     new: true,
+  //   }).select("_id avatar name email handle token");
+
+  //   if (user) {
+  //     console.log({ user });
+  //     res.status(200).json({ user });
+  //   }
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).json({ error: "Server error." });
+  // }
 };
 
 // const update = async (req, res) => {
 //   meu = "63e92529db245d6610ae66dd";
 //   pic =
-//     "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1681681842/bw3pudnw0aqwii2kzhpa.webp";
+//     "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1681760842/hek0cqstzqv6rgmm2gds.webp";
 
 //   date = new Date();
 //   const user = await User.findOneAndUpdate(
@@ -186,7 +197,5 @@ module.exports = {
   loginUser,
   signupUser,
   getUserById,
-  updateUserAvatar,
-  deleteUserAvatar,
   updateUser,
 };

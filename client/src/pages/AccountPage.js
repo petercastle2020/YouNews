@@ -23,10 +23,12 @@ const AccountPage = () => {
   //Track user changes
   const [userDataChanges, setUserDataChanges] = useState({});
 
-  // User Auth Token
-
   // Update the component once user is loaded.
   useEffect(() => {
+    console.log(user);
+    /* DISPATCH is not putting it updated user info. resulting in using the same url
+    to delete old resources already deleted.
+     */
     if (user) {
       setLoading(false);
       setOldAvatar(user.avatar);
@@ -36,43 +38,20 @@ const AccountPage = () => {
       setEmail(user.email);
       setHandle(user.handle);
     }
-  }, [user]);
+  }, [user, dispatch]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  //   const pic =
-  //     "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1680977690/h8qciuuhzrbpzeuzlhyf.webp";
-
-  // const uploadAvatar = async (selectedFile) => {
-  //   if (!user) {
-  //     // handle the case where user is not available
-  //     console.log("USER WAS EMPTY");
-  //     return;
+  // Listen for changes in the context state and update the component.
+  // useEffect(() => {
+  //   if (user) {
+  //     // setLoading(false);
+  //     setOldAvatar(user.avatar);
+  //     setJoinedAt(user.joinedAt);
+  //     setAvatar(user.avatar);
+  //     setName(user.name);
+  //     setEmail(user.email);
+  //     setHandle(user.handle);
   //   }
-  //   // create formData
-  //   const formData = new FormData();
-  //   formData.append("file", selectedFile);
-
-  //   const response = await fetch("/api/user/upload", {
-  //     method: "POST",
-  //     headers: {
-  //       Authorization: `Bearer ${user.token}`,
-  //       // "Content-Type": "multipart/form-data",
-  //     },
-  //     body: formData,
-  //   });
-
-  //   const json = await response.json();
-  //   console.log(json);
-
-  //   if (response.ok) {
-  //     console.log(json.newAvatar);
-  //   }
-
-  //   return json.newAvatar;
-  // };
+  // }, [dispatch, user]);
 
   const updateUserData = async (newAvatarFile, toBeDeletedURL, JsonBody) => {
     if (!user) {
@@ -82,7 +61,7 @@ const AccountPage = () => {
     }
 
     if (!newAvatarFile && !JsonBody) {
-      // INFO ABOUT NO CHANGES.
+      // Warning. ABOUT NO CHANGES.
       return;
     }
 
@@ -97,8 +76,6 @@ const AccountPage = () => {
       }
     }
 
-    console.log(user.token);
-    // >>>>>>>>>>>>>>>>>>>>>>CHANGE THE NAME ROUTE.
     const response = await fetch("/api/user/update", {
       method: "POST",
       headers: {
@@ -109,8 +86,6 @@ const AccountPage = () => {
     });
 
     const json = await response.json();
-    console.log(json);
-    console.log(json.user);
 
     if (response.ok) {
       // console.log(json.newAvatar);
@@ -118,50 +93,6 @@ const AccountPage = () => {
       return json.user;
     }
   };
-
-  // const deleteAvatar = async (imgURL) => {
-  //   const response = await fetch(`/api/user/delete`, {
-  //     method: "POST",
-  //     headers: {
-  //       Authorization: `Bearer ${user.token}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ imgURL: imgURL }),
-  //   });
-
-  //   const json = await response.json();
-
-  //   if (response.ok) {
-  //     console.log(json.deletedAvatar);
-  //   }
-
-  //   return json.deletedAvatar;
-  // };
-
-  // const updateUser = async (jsonBody) => {
-  //   if (!user) {
-  //     // handle the case where user is not available
-  //     console.log("USER without Auth.");
-  //     return;
-  //   }
-
-  //   const response = await fetch(`/api/user/update`, {
-  //     method: "PATCH",
-  //     headers: {
-  //       Authorization: `Bearer ${user.token}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(jsonBody),
-  //   });
-
-  //   const json = await response.json();
-
-  //   if (response.ok) {
-  //     console.log(json.user);
-  //   }
-
-  //   return json.user;
-  // };
 
   const handleAvatarChange = (selectedFile) => {
     const url = URL.createObjectURL(selectedFile);
@@ -197,28 +128,33 @@ const AccountPage = () => {
     });
   };
 
-  const handleSaveClick = async () => {
-    console.log("NUMBER OF TIMES");
-    // Save changes to user account
-    // if (avatarFile) {
-    //   const newAvatar = await uploadAvatar(avatarFile);
-    //   console.log("NEW AVATAR", newAvatar);
-    //   updatedUser.avatar = newAvatar;
-    // }
-    // // set user data OBJ to update the user doc.
-    // const userNew = await updateUser(updatedUser);
-    console.log(avatarFile, oldAvatar, userDataChanges);
-    const userNew = await updateUserData(
-      avatarFile,
-      oldAvatar,
-      userDataChanges
-    );
-    console.log("AFTER FUnc, userNew result:", userNew);
-    dispatch({ action: "LOGIN", payload: userNew });
-    console.log("AFTER THE DISPATCH>");
+  const handleSaveClick = async (e) => {
+    e.preventDefault();
 
-    setEditing(false);
+    try {
+      const userNew = await updateUserData(
+        avatarFile,
+        oldAvatar,
+        userDataChanges
+      );
+
+      if (userNew) {
+        localStorage.setItem("user", JSON.stringify(userNew));
+        dispatch({ action: "LOGIN", payload: userNew });
+        console.log("AFTER THE DISPATCH>");
+      }
+
+      setEditing(false);
+    } catch (error) {
+      console.log("Error updating user data:", error);
+      // Display a message to the user informing them of the failure
+      setEditing(false);
+    }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Container>
