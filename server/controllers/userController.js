@@ -117,9 +117,14 @@ const updateUser = async (req, res) => {
     }
 
     console.log(deleteURL);
+    const defaultAvatarSource =
+      "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1681943748/user-default_pawzoi.webp";
     // DELETE old avatar
     if (deleteURL) {
       try {
+        if (deleteURL === defaultAvatarSource) {
+          return;
+        }
         await deleteIMG(deleteURL);
       } catch (error) {
         console.error(error);

@@ -148,15 +148,21 @@ function ResponsiveAppBar({ toggleTheme }) {
           {user && (
             <>
               <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
-                <Container sx={{ display: "flex", alignItems: "baseline" }}>
+                <Container
+                  sx={{
+                    display: "flex",
+                    alignItems: "baseline",
+                    alignItems: "center",
+                  }}
+                >
                   <Typography
                     sx={{
-                      mr: 2,
                       display: { xs: "none", sm: "flex", md: "flex" },
                       fontFamily: "Verdana, 'Source Sans Pro', sans-serif",
                       fontWeight: 300,
-                      fontSize: { xs: "0.5rem", sm: "0.8rem", md: "1rem" },
+                      fontSize: { xs: "0.5rem", sm: "0.6rem", md: "0.8rem" },
                       color: "inherit",
+                      whiteSpace: "nowrap",
                       textDecoration: "none",
                     }}
                   >
