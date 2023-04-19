@@ -4,6 +4,8 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { AuthContext } from "../context/AuthContext";
 
 import { useState, useEffect, useContext } from "react";
+// Date format
+import { format } from "date-fns";
 
 const AccountPage = () => {
   const { dispatch } = useContext(AuthContext);
@@ -19,6 +21,7 @@ const AccountPage = () => {
   // field to be updated.
   const [oldAvatar, setOldAvatar] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   //Track user changes
   const [userDataChanges, setUserDataChanges] = useState({});
@@ -26,32 +29,27 @@ const AccountPage = () => {
   // Update the component once user is loaded.
   useEffect(() => {
     console.log(user);
-    /* DISPATCH is not putting it updated user info. resulting in using the same url
-    to delete old resources already deleted.
-     */
     if (user) {
-      setLoading(false);
-      setOldAvatar(user.avatar);
-      setJoinedAt(user.joinedAt);
-      setAvatar(user.avatar);
-      setName(user.name);
-      setEmail(user.email);
-      setHandle(user.handle);
+      setUserData(user);
     }
   }, [user, dispatch]);
 
-  // Listen for changes in the context state and update the component.
-  // useEffect(() => {
-  //   if (user) {
-  //     // setLoading(false);
-  //     setOldAvatar(user.avatar);
-  //     setJoinedAt(user.joinedAt);
-  //     setAvatar(user.avatar);
-  //     setName(user.name);
-  //     setEmail(user.email);
-  //     setHandle(user.handle);
-  //   }
-  // }, [dispatch, user]);
+  //  use the user from Auth to create a userData obj, therefore changes into userData
+  //  can be made right away and displayed.
+  // REASON: dispatch has delay, so the component cannot re-render with new values immediately.
+  useEffect(() => {
+    console.log(userData);
+
+    if (userData) {
+      setLoading(false);
+      setOldAvatar(userData.avatar);
+      setJoinedAt(format(new Date(userData.createdAt), "MMM yyyy"));
+      setAvatar(userData.avatar);
+      setName(userData.name);
+      setEmail(userData.email);
+      setHandle(userData.handle);
+    }
+  }, [userData]);
 
   const updateUserData = async (newAvatarFile, toBeDeletedURL, JsonBody) => {
     if (!user) {
@@ -141,6 +139,8 @@ const AccountPage = () => {
       if (userNew) {
         localStorage.setItem("user", JSON.stringify(userNew));
         dispatch({ action: "LOGIN", payload: userNew });
+        // setting the user new info, reason: dispatch has delay.
+        setUserData(userNew);
         console.log("AFTER THE DISPATCH>");
       }
 

@@ -20,7 +20,7 @@ const loginUser = async (req, res) => {
       name: user.name,
       handle: user.handle,
       avatar: user.avatar,
-      joinedAt: user.createdAt,
+      createdAt: user.createdAt,
       token,
     });
   } catch (error) {
@@ -42,7 +42,7 @@ const signupUser = async (req, res) => {
       name: user.name,
       handle: user.handle,
       avatar: user.avatar,
-      joinedAt: user.createdAt,
+      createdAt: user.createdAt,
       token,
     });
   } catch (error) {
@@ -95,7 +95,7 @@ const updateUser = async (req, res) => {
     try {
       const user = await User.findByIdAndUpdate(user_id, userToUpdate, {
         new: true,
-      }).select("_id avatar name email handle token");
+      }).select("_id avatar name email handle createdAt token");
 
       if (user) {
         // Create new JWT token to send back with updated data.
