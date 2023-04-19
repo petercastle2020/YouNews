@@ -139,10 +139,22 @@ const AccountPanel = ({
             alignItems: "center",
             marginTop: "1rem",
             textAlign: "center",
+            marginRight: "0.5rem",
           }}
         >
           <CalendarMonthIcon sx={{ marginRight: "0.2rem" }} />
-          Joined: {joinedAt}
+          Joined:
+        </Typography>
+        <Typography
+          variant="body1"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: "1rem",
+            textAlign: "center",
+          }}
+        >
+          {joinedAt}
         </Typography>
       </Box>
       {editing ? (

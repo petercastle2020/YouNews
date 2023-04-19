@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -87,6 +88,13 @@ function ResponsiveAppBar({ toggleTheme }) {
   // Auth
   const { logout } = useLogout();
   const { user } = useAuthContext();
+  const [avatarUrl, setAvatarUrl] = React.useState("");
+
+  useEffect(() => {
+    if (user) {
+      setAvatarUrl(user.avatar);
+    }
+  }, [user]);
 
   const handleLogoutClick = () => {
     logout();
@@ -158,7 +166,10 @@ function ResponsiveAppBar({ toggleTheme }) {
                   <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open settings">
                       <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        <Avatar alt="Remy Sharp" src="" />
+                        <Avatar
+                          alt="user-avatar"
+                          src={avatarUrl ? avatarUrl : ""}
+                        />
                       </IconButton>
                     </Tooltip>
                     <Menu

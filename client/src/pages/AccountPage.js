@@ -1,7 +1,10 @@
-import { Container } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import AccountPanel from "../components/AccountPanel";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { AuthContext } from "../context/AuthContext";
+
+// spinner
+import CircularIndeterminate from "../components/CircularIndeterminate";
 
 import { useState, useEffect, useContext } from "react";
 // Date format
@@ -153,7 +156,22 @@ const AccountPage = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <CircularIndeterminate size={100} />
+      </Box>
+    );
   }
 
   return (
