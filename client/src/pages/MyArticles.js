@@ -96,7 +96,14 @@ const MyArticles = () => {
 
   return (
     <Box>
-      {userData && <UserProfileDisplay handle={userData.email} />}
+      {userData && (
+        <UserProfileDisplay
+          avatar={user.avatar}
+          name={userData.name}
+          handle={userData.handle}
+          joinedAt={userData.createdAt}
+        />
+      )}
       <Box sx={{ padding: "1rem" }}>
         {articles &&
           articles.map((article) => (

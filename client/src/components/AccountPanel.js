@@ -1,4 +1,6 @@
 import { useRef } from "react";
+// COMPONENTS
+import JoinedAtComponent from "./JoinedAtComponent";
 
 // MUI
 import {
@@ -11,8 +13,6 @@ import {
 } from "@mui/material";
 
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-// import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import SaveIcon from "@mui/icons-material/Save";
 
 import { useTheme } from "@mui/system";
@@ -129,34 +129,7 @@ const AccountPanel = ({
           InputProps={{ readOnly: false }}
         />
       </Box>
-      <Box
-        sx={{ marginTop: "2rem", display: "flex", justifyContent: "center" }}
-      >
-        <Typography
-          variant="body2"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            marginTop: "1rem",
-            textAlign: "center",
-            marginRight: "0.5rem",
-          }}
-        >
-          <CalendarMonthIcon sx={{ marginRight: "0.2rem" }} />
-          Joined:
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            marginTop: "1rem",
-            textAlign: "center",
-          }}
-        >
-          {joinedAt}
-        </Typography>
-      </Box>
+      <JoinedAtComponent joinedAt={joinedAt} />
       {editing ? (
         <Box
           sx={{

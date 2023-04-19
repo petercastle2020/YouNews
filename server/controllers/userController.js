@@ -55,8 +55,10 @@ const getUserById = async (req, res) => {
   const user_id = req.params.id;
 
   try {
-    const user = await User.findOne({ _id: user_id });
-    res.status(200).json({ user_id: user._id, user_email: user.email });
+    const user = await User.findOne({ _id: user_id }).select(
+      "_id avatar name handle createdAt"
+    );
+    res.status(200).json({ user });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

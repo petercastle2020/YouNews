@@ -21,7 +21,7 @@ const UserProfile = () => {
       ),
     ])
       .then(([userData, articleData]) => {
-        setUser(userData);
+        setUser(userData.user);
         setArticles(articleData);
       })
       .catch((error) => console.error(error));
@@ -33,7 +33,12 @@ const UserProfile = () => {
 
   return (
     <div className="user-profile">
-      <UserProfileDisplay handle={user.user_email} />
+      <UserProfileDisplay
+        avatar={user.avatar}
+        name={user.name}
+        handle={user.handle}
+        joinedAt={user.createdAt}
+      />
       {articles.length === 0 ? (
         <p>No articles to display</p>
       ) : (

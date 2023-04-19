@@ -1,13 +1,11 @@
 //MUI
 import { Box, CardMedia, Typography } from "@mui/material";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+// COMPONENTS
+import JoinedAtComponent from "./JoinedAtComponent";
 
 import { useTheme } from "@mui/system";
 
-const pic =
-  "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1680977690/h8qciuuhzrbpzeuzlhyf.webp";
-
-const UserProfileDisplay = ({ handle }) => {
+const UserProfileDisplay = ({ name, handle, avatar, joinedAt }) => {
   const theme = useTheme();
   return (
     <Box
@@ -21,7 +19,7 @@ const UserProfileDisplay = ({ handle }) => {
     >
       <Box sx={{ marginTop: "3rem" }}>
         <CardMedia
-          image={pic}
+          image={avatar}
           title="user-img"
           sx={{
             borderRadius: "50%",
@@ -42,19 +40,13 @@ const UserProfileDisplay = ({ handle }) => {
         }}
       >
         <Typography variant="h5" sx={{ marginTop: "1rem" }}>
-          Name Surname
+          {name}
         </Typography>
         <Typography variant="body1" sx={{ marginTop: "1rem" }}>
           {handle}
         </Typography>
 
-        <Typography
-          variant="body2"
-          sx={{ display: "flex", alignItems: "center", marginTop: "1rem" }}
-        >
-          <CalendarMonthIcon sx={{ marginRight: "0.2rem" }} />
-          Joined: April 2023
-        </Typography>
+        <JoinedAtComponent joinedAt={joinedAt} />
       </Box>
     </Box>
   );

@@ -7,8 +7,6 @@ import { AuthContext } from "../context/AuthContext";
 import CircularIndeterminate from "../components/CircularIndeterminate";
 
 import { useState, useEffect, useContext } from "react";
-// Date format
-import { format } from "date-fns";
 
 const AccountPage = () => {
   const { dispatch } = useContext(AuthContext);
@@ -31,7 +29,6 @@ const AccountPage = () => {
 
   // Update the component once user is loaded.
   useEffect(() => {
-    console.log(user);
     if (user) {
       setUserData(user);
     }
@@ -41,12 +38,10 @@ const AccountPage = () => {
   //  can be made right away and displayed.
   // REASON: dispatch has delay, so the component cannot re-render with new values immediately.
   useEffect(() => {
-    console.log(userData);
-
     if (userData) {
       setLoading(false);
       setOldAvatar(userData.avatar);
-      setJoinedAt(format(new Date(userData.createdAt), "MMM yyyy"));
+      setJoinedAt(userData.createdAt);
       setAvatar(userData.avatar);
       setName(userData.name);
       setEmail(userData.email);
@@ -57,7 +52,6 @@ const AccountPage = () => {
   const updateUserData = async (newAvatarFile, toBeDeletedURL, JsonBody) => {
     if (!user) {
       // handle the case where user is not available
-      console.log("USER without Auth.");
       return;
     }
 

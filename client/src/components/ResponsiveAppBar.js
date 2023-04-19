@@ -89,10 +89,12 @@ function ResponsiveAppBar({ toggleTheme }) {
   const { logout } = useLogout();
   const { user } = useAuthContext();
   const [avatarUrl, setAvatarUrl] = React.useState("");
+  const [userHandle, setUserHandle] = React.useState("");
 
   useEffect(() => {
     if (user) {
       setAvatarUrl(user.avatar);
+      setUserHandle(user.handle);
     }
   }, [user]);
 
@@ -159,7 +161,7 @@ function ResponsiveAppBar({ toggleTheme }) {
                     }}
                   >
                     <RouterLink className="nav-link" to="/my">
-                      {user.email}
+                      {userHandle}
                     </RouterLink>
                   </Typography>
 
