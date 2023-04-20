@@ -9,7 +9,7 @@ const searchUserAndArticle = async (req, res) => {
     }).select("img title _id");
     const users = await User.find({
       email: { $regex: query, $options: "i" },
-    }).select("email _id");
+    }).select("_id avatar handle name");
 
     if (articles.length === 0 && users.length === 0) {
       res.status(404).json({ SearchResponse: "No article nor user found." });
