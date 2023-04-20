@@ -151,12 +151,12 @@ function ResponsiveAppBar({ toggleTheme }) {
                 <Container
                   sx={{
                     display: "flex",
-                    alignItems: "baseline",
                     alignItems: "center",
                   }}
                 >
                   <Typography
                     sx={{
+                      mr: 1,
                       display: { xs: "none", sm: "flex", md: "flex" },
                       fontFamily: "Verdana, 'Source Sans Pro', sans-serif",
                       fontWeight: 300,

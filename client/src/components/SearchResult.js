@@ -20,7 +20,7 @@ const SearchResult = ({ _id, img, title, email, onClick }) => {
         width: "100%",
         cursor: "pointer",
         "&:hover": {
-          backgroundColor: theme.palette.blueHover.main,
+          backgroundColor: theme.palette.grayHover.main,
           cursor: "pointer",
         },
       }}

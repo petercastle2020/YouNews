@@ -44,6 +44,9 @@ const lightTheme = createTheme({
     blueHover: {
       main: "#00a9e0",
     },
+    grayHover: {
+      main: "#323232",
+    },
     heartRed: {
       main: "#FF2D55",
     },
@@ -72,6 +75,9 @@ const darkTheme = createTheme({
     },
     blueHover: {
       main: "#00a9e0",
+    },
+    grayHover: {
+      main: "#323232",
     },
     heartRed: {
       main: "#FF2D55",

@@ -47,7 +47,9 @@ const TrendingCard = ({ article }) => {
     <TrendingCardStyled onClick={handleTrendingCardClick}>
       <TrendingCardMediaStyled image={img} />
       <TrendingCardContentStyled>
-        <Typography variant="subtitle1">{sanitizedTitle}</Typography>
+        <Typography variant="subtitle2" sx={{ fontSize: { md: "1rem" } }}>
+          {sanitizedTitle}
+        </Typography>
       </TrendingCardContentStyled>
     </TrendingCardStyled>
   );
