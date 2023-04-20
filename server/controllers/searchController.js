@@ -8,7 +8,7 @@ const searchUserAndArticle = async (req, res) => {
       title: { $regex: query, $options: "i" },
     }).select("img title _id");
     const users = await User.find({
-      email: { $regex: query, $options: "i" },
+      handle: { $regex: query, $options: "i" },
     }).select("_id avatar handle name");
 
     if (articles.length === 0 && users.length === 0) {

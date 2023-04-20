@@ -7,7 +7,7 @@ import { useTheme } from "@mui/system";
 
 import { useNavigate } from "react-router-dom";
 
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 // COMPONENTS
 import SearchResult from "./SearchResult";
 
@@ -56,6 +56,7 @@ const SearchBox = () => {
   const theme = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const searchResultsRef = useRef(null);
 
   // const pic =
   //   "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1680977690/h8qciuuhzrbpzeuzlhyf.webp";
@@ -102,6 +103,26 @@ const SearchBox = () => {
     }
   };
 
+  // Click Outside.
+  const handleClickOutside = (event) => {
+    if (
+      searchResultsRef.current &&
+      !searchResultsRef.current.contains(event.target)
+    )
+      // Clicked outside of search results, hide it
+      setSearchResults([]);
+  };
+
+  useEffect(() => {
+    // Add event listener to document when component mounts
+    document.addEventListener("click", handleClickOutside);
+
+    // Remove event listener when component unmounts
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
     <Box position="relative">
       <Box>
@@ -121,6 +142,7 @@ const SearchBox = () => {
       </Box>
       {searchResults.length > 0 && (
         <Box
+          ref={searchResultsRef}
           sx={{
             position: "absolute",
             top: "100%",

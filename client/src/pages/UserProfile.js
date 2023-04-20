@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ArticleCard from "../components/MediaCard";
 import UserProfileDisplay from "../components/UserProfileDisplay";
+import CircularIndeterminate from "../components/CircularIndeterminate";
 
 // MUI
 import { Box } from "@mui/material";
@@ -28,7 +29,19 @@ const UserProfile = () => {
   }, [id]);
 
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100vw",
+          height: "100vh",
+        }}
+      >
+        <CircularIndeterminate size={100} />
+      </Box>
+    );
   }
 
   return (
