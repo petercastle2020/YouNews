@@ -56,8 +56,6 @@ const MyArticles = () => {
     }
   }, [user]);
 
-  console.log(userData);
-
   // ALERT STATES
   const [isAlertOpen, setIsAlertOpen] = useState(false);
 

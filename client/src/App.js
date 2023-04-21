@@ -13,6 +13,7 @@ import ArticlePage from "./pages/ArticlePage";
 import AccountPage from "./pages/AccountPage";
 import MyArticles from "./pages/MyArticles";
 import UserProfile from "./pages/UserProfile";
+import ScrollToTop from "./components/ScrollToTop";
 
 // MUI
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -107,6 +108,7 @@ function App() {
       >
         <div className="App">
           <BrowserRouter>
+            <ScrollToTop />
             <ResponsiveAppBar toggleTheme={toggleTheme} />
             <div className="pages">
               <Routes>
