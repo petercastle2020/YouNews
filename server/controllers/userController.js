@@ -138,26 +138,6 @@ const updateUser = async (req, res) => {
   }
 };
 
-// const update = async (req, res) => {
-//   meu = "63e92529db245d6610ae66dd";
-//   pic =
-//     "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1681760842/hek0cqstzqv6rgmm2gds.webp";
-
-//   date = new Date();
-//   const user = await User.findOneAndUpdate(
-//     { _id: meu },
-//     {
-//       avatar: pic,
-//     }
-//   );
-
-//   if (user) {
-//     console.log("IMG UPDATED>");
-//   }
-// };
-
-// update();
-
 module.exports = {
   loginUser,
   signupUser,

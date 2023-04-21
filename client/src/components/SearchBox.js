@@ -58,9 +58,6 @@ const SearchBox = () => {
   const [searchResults, setSearchResults] = useState([]);
   const searchResultsRef = useRef(null);
 
-  // const pic =
-  //   "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1680977690/h8qciuuhzrbpzeuzlhyf.webp";
-
   const handleSearch = () => {
     // searchQuery will be the search term.
     const searchArticlesAndUsers = async (searchQuery) => {

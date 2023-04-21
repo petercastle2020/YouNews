@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 // Components
 import MediaCard from "../components/MediaCard";
 import TrendingTab from "../components/TrendingTab";
-import SideNavbar from "../components/SideNavbar";
 import { useArticlesContext } from "../hooks/useArticlesContext";
 
 // MUI
@@ -15,11 +14,12 @@ const BoxStyled = styled(Box)({
   minHeight: "100%",
   display: "grid",
   paddingTop: "1rem",
-  // gridTemplateColumns: "2fr 1fr",
-  gridTemplateColumns: "1fr 3fr 2fr",
-  gap: "2rem",
-  // height: "100vh",
-  // overflow: "hidden",
+  gridTemplateColumns: "4fr 2fr",
+  gap: "1rem",
+
+  "@media (max-width: 900px)": {
+    gridTemplateColumns: "5fr 4fr",
+  },
 
   "@media (max-width: 800px)": {
     gridTemplateColumns: "1fr",
@@ -34,15 +34,6 @@ const BoxArticlesStyled = styled(Box)({
   flexWrap: "wrap",
   justifyContent: "space-around",
   alignItems: "flex-start",
-  // scroll
-  // height: "100vh",
-  // overflowY: "scroll",
-  // hide scrollbar
-  // "::-webkit-scrollbar": {
-  //   display: "none",
-  // },
-  // for firefox
-  // scrollbarWidth: "none",
 
   "@media (max-width: 550px)": {
     with: "100%",
@@ -71,10 +62,6 @@ const Home = ({ user }) => {
 
   return (
     <BoxStyled>
-      <Box>
-        <SideNavbar />
-      </Box>
-
       <BoxArticlesStyled
         sx={{
           border: "1px solid",

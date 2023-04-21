@@ -138,12 +138,6 @@ const AccountPanel = ({
             justifyContent: "flex-end",
           }}
         >
-          {/* <Button
-          variant="contained"
-          startIcon={<RestoreFromTrashIcon fontSize="large" />}
-        >
-          Discard changes
-        </Button> */}
           <Button
             type="submit"
             variant="contained"

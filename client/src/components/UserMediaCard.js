@@ -49,11 +49,8 @@ const CardStyled = styled(Card)({
 });
 
 const CardMediaStyled = styled(CardMedia)({
-  // height: 200,
-  // width: 250,
   minWidth: "30%",
   minHeight: 200,
-  // flexShrink: 0,
   objectFit: "cover",
   "@media (max-width: 650px)": {
     width: "100%",
@@ -64,9 +61,6 @@ const CardMediaStyled = styled(CardMedia)({
 const CardContentStyled = styled(CardContent)({
   flexGrow: 0,
   paddingRight: "3rem",
-
-  // flexGrow: 1,
-  // paddingLeft: "1rem",
 });
 
 const IconButtonStyled = styled(IconButton)({
