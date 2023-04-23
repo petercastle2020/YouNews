@@ -24,7 +24,7 @@ const articleSchema = new Schema(
       ref: "User",
       require: true,
     },
-    user_email: {
+    user_handle: {
       type: String,
       require: true,
     },

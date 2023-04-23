@@ -68,16 +68,23 @@ const getUserById = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const user_id = req.user._id; // User _id from middleware Auth.
-    const imgPath = req.file.path; // middleware multer
     const deleteURL = req.body.deleteURL; // URL to be deleted.
     const { name, email, handle } = req.body;
+    let newAvatar;
+    let imgPath;
+    // check to see File exists.
+    if (req.file) {
+      imgPath = req.file.path; // middleware multer
+    }
     const userToUpdate = {}; // user changes to be updated.
 
     // UPLOAD new avatar
-    let newAvatar;
+
     try {
-      newAvatar = await uploadIMG(imgPath);
-      userToUpdate.avatar = newAvatar;
+      if (imgPath) {
+        newAvatar = await uploadIMG(imgPath);
+        userToUpdate.avatar = newAvatar;
+      }
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: "Image upload failed." });
@@ -120,7 +127,7 @@ const updateUser = async (req, res) => {
     const defaultAvatarSource =
       "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1681943748/user-default_pawzoi.webp";
     // DELETE old avatar
-    if (deleteURL) {
+    if (deleteURL && newAvatar) {
       try {
         if (deleteURL === defaultAvatarSource) {
           return;

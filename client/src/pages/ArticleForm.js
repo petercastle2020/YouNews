@@ -78,7 +78,7 @@ const ArticleForm = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("subtitle", subtitle);
-    formData.append("email", user.email);
+    formData.append("handle", user.handle);
     if (fileInputExists) {
       formData.append("file", img);
     }

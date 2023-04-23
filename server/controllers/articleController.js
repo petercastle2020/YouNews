@@ -56,7 +56,7 @@ const getSingleArticle = async (req, res) => {
 // CREATE new article
 
 const createArticle = async (req, res) => {
-  const { title, subtitle, email, content } = req.body;
+  const { title, subtitle, email, handle, content } = req.body;
   const imgPath = req.file.path;
 
   const inputValidation = async () => {
@@ -96,14 +96,14 @@ const createArticle = async (req, res) => {
     // Call inputValidation and wait for it to complete
     const img = await inputValidation();
     const user_id = req.user._id;
-    const user_email = email;
+    const user_handle = handle;
     const article = await Article.create({
       title: title,
       subtitle: subtitle,
       img: img,
       content: content,
       user_id: user_id,
-      user_email: user_email,
+      user_handle: user_handle,
     });
     res.status(200).json(article);
   } catch (error) {

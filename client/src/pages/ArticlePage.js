@@ -76,7 +76,7 @@ const ArticlePage = () => {
   }
 
   // destructuring.
-  const { title, subtitle, img, content, createdAt, user_email } = ArticlePage;
+  const { title, subtitle, img, content, createdAt, user_handle } = ArticlePage;
 
   const sanitizedTitle = DOMPurify.sanitize(title);
   const sanitizedSubtitle = DOMPurify.sanitize(subtitle);
@@ -121,7 +121,7 @@ const ArticlePage = () => {
           >
             By{" "}
             <RouterLink className="article-author-link" to={`/user/${userId}`}>
-              {user_email}
+              {user_handle}
             </RouterLink>
           </Typography>
           <div className="date">
