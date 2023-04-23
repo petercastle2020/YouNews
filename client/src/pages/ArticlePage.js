@@ -91,7 +91,7 @@ const ArticlePage = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        margin: "1rem auto 1rem auto",
+        margin: "1rem auto 0 auto",
         maxWidth: "650px",
         color: theme.palette.primary.main,
       }}

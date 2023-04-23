@@ -101,6 +101,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Box
         sx={{
+          paddingBottom: "3rem",
           minHeight: "100vh",
           backgroundColor: (theme) =>
             theme.palette.mode === "dark" ? "#323232" : "#f5f5f5",
