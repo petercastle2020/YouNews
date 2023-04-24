@@ -188,6 +188,7 @@ const ArticleForm = () => {
           required
           id="outlined-required"
           label="Title"
+          autoComplete="off"
           onChange={(e) => setTitle(e.target.value)}
           value={title}
           sx={{ margin: "1rem 0 1rem 0" }}
@@ -196,6 +197,7 @@ const ArticleForm = () => {
           required
           id="outlined-required"
           label="Subtitle"
+          autoComplete="off"
           onChange={(e) => setSubtitle(e.target.value)}
           value={subtitle}
           sx={{ margin: "1rem 0 1rem 0" }}

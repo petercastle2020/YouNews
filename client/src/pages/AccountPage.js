@@ -125,6 +125,7 @@ const AccountPage = () => {
 
   const handleSaveClick = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const userNew = await updateUserData(
@@ -141,11 +142,14 @@ const AccountPage = () => {
         console.log("AFTER THE DISPATCH>");
       }
 
+      setLoading(false);
       setEditing(false);
+      window.location.reload();
     } catch (error) {
       console.log("Error updating user data:", error);
       // Display a message to the user informing them of the failure
       setEditing(false);
+      setLoading(false);
     }
   };
 
