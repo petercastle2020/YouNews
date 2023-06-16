@@ -1,5 +1,5 @@
 // MUI
-import { Box, InputBase } from "@mui/material";
+import { Box, InputBase, Typography } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -137,7 +137,29 @@ const SearchBox = () => {
           />
         </Search>
       </Box>
-      {searchResults.length > 0 && (
+
+      {!Array.isArray(searchResults) && (
+        <Box
+          ref={searchResultsRef}
+          sx={{
+            position: "absolute",
+            top: "100%",
+            left: 0,
+            width: "100%",
+            backgroundColor: "background.paper",
+            zIndex: 2,
+            boxShadow: 1,
+            border: "1px solid",
+            borderColor: `${theme.palette.contrastBorder.main}`,
+            borderRadius: 1,
+          }}
+        >
+          <Typography variant="body1" sx={{ display: "flex", padding: "1rem" }}>
+            No results found.
+          </Typography>
+        </Box>
+      )}
+      {Array.isArray(searchResults) && searchResults.length > 0 && (
         <Box
           ref={searchResultsRef}
           sx={{
