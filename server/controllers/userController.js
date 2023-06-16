@@ -98,7 +98,12 @@ const updateUser = async (req, res) => {
       userToUpdate.email = email;
     }
     if (handle) {
-      userToUpdate.handle = handle;
+      if (handle.includes("@")) {
+        return res
+          .status(400)
+          .json({ error: "@ is not allowed inside the handle." });
+      }
+      userToUpdate.handle = "@" + handle;
     }
 
     try {

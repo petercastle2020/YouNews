@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
   CardMedia,
+  InputAdornment,
 } from "@mui/material";
 
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
@@ -47,7 +48,11 @@ const AccountPanel = ({
   return (
     <Box
       component="form"
-      sx={{ marginTop: "2rem", color: theme.palette.primary.main }}
+      sx={{
+        marginTop: "2rem",
+        marginBottom: "2rem",
+        color: theme.palette.primary.main,
+      }}
       onSubmit={(e) => handleSaveClick(e)}
     >
       <Typography variant="h5" textAlign={"center"} gutterBottom>
@@ -124,12 +129,19 @@ const AccountPanel = ({
         <TextField
           required
           id="standard-required"
-          label="@"
+          label="handle"
           variant="standard"
           autoComplete="off"
           value={handle}
           onChange={handleHandleChange}
-          InputProps={{ readOnly: false }}
+          InputProps={{
+            readOnly: false,
+            startAdornment: (
+              <InputAdornment position="start">
+                <span style={{ opacity: 0.5 }}>@</span>
+              </InputAdornment>
+            ),
+          }}
         />
       </Box>
       <JoinedAtComponent joinedAt={joinedAt} />

@@ -1,4 +1,4 @@
-import { Container, Box } from "@mui/material";
+import { Container, Box, Alert, AlertTitle, Stack } from "@mui/material";
 import AccountPanel from "../components/AccountPanel";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { AuthContext } from "../context/AuthContext";
@@ -12,6 +12,7 @@ const AccountPage = () => {
   const { dispatch } = useContext(AuthContext);
   const { user } = useAuthContext();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   // Define state variables and functions
   const [joinedAt, setJoinedAt] = useState(null);
   const [avatar, setAvatar] = useState(null);
@@ -125,6 +126,16 @@ const AccountPage = () => {
 
   const handleSaveClick = async (e) => {
     e.preventDefault();
+    // CHECK TO SEE ERROR IN THE FORM.
+    if (!name || !email || !handle || !avatar) {
+      setError("Please, fill in all the fields.");
+    }
+
+    if (handle.includes("@")) {
+      setError("Please, do not use `@` inside the handle field.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -178,7 +189,7 @@ const AccountPage = () => {
         avatar={avatar}
         name={name}
         email={email}
-        handle={handle}
+        handle={handle.slice(1)}
         joinedAt={joinedAt}
         editing={editing}
         handleAvatarChange={handleAvatarChange}
@@ -187,6 +198,18 @@ const AccountPage = () => {
         handleHandleChange={handleHandleChange}
         handleSaveClick={handleSaveClick}
       />
+      {error && (
+        <Stack
+          sx={{ width: "100%" }}
+          spacing={2}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        >
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            {error}
+          </Alert>{" "}
+        </Stack>
+      )}
     </Container>
   );
 };
