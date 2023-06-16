@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
 
 const articleRoutes = require("./routes/articles");
 const userRoutes = require("./routes/user");
@@ -12,6 +13,14 @@ const app = express();
 
 //middleware
 app.use(express.json());
+
+// Serve static files from the build directory
+app.use(express.static(path.join(__dirname, "build")));
+
+// Fall back to index.html for any other route
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 /*
 for reference when dev
