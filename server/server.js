@@ -17,11 +17,6 @@ app.use(express.json());
 // Serve static files from the build directory
 app.use(express.static(path.join(__dirname, "../client/build")));
 
-// Fall back to index.html for any other route
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-});
-
 /*
 for testing requests.
 app.use((req, res, next) => {
@@ -38,6 +33,11 @@ app.use("/api/user", userRoutes);
 app.use("/api/searchData", searchRoutes);
 
 app.use("/api/like", likeRoutes);
+
+// Fall back to index.html for any other route
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
 
 // connect to db
 mongoose
