@@ -15,11 +15,11 @@ const app = express();
 app.use(express.json());
 
 // Serve static files from the build directory
-app.use(express.static(path.join(__dirname, "client", "build")));
+app.use(express.static(path.join(__dirname, "../client/build")));
 
 // Fall back to index.html for any other route
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
 });
 
 /*
