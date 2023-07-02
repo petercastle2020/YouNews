@@ -129,7 +129,7 @@ const AccountPanel = ({
         <TextField
           required
           id="standard-required"
-          label="handle"
+          label="Handle"
           variant="standard"
           autoComplete="off"
           value={handle}

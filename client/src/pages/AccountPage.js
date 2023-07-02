@@ -189,7 +189,7 @@ const AccountPage = () => {
         avatar={avatar}
         name={name}
         email={email}
-        handle={handle.slice(1)}
+        handle={handle.replace("@", "")}
         joinedAt={joinedAt}
         editing={editing}
         handleAvatarChange={handleAvatarChange}
