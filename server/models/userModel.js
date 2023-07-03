@@ -38,6 +38,18 @@ const userSchema = new Schema(
       default:
         "https://res.cloudinary.com/dqjwxv8ck/image/upload/v1681943748/user-default_pawzoi.webp",
     },
+    following: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    followers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     timestamps: true,

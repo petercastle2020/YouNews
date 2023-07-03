@@ -47,6 +47,7 @@ const UserProfile = () => {
   return (
     <div className="user-profile">
       <UserProfileDisplay
+        _id={user._id}
         avatar={user.avatar}
         name={user.name}
         handle={user.handle}

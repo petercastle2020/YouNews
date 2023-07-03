@@ -25,4 +25,8 @@ router.get("/:id", getUserById);
 // update user
 router.post("/update", requireAuth, upload.single("file"), updateUser);
 
+// router.post('/api/users/:userId/follow', requireAuth, followUser);
+
+// router.post('/api/users/:userId/unfollow', requireAuth, unfollowUser);
+
 module.exports = router;

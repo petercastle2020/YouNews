@@ -1,12 +1,64 @@
+import { useEffect, useState } from "react";
 //MUI
-import { Box, CardMedia, Typography } from "@mui/material";
+import { Box, CardMedia, Typography, Button } from "@mui/material";
 // COMPONENTS
 import JoinedAtComponent from "./JoinedAtComponent";
 
 import { useTheme } from "@mui/system";
 
-const UserProfileDisplay = ({ name, handle, avatar, joinedAt }) => {
+const UserProfileDisplay = ({ _id, name, handle, avatar, joinedAt }) => {
   const theme = useTheme();
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  useEffect(() => {
+    const checkFollowStatus = async () => {
+      try {
+        const user = localStorage.getItem("user");
+        const token = user.token;
+
+        let AuthorizationToken = {};
+        if (token) {
+          AuthorizationToken = { Authorization: `Bearer ${token}` };
+
+          const response = await fetch(`/api/users/${_id}/followStatus`, {
+            method: "GET",
+            headers: AuthorizationToken,
+          });
+        } else {
+          // User is not logged in,
+          console.log("User not logged in.");
+        }
+      } catch (error) {
+        // Handle error
+      }
+    };
+
+    checkFollowStatus();
+  }, [_id]);
+
+  const handleFollow = async () => {
+    try {
+      const user = localStorage.getItem("user");
+      const token = user.token;
+
+      let AuthorizationToken = {};
+      if (token) {
+        AuthorizationToken = { Authorization: `Bearer ${token}` };
+      }
+
+      const endpoint = isFollowing
+        ? `/api/users/${_id}/unfollow`
+        : `/api/users/${_id}/follow`;
+
+      const response = await fetch(`/api/users/${_id}/follow`, {
+        method: "POST",
+        headers: AuthorizationToken,
+      });
+    } catch (error) {
+      // Handle error
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -47,6 +99,14 @@ const UserProfileDisplay = ({ name, handle, avatar, joinedAt }) => {
         </Typography>
 
         <JoinedAtComponent joinedAt={joinedAt} />
+        <Button
+          onClick={handleFollow}
+          size="medium"
+          variant="outlined"
+          sx={{ marginTop: "1rem" }}
+        >
+          {isFollowing ? "Unfollow" : "Follow"}
+        </Button>
       </Box>
     </Box>
   );
