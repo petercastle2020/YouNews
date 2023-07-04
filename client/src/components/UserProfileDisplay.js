@@ -20,7 +20,7 @@ const UserProfileDisplay = ({ _id, name, handle, avatar, joinedAt }) => {
         if (token) {
           AuthorizationToken = { Authorization: `Bearer ${token}` };
 
-          const response = await fetch(`/api/users/${_id}/followStatus`, {
+          const response = await fetch(`/api/user/${_id}/followStatus`, {
             method: "GET",
             headers: AuthorizationToken,
           });
@@ -44,16 +44,19 @@ const UserProfileDisplay = ({ _id, name, handle, avatar, joinedAt }) => {
       let AuthorizationToken = {};
       if (token) {
         AuthorizationToken = { Authorization: `Bearer ${token}` };
+
+        const endpoint = isFollowing
+          ? `/api/user/${_id}/unfollow`
+          : `/api/user/${_id}/follow`;
+
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: AuthorizationToken,
+        });
+      } else {
+        // User is not logged in,
+        console.log("User not logged in.");
       }
-
-      const endpoint = isFollowing
-        ? `/api/users/${_id}/unfollow`
-        : `/api/users/${_id}/follow`;
-
-      const response = await fetch(`/api/users/${_id}/follow`, {
-        method: "POST",
-        headers: AuthorizationToken,
-      });
     } catch (error) {
       // Handle error
     }

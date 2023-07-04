@@ -150,9 +150,33 @@ const updateUser = async (req, res) => {
   }
 };
 
+const checkFollowStatus = async (req, res) => {
+  try {
+    const userTargetId = req.params.id;
+    const currentUserId = req.user._id;
+    console.log(req.params);
+    console.log("I AM HERE.");
+    console.log(currentUserId, userTargetId);
+    const isFollowing = await User.exists({
+      _id: currentUserId,
+      following: userTargetId,
+    });
+
+    if (isFollowing) {
+      return res.status(200).json({ isFollowing });
+    } else {
+      return res.status(200).json({ isFollowing });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error." });
+  }
+};
+
 module.exports = {
   loginUser,
   signupUser,
   getUserById,
   updateUser,
+  checkFollowStatus,
 };
