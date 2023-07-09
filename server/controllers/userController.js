@@ -21,6 +21,7 @@ const loginUser = async (req, res) => {
       handle: user.handle,
       avatar: user.avatar,
       createdAt: user.createdAt,
+      _id: user._id,
       token,
     });
   } catch (error) {
@@ -43,6 +44,7 @@ const signupUser = async (req, res) => {
       handle: user.handle,
       avatar: user.avatar,
       createdAt: user.createdAt,
+      _id: user._id,
       token,
     });
   } catch (error) {
@@ -154,6 +156,14 @@ const checkFollowStatus = async (req, res) => {
   try {
     const userTargetId = req.params.id;
     const currentUserId = req.user._id;
+
+    if (!userTargetId) {
+      return res.status(200).json({ isFollowing: null });
+    }
+
+    if (currentUserId === userTargetId) {
+      return res.status(200).json({ isFollowing: null });
+    }
     console.log(req.params);
     console.log("I AM HERE.");
     console.log(currentUserId, userTargetId);

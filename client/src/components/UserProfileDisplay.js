@@ -9,6 +9,7 @@ import { useTheme } from "@mui/system";
 const UserProfileDisplay = ({ _id, name, handle, avatar, joinedAt }) => {
   const theme = useTheme();
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isUserPage, setIsUserPage] = useState(false);
 
   useEffect(() => {
     const checkFollowStatus = async () => {
@@ -16,29 +17,34 @@ const UserProfileDisplay = ({ _id, name, handle, avatar, joinedAt }) => {
         const user = localStorage.getItem("user");
         const userObj = JSON.parse(user);
         const token = userObj.token;
-        console.log(token, userObj);
 
-        let AuthorizationToken = {};
-        if (token) {
-          AuthorizationToken = { Authorization: `Bearer ${token}` };
-
-          const response = await fetch(`/api/user/${_id}/followStatus`, {
-            method: "GET",
-            headers: AuthorizationToken,
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            data.response.isFollowing
-              ? setIsFollowing(true)
-              : setIsFollowing(false);
-          } else {
-            // handle error.
-            console.log("Error checking the Following status.");
-          }
+        if (userObj._id === _id || !_id) {
+          setIsUserPage(true);
         } else {
-          // User is not logged in,
-          console.log("User not logged in.");
+          setIsUserPage(false);
+
+          let AuthorizationToken = {};
+          if (token) {
+            AuthorizationToken = { Authorization: `Bearer ${token}` };
+
+            const response = await fetch(`/api/user/${_id}/followStatus`, {
+              method: "GET",
+              headers: AuthorizationToken,
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              data.response.isFollowing
+                ? setIsFollowing(true)
+                : setIsFollowing(false);
+            } else {
+              // handle error.
+              console.log("Error checking the Following status.");
+            }
+          } else {
+            // User is not logged in,
+            console.log("User not logged in.");
+          }
         }
       } catch (error) {
         // Handle error
@@ -128,14 +134,16 @@ const UserProfileDisplay = ({ _id, name, handle, avatar, joinedAt }) => {
         </Typography>
 
         <JoinedAtComponent joinedAt={joinedAt} />
-        <Button
-          onClick={handleFollow}
-          size="medium"
-          variant="outlined"
-          sx={{ marginTop: "1rem" }}
-        >
-          {isFollowing ? "Unfollow" : "Follow"}
-        </Button>
+        {!isUserPage && (
+          <Button
+            onClick={handleFollow}
+            size="medium"
+            variant="outlined"
+            sx={{ marginTop: "1rem" }}
+          >
+            {isFollowing ? "Unfollow" : "Follow"}
+          </Button>
+        )}
       </Box>
     </Box>
   );
