@@ -162,14 +162,58 @@ const checkFollowStatus = async (req, res) => {
       following: userTargetId,
     });
 
-    if (isFollowing) {
-      return res.status(200).json({ isFollowing });
+    const response = { isFollowing: !!isFollowing }; // Convert isFollowing to boolean
+
+    if (response) {
+      return res.status(200).json({ response });
     } else {
-      return res.status(200).json({ isFollowing });
+      return res.status(200).json({ response });
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server error." });
+  }
+};
+
+const followUser = async (req, res) => {
+  try {
+    const currentUserId = req.user._id;
+    const userToFollowId = req.params.id;
+
+    await User.findByIdAndUpdate(currentUserId, {
+      $push: { following: userToFollowId },
+    });
+
+    await User.findByIdAndUpdate(userToFollowId, {
+      $push: { followers: currentUserId },
+    });
+
+    console.log("Following updated successfully!");
+    res.status(200).json({ message: "Following updated successfully!" });
+  } catch (error) {
+    console.error("Error updating following:", error);
+    throw error;
+  }
+};
+
+const unfollowUser = async (req, res) => {
+  try {
+    const currentUserId = req.user._id;
+    const userToUnfollowId = req.params.id;
+
+    await User.findByIdAndUpdate(currentUserId, {
+      $pull: { following: userToUnfollowId },
+    });
+
+    await User.findByIdAndUpdate(userToUnfollowId, {
+      $pull: { followers: currentUserId },
+    });
+
+    console.log("Unfollowing updated successfully!");
+    res.status(200).json({ message: "Unfollowing updated successfully!" });
+  } catch (error) {
+    console.error("Error updating unfollowing:", error);
+    throw error;
   }
 };
 
@@ -179,4 +223,6 @@ module.exports = {
   getUserById,
   updateUser,
   checkFollowStatus,
+  followUser,
+  unfollowUser,
 };

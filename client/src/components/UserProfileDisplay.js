@@ -14,7 +14,9 @@ const UserProfileDisplay = ({ _id, name, handle, avatar, joinedAt }) => {
     const checkFollowStatus = async () => {
       try {
         const user = localStorage.getItem("user");
-        const token = user.token;
+        const userObj = JSON.parse(user);
+        const token = userObj.token;
+        console.log(token, userObj);
 
         let AuthorizationToken = {};
         if (token) {
@@ -24,6 +26,16 @@ const UserProfileDisplay = ({ _id, name, handle, avatar, joinedAt }) => {
             method: "GET",
             headers: AuthorizationToken,
           });
+
+          if (response.ok) {
+            const data = await response.json();
+            data.response.isFollowing
+              ? setIsFollowing(true)
+              : setIsFollowing(false);
+          } else {
+            // handle error.
+            console.log("Error checking the Following status.");
+          }
         } else {
           // User is not logged in,
           console.log("User not logged in.");
@@ -39,26 +51,40 @@ const UserProfileDisplay = ({ _id, name, handle, avatar, joinedAt }) => {
   const handleFollow = async () => {
     try {
       const user = localStorage.getItem("user");
-      const token = user.token;
+      const userObj = JSON.parse(user);
+      const token = userObj.token;
 
       let AuthorizationToken = {};
       if (token) {
         AuthorizationToken = { Authorization: `Bearer ${token}` };
 
-        const endpoint = isFollowing
-          ? `/api/user/${_id}/unfollow`
-          : `/api/user/${_id}/follow`;
+        let endpoint = "";
+        if (isFollowing) {
+          endpoint = `/api/user/${_id}/unfollow`;
+        } else {
+          endpoint = `/api/user/${_id}/follow`;
+        }
 
         const response = await fetch(endpoint, {
           method: "POST",
           headers: AuthorizationToken,
         });
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsFollowing(!isFollowing); // Toggle the value of isFollowing
+          console.log(data);
+        } else {
+          // Handle error
+          console.error("Follow/unfollow operation failed");
+        }
       } else {
         // User is not logged in,
         console.log("User not logged in.");
       }
     } catch (error) {
       // Handle error
+      console.log(error);
     }
   };
 
