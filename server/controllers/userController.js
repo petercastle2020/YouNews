@@ -227,6 +227,29 @@ const unfollowUser = async (req, res) => {
   }
 };
 
+// GET USER FOLLOWING LIST.
+const getFollowingList = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findById({ _id: userId }).populate("following");
+
+    if (!user) {
+      return res.status(404).json({
+        error: "You cannot get a following list, You do not follow anyone yet.",
+      });
+    }
+
+    const followingUsersIds = user.following.map(
+      (followingUser) => followingUser._id
+    );
+    res.status(200).json({ followingUsersIds });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   loginUser,
   signupUser,
@@ -235,4 +258,5 @@ module.exports = {
   checkFollowStatus,
   followUser,
   unfollowUser,
+  getFollowingList,
 };

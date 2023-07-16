@@ -16,6 +16,7 @@ const {
   checkFollowStatus,
   followUser,
   unfollowUser,
+  getFollowingList,
 } = require("../controllers/userController");
 
 // login route
@@ -24,6 +25,9 @@ router.post("/login", loginUser);
 router.post("/signup", signupUser);
 
 router.get("/:id/followStatus", requireAuth, checkFollowStatus);
+
+router.get("/:id/following", getFollowingList);
+
 // update user
 router.post("/update", requireAuth, upload.single("file"), updateUser);
 

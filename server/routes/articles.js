@@ -15,14 +15,17 @@ const {
   updateArticle,
   getSpecificUserArticles,
   getTrendingArticles,
+  queryUserArticles,
 } = require("../controllers/articleController");
 const requireAuth = require("../middleware/requireAuth");
 
 // require auth for all following routes.(I've put specific Auth in each router.)
 //router.use(requireAuth);
+// QUERY FOR USER ARTICLES
+router.get("/", queryUserArticles);
 
 // GET ALL articles
-router.get("/", getAllArticles);
+router.get("/all", getAllArticles);
 
 // GET Mine all articles
 router.get("/my", requireAuth, getAllMyArticles);

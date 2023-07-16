@@ -35,6 +35,27 @@ const getSpecificUserArticles = async (req, res) => {
   res.status(200).json(articles);
 };
 
+const queryUserArticles = async (req, res) => {
+  try {
+    const { user_id } = req.query;
+
+    const articles = await Article.find({ user_id: user_id }).sort({
+      createdAt: -1,
+    });
+
+    console.log(articles);
+
+    if (articles.length > 0) {
+      res.status(200).json(articles);
+    } else {
+      res.status(404).json({ msg: "User don't have articles yet." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 // GET single article
 const getSingleArticle = async (req, res) => {
   const { id } = req.params;
@@ -218,4 +239,5 @@ module.exports = {
   updateArticle,
   getSpecificUserArticles,
   getTrendingArticles,
+  queryUserArticles,
 };
