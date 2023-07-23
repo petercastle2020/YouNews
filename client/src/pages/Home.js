@@ -47,48 +47,6 @@ const Home = ({ user }) => {
   const [followingUsers, setFollowingUsers] = useState([]);
   const theme = useTheme();
 
-  // useEffect(() => {
-  //   const fetchArticles = async () => {
-  //     const response = await fetch("/api/articles/all", {
-  //       headers: {},
-  //     });
-  //     const json = await response.json();
-
-  //     if (response.ok) {
-  //       dispatch({ type: "SET_ARTICLES", payload: json });
-  //     }
-  //   };
-
-  //   fetchArticles();
-  // }, [dispatch, user]);
-
-  const fetchFollowingArticles = async () => {
-    try {
-      const promises = followingUsers.map(async (followingUser) => {
-        console.log(followingUsers);
-        const response = await fetch(`api/articles?user_id=${followingUser}`);
-        if (response.ok) {
-          const ArticlesArray = await response.json();
-          console.log(ArticlesArray);
-          // return ArticlesArray;
-        } else {
-          console.error(`Failed to fetch articles for user ${followingUser}`);
-          return [];
-        }
-      });
-
-      const articlesData = await Promise.all(promises);
-      console.log(articlesData);
-
-      const allArticles = articlesData.flat();
-      console.log(allArticles);
-      // THEN SET THE ARTICLES HERE.
-      dispatch({ type: "SET_ARTICLES", payload: allArticles });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     const fetchFollowingUsers = async () => {
       try {
@@ -106,7 +64,7 @@ const Home = ({ user }) => {
           const data = await response.json();
           console.log(data.followingUsersIds);
           setFollowingUsers(data.followingUsersIds);
-          fetchFollowingArticles();
+          // fetchFollowingArticles();
         } else {
           console.error("Failed to fetch following users");
         }
@@ -117,6 +75,53 @@ const Home = ({ user }) => {
 
     fetchFollowingUsers();
   }, [user]);
+
+  useEffect(() => {
+    const fetchFollowingArticles = async () => {
+      try {
+        if (followingUsers.length === 0) {
+          return;
+        }
+
+        const promises = followingUsers.map(async (followingUser) => {
+          try {
+            console.log(followingUsers);
+            const response = await fetch(
+              `api/articles?user_id=${followingUser}`
+            );
+            if (response.ok) {
+              const ArticlesArray = await response.json();
+              console.log(ArticlesArray);
+              return ArticlesArray;
+            } else if (response.status === 404) {
+              console.error(`User ${followingUser} doesn't have articles yet.`);
+              return [];
+            } else {
+              console.error(
+                `Failed to fetch articles for user ${followingUser}: ${response.status} - ${response.statusText}`
+              );
+              return [];
+            }
+          } catch (error) {
+            console.error(`Failed to fetch articles for user ${followingUser}`);
+            return [];
+          }
+        });
+
+        const articlesData = await Promise.all(promises);
+        console.log(articlesData);
+
+        const allArticles = articlesData.flat();
+        console.log(allArticles);
+        // THEN SET THE ARTICLES HERE.
+        dispatch({ type: "SET_ARTICLES", payload: allArticles });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchFollowingArticles();
+  }, [followingUsers, dispatch]);
 
   return (
     <BoxStyled>
