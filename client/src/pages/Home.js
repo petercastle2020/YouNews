@@ -64,7 +64,6 @@ const Home = ({ user }) => {
           const data = await response.json();
           console.log(data.followingUsersIds);
           setFollowingUsers(data.followingUsersIds);
-          // fetchFollowingArticles();
         } else {
           console.error("Failed to fetch following users");
         }
