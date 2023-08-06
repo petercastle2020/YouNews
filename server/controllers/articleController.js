@@ -230,6 +230,28 @@ const getTrendingArticles = async (req, res) => {
   }
 };
 
+const shareArticle = async (req, res) => {
+  console.log("sharing func...");
+  try {
+    const { articleId } = req.params; // see how this works.
+    const sharedBy = req.user._id;
+
+    const originalArticle = await Article.findById(articleId);
+
+    const sharedArticle = new Article({
+      ...originalArticle.toObject(),
+      sharedBy: sharedBy,
+      sharedArticle: articleId,
+    });
+
+    await sharedArticle.save();
+
+    res.status(200).json({ message: "Article shared successfully." });
+  } catch (error) {
+    res.status(500).json({ error: "Something went wrong." });
+  }
+};
+
 module.exports = {
   createArticle,
   getAllArticles,
@@ -240,4 +262,5 @@ module.exports = {
   getSpecificUserArticles,
   getTrendingArticles,
   queryUserArticles,
+  shareArticle,
 };

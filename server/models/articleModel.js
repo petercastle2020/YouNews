@@ -32,6 +32,14 @@ const articleSchema = new Schema(
       type: Number,
       default: 0,
     },
+    sharedBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    sharedArticle: {
+      type: Schema.Types.ObjectId,
+      ref: "Article",
+    },
   },
   { timestamps: true }
 );

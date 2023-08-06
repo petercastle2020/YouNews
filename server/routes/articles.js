@@ -16,6 +16,7 @@ const {
   getSpecificUserArticles,
   getTrendingArticles,
   queryUserArticles,
+  shareArticle,
 } = require("../controllers/articleController");
 const requireAuth = require("../middleware/requireAuth");
 
@@ -32,6 +33,9 @@ router.get("/my", requireAuth, getAllMyArticles);
 
 // POST new articles
 router.post("/", requireAuth, upload.single("file"), createArticle);
+
+// Share articles
+router.post("/:articleId/share", shareArticle);
 
 // DELETE new articles
 router.delete("/:id", requireAuth, deleteArticle);
