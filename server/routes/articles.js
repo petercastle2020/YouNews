@@ -35,7 +35,7 @@ router.get("/my", requireAuth, getAllMyArticles);
 router.post("/", requireAuth, upload.single("file"), createArticle);
 
 // Share articles
-router.post("/:articleId/share", shareArticle);
+router.post("/:articleId/share", requireAuth, shareArticle);
 
 // DELETE new articles
 router.delete("/:id", requireAuth, deleteArticle);

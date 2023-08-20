@@ -234,21 +234,32 @@ const shareArticle = async (req, res) => {
   console.log("sharing func...");
   try {
     const { articleId } = req.params; // see how this works.
+    console.log(articleId);
     const sharedBy = req.user._id;
 
     const originalArticle = await Article.findById(articleId);
+    console.log(originalArticle);
+    const { _id, ...rest } = originalArticle.toObject();
 
     const sharedArticle = new Article({
-      ...originalArticle.toObject(),
+      ...rest,
       sharedBy: sharedBy,
       sharedArticle: articleId,
     });
 
     await sharedArticle.save();
 
+    console.log(sharedArticle, "inside share article.");
+
     res.status(200).json({ message: "Article shared successfully." });
   } catch (error) {
-    res.status(500).json({ error: "Something went wrong." });
+    if (error.name === "ValidationError") {
+      console.error("Mongoose Validation Error:", error.errors);
+      res.status(400).json({ message: "Validation error." });
+    } else {
+      console.error("Error creating and saving sharedArticle:", error);
+      res.status(500).json({ error: "Something went wrong." });
+    }
   }
 };
 

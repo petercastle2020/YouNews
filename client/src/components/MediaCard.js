@@ -21,6 +21,7 @@ import { Snackbar, Alert } from "@mui/material";
 
 // Component
 import LikeButton from "./LikeButton";
+import ShareButton from "./ShareButton";
 
 //DOMPurify
 import DOMPurify from "dompurify";
@@ -120,6 +121,43 @@ const MediaCard = ({ article, user }) => {
     setLocalLikeCount(data.likeCount);
   };
 
+  const handleShareClick = async (articleId) => {
+    // Check if user is authenticated
+    if (!user) {
+      dispatch({
+        type: "SET_AUTH_ERROR",
+        payload: "Please, you must be logged in.",
+      });
+      setIsSnackbarOpen(true);
+      return;
+    }
+
+    // Check for headers
+    const headers = user
+      ? {
+          Authorization: `Bearer ${user.token}`,
+          "Content-Type": "application/json",
+        }
+      : {};
+
+    if (headers) {
+      try {
+        const res = await fetch(`/api/articles/${articleId}/share`, {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify({ articleId }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          console.log(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   // dispatch null value for authError when snackbar closes.
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -169,6 +207,10 @@ const MediaCard = ({ article, user }) => {
                 isLiked={isLiked}
                 onUpdateLikes={handleLikeClick}
               ></LikeButton>
+              <ShareButton
+                articleId={_id}
+                onShareClick={handleShareClick}
+              ></ShareButton>
             </CardActions>
           </Card>
           <Snackbar
