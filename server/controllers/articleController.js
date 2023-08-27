@@ -13,13 +13,28 @@ const getAllArticles = async (req, res) => {
 
 // GET MINE all articles
 
+// const getAllMyArticles = async (req, res) => {
+//   const user_id = req.user._id;
+
+//   const articles = await Article.find({ user_id: user_id }).sort({
+//     createdAt: -1,
+//   });
+
+//   res.status(200).json(articles);
+// };
+
+// GET MINE all articles
+// GET own articles and SHared Articles for the user's page.
+
 const getAllMyArticles = async (req, res) => {
   const user_id = req.user._id;
 
-  const articles = await Article.find({ user_id: user_id }).sort({
+  const articles = await Article.find({
+    $or: [{ user_id: user_id }, { sharedBy: user_id }],
+  }).sort({
     createdAt: -1,
   });
-
+  console.log(articles);
   res.status(200).json(articles);
 };
 
